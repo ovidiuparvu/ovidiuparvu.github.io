@@ -2,12 +2,12 @@
   
     {
 
-      "title"       : "Hello world",
-      "url"         : "/2020/05/24/hello-world",
+      "title"       : "How to set up a GitHub Pages technical blog?",
+      "url"         : "/2020/05/25/how-to-set-up-github-pages-technical-blog",
       "category"    : "",
-      "tags"        : "init",
-      "date"        : "2020-05-24 00:00:00 +0100",
-      "description" : "Initial blog post"
+      "tags"        : "blog, gh-pages",
+      "date"        : "2020-05-25 00:00:00 +0100",
+      "description" : "Post that describes how to set up a GitHub Pages site for a technical blog like this one."
 
     } 
   
