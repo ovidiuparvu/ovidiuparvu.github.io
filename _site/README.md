@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ovidiuparvu/ovidiuparvu.github.io.svg?branch=master)](https://travis-ci.org/ovidiuparvu/ovidiuparvu.github.io)
+[![pages-build-deployment](https://github.com/ovidiuparvu/ovidiuparvu.github.io/actions/workflows/pages/pages-build-deployment/badge.svg?branch=master)](https://github.com/ovidiuparvu/ovidiuparvu.github.io/actions/workflows/pages/pages-build-deployment)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Ovidiu Pârvu's technical blog.
