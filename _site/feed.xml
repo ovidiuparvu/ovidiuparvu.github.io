@@ -1,20 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-25T13:18:12+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu's technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">How to set up a GitHub Pages technical blog?</title><link href="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog" rel="alternate" type="text/html" title="How to set up a GitHub Pages technical blog?" /><published>2020-05-25T00:00:00+01:00</published><updated>2020-05-25T00:00:00+01:00</updated><id>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</id><content type="html" xml:base="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog">&lt;p&gt;This post describes how to set up a GitHub Pages site for a technical blog like this one.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-02-21T16:22:41+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Ovi’s Digital Library</title><link href="http://localhost:4000/2024/02/01/ovi-digital-library" rel="alternate" type="text/html" title="Ovi’s Digital Library" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/01/ovi-digital-library</id><content type="html" xml:base="http://localhost:4000/2024/02/01/ovi-digital-library"><![CDATA[<h1 id="storage-aystems">Storage aystems</h1>
 
-&lt;ol&gt;
-  &lt;li&gt;Create a GitHub repository for hosting the blog source files: &lt;a href=&quot;https://github.com/ovidiuparvu/gh-pages-blog-template/generate&quot;&gt;gh-pages-blog-template&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Clone the GitHub repository created at step 1 into a local directory, which will be denoted as &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; for the remainder of this post.&lt;/li&gt;
-  &lt;li&gt;Set up &lt;a href=&quot;https://www.ruby-lang.org/en/documentation/installation/&quot;&gt;Ruby&lt;/a&gt; and &lt;a href=&quot;https://bundler.io/&quot;&gt;Bundler&lt;/a&gt; locally.&lt;/li&gt;
-  &lt;li&gt;Install the gems required for testing the blog locally by running in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; directory the following:
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; bundle install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Test the blog locally by running in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; directory the command below and opening in a browser the URL printed when running the command:
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; bundle exec jekyll serve
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Customize the structure and contents of the blog to your own liking. If you are new to Jekyll, going through the &lt;a href=&quot;https://jekyllrb.com/docs/step-by-step/01-setup&quot;&gt;Step by Step Tutorial&lt;/a&gt; could help.
-    &lt;ul&gt;
-      &lt;li&gt;Search for all occurrences of the string &lt;code class=&quot;highlighter-rouge&quot;&gt;YOUR_NAME&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; directory and replace them (and the surrounding text) as needed.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Ovidiu Pârvu</name></author><category term="blog" /><category term="gh-pages" /><summary type="html">This post describes how to set up a GitHub Pages site for a technical blog like this one.</summary></entry></feed>
+<ol>
+  <li>S3: https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html</li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="library" /><category term="technology" /><category term="reading" /><summary type="html"><![CDATA[Technology references I find useful.]]></summary></entry><entry><title type="html">How to set up a GitHub Pages technical blog?</title><link href="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog" rel="alternate" type="text/html" title="How to set up a GitHub Pages technical blog?" /><published>2020-05-25T00:00:00+01:00</published><updated>2020-05-25T00:00:00+01:00</updated><id>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</id><content type="html" xml:base="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog"><![CDATA[<p>This post describes how to set up a GitHub Pages site for a technical blog like this one.</p>
+
+<ol>
+  <li>Create a GitHub repository for hosting the blog source files: <a href="https://github.com/ovidiuparvu/gh-pages-blog-template/generate">gh-pages-blog-template</a>.</li>
+  <li>Clone the GitHub repository created at step 1 into a local directory, which will be denoted as <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> for the remainder of this post.</li>
+  <li>Set up <a href="https://www.ruby-lang.org/en/documentation/installation/">Ruby</a> and <a href="https://bundler.io/">Bundler</a> locally.</li>
+  <li>Install the gems required for testing the blog locally by running in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory the following:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle install
+</code></pre></div>    </div>
+  </li>
+  <li>Test the blog locally by running in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory the command below and opening in a browser the URL printed when running the command:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle exec jekyll serve
+</code></pre></div>    </div>
+  </li>
+  <li>Customize the structure and contents of the blog to your own liking. If you are new to Jekyll, going through the <a href="https://jekyllrb.com/docs/step-by-step/01-setup">Step by Step Tutorial</a> could help.
+    <ul>
+      <li>Search for all occurrences of the string <code class="language-plaintext highlighter-rouge">YOUR_NAME</code> in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory and replace them (and the surrounding text) as needed.</li>
+    </ul>
+  </li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="blog" /><category term="gh-pages" /><summary type="html"><![CDATA[Post that describes how to set up a GitHub Pages site for a technical blog like this one.]]></summary></entry></feed>

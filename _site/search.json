@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "Ovi&#39;s Digital Library",
+      "url"         : "/2024/02/01/ovi-digital-library",
+      "category"    : "",
+      "tags"        : "library, technology, reading",
+      "date"        : "2024-02-01 00:00:00 +0000",
+      "description" : "Technology references I find useful."
+
+    } ,
+  
+    {
+
       "title"       : "How to set up a GitHub Pages technical blog?",
       "url"         : "/2020/05/25/how-to-set-up-github-pages-technical-blog",
       "category"    : "",
