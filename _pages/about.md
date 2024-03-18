@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-Ovidiu Pârvu. Solving problems using technology.
+Ovidiu Pârvu. Creating value using technology.
 
 - Professional details: [LinkedIn](https://www.linkedin.com/in/ovidiuparvu).
 - Publicly available code contributions: [GitHub](https://www.github.com/ovidiuparvu).
