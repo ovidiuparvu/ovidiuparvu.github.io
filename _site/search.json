@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "Accelerate reading notes",
+      "url"         : "/2024/04/03/accelerate-reading-notes",
+      "category"    : "",
+      "tags"        : "accelerate, dora, devops",
+      "date"        : "2024-04-03 00:00:00 +0100",
+      "description" : "Accelerate reading notes"
+
+    } ,
+  
+    {
+
       "title"       : "How can I start using GitHub Copilot from vim?",
       "url"         : "/2024/02/29/copilot-setup-vim",
       "category"    : "",

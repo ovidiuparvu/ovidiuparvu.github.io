@@ -154,7 +154,11 @@ strong, b {
 }
 
 .post ul, .project ul, .post ol {
-    //list-style-position: inside;
+    list-style-position: inside;
+}
+
+.post ul li, .project ul li, .post ol li {
+    padding-left: 1rem;
 }
 
 main {

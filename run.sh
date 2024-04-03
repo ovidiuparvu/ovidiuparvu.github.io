@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 
-bundle2.7 exec jekyll serve
+bundle3.0 exec jekyll serve

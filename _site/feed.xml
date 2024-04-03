@@ -1,24 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-03-15T10:06:31+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu's technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">How can I start using GitHub Copilot from vim?</title><link href="http://localhost:4000/2024/02/29/copilot-setup-vim" rel="alternate" type="text/html" title="How can I start using GitHub Copilot from vim?" /><published>2024-02-29T00:00:00+00:00</published><updated>2024-02-29T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/29/copilot-setup-vim</id><content type="html" xml:base="http://localhost:4000/2024/02/29/copilot-setup-vim">&lt;h1 id=&quot;1-sign-up-for-github-copilot&quot;&gt;1. Sign up for GitHub Copilot&lt;/h1&gt;</content><author><name>Ovidiu Pârvu</name></author><category term="vim" /><category term="copilot" /><category term="github" /><summary type="html">1. Sign up for GitHub Copilot</summary></entry><entry><title type="html">How can I create a command line tool that creates a plot using plotly and opens it in your browser?</title><link href="http://localhost:4000/2024/02/27/typer-plotly-html-browser" rel="alternate" type="text/html" title="How can I create a command line tool that creates a plot using plotly and opens it in your browser?" /><published>2024-02-27T00:00:00+00:00</published><updated>2024-02-27T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/27/typer-plotly-html-browser</id><content type="html" xml:base="http://localhost:4000/2024/02/27/typer-plotly-html-browser">&lt;h1 id=&quot;todo&quot;&gt;TODO&lt;/h1&gt;</content><author><name>Ovidiu Pârvu</name></author><category term="typer" /><category term="pyton" /><category term="cli" /><category term="plotly" /><category term="browser" /><category term="www" /><category term="html" /><summary type="html">TODO</summary></entry><entry><title type="html">Ovi’s Digital Library</title><link href="http://localhost:4000/2024/02/01/ovi-digital-library" rel="alternate" type="text/html" title="Ovi's Digital Library" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/01/ovi-digital-library</id><content type="html" xml:base="http://localhost:4000/2024/02/01/ovi-digital-library">&lt;h1 id=&quot;storage-aystems&quot;&gt;Storage aystems&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-04-03T07:08:24+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
 
-&lt;ol&gt;
-  &lt;li&gt;S3: &lt;a href=&quot;https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html&quot;&gt;https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html&lt;/a&gt;.&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Ovidiu Pârvu</name></author><category term="library" /><category term="technology" /><category term="reading" /><summary type="html">Storage aystems</summary></entry><entry><title type="html">How to set up a GitHub Pages technical blog?</title><link href="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog" rel="alternate" type="text/html" title="How to set up a GitHub Pages technical blog?" /><published>2020-05-25T00:00:00+01:00</published><updated>2020-05-25T00:00:00+01:00</updated><id>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</id><content type="html" xml:base="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog">&lt;p&gt;This post describes how to set up a GitHub Pages site for a technical blog like this one.&lt;/p&gt;
+<ul>
+  <li>High IT performance correlates with strong business performance.</li>
+  <li>People are an organization’s #1 asset.</li>
+  <li>Queue theory in maths tells us that as utilization approaches 100%, lead times approach infinity.</li>
+  <li>Useful measures of software delivery performance:
+    <ol>
+      <li>Delivery lead time: The time it takes to deliver a feature to customers.</li>
+      <li>Deployment frequency (as a proxy for batch size).</li>
+      <li>Mean Time to Restore (MTTR).</li>
+      <li>Change fail percentage.</li>
+    </ol>
+  </li>
+  <li>The ability to take an experimental approach to product development is highly correlated with the technical practices that contribute to continuous delivery.</li>
+  <li>Use a Wardley map to find opportunity, remove waste, help to organise a team of people or determine the strategy for a company (<a href="https://medium.com/wardleymaps/on-being-lost-2ef5f05eb1ec">https://medium.com/wardleymaps/on-being-lost-2ef5f05eb1ec</a>).</li>
+  <li>Westrum’s classification of organizational cultures:
+    <ul>
+      <li>Pathological (power-oriented): Organizations are characterized by large amounts of fear and threat. People often hoard information or withhold it for political reasons or distort it to make themselves look better.</li>
+      <li>Bureaucratic (rule-oriented): Organizations protect departments. Those in the department want to maintain their “turf”, insist on their own rules, and generally do this by the book - their book.</li>
+      <li>Generative (performance-oriented): Organizations focus on the mission. How do we accomplish our goal? Everything is subordinated to good performance, to doing what we are supposed to do.</li>
+    </ul>
+  </li>
+  <li>According to Westrum organizational culture predicts the way information flows through an organisation.</li>
+  <li>Table 3.1 comparing organizational cultures looks useful; see p32 for details.</li>
+  <li>Figure 3.1 provides an example of the type of questions that can be used to measure culture.</li>
+  <li>According to Westrum’s theory organizations with better information flow function more effectively.</li>
+  <li>The way to change culture is not to first change how people think, but instead to start by changing how people behave - what they do.</li>
+  <li>Test-driven development, continuous integration and comprehensive configuration management enable more frequent, higher-quality and lower-risk software releases (i.e. continuous delivery).</li>
+</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="accelerate" /><category term="dora" /><category term="devops" /><summary type="html"><![CDATA[Accelerate reading notes]]></summary></entry><entry><title type="html">How can I start using GitHub Copilot from vim?</title><link href="http://localhost:4000/2024/02/29/copilot-setup-vim" rel="alternate" type="text/html" title="How can I start using GitHub Copilot from vim?" /><published>2024-02-29T00:00:00+00:00</published><updated>2024-02-29T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/29/copilot-setup-vim</id><content type="html" xml:base="http://localhost:4000/2024/02/29/copilot-setup-vim"><![CDATA[<h1 id="1-sign-up-for-github-copilot">1. Sign up for GitHub Copilot</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="vim" /><category term="copilot" /><category term="github" /><summary type="html"><![CDATA[How can I start using GitHub Copilot from vim?]]></summary></entry><entry><title type="html">How can I create a command line tool that creates a plot using plotly and opens it in your browser?</title><link href="http://localhost:4000/2024/02/27/typer-plotly-html-browser" rel="alternate" type="text/html" title="How can I create a command line tool that creates a plot using plotly and opens it in your browser?" /><published>2024-02-27T00:00:00+00:00</published><updated>2024-02-27T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/27/typer-plotly-html-browser</id><content type="html" xml:base="http://localhost:4000/2024/02/27/typer-plotly-html-browser"><![CDATA[<h1 id="todo">TODO</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="typer" /><category term="pyton" /><category term="cli" /><category term="plotly" /><category term="browser" /><category term="www" /><category term="html" /><summary type="html"><![CDATA[How can I create a command line tool that creates a plot using plotly and opens it in your browser?]]></summary></entry><entry><title type="html">Ovi’s Digital Library</title><link href="http://localhost:4000/2024/02/01/ovi-digital-library" rel="alternate" type="text/html" title="Ovi’s Digital Library" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/01/ovi-digital-library</id><content type="html" xml:base="http://localhost:4000/2024/02/01/ovi-digital-library"><![CDATA[<h1 id="devops">DevOps</h1>
 
-&lt;ol&gt;
-  &lt;li&gt;Create a GitHub repository for hosting the blog source files: &lt;a href=&quot;https://github.com/ovidiuparvu/gh-pages-blog-template/generate&quot;&gt;gh-pages-blog-template&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Clone the GitHub repository created at step 1 into a local directory, which will be denoted as &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; for the remainder of this post.&lt;/li&gt;
-  &lt;li&gt;Set up &lt;a href=&quot;https://www.ruby-lang.org/en/documentation/installation/&quot;&gt;Ruby&lt;/a&gt; and &lt;a href=&quot;https://bundler.io/&quot;&gt;Bundler&lt;/a&gt; locally.&lt;/li&gt;
-  &lt;li&gt;Install the gems required for testing the blog locally by running in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; directory the following:
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; bundle install
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Test the blog locally by running in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; directory the command below and opening in a browser the URL printed when running the command:
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; bundle exec jekyll serve
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Customize the structure and contents of the blog to your own liking. If you are new to Jekyll, going through the &lt;a href=&quot;https://jekyllrb.com/docs/step-by-step/01-setup&quot;&gt;Step by Step Tutorial&lt;/a&gt; could help.
-    &lt;ul&gt;
-      &lt;li&gt;Search for all occurrences of the string &lt;code class=&quot;highlighter-rouge&quot;&gt;YOUR_NAME&lt;/code&gt; in the &lt;code class=&quot;highlighter-rouge&quot;&gt;BLOG_DIR&lt;/code&gt; directory and replace them (and the surrounding text) as needed.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Ovidiu Pârvu</name></author><category term="blog" /><category term="gh-pages" /><summary type="html">This post describes how to set up a GitHub Pages site for a technical blog like this one.</summary></entry></feed>
+<ol>
+  <li><a href="https://itrevolution.com/product/accelerate">Accelerate</a> - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations, by Nicole Forsgren, Jez Humble, Gene Kim.</li>
+</ol>
+
+<h1 id="storage-aystems">Storage aystems</h1>
+
+<ol>
+  <li>S3: <a href="https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html">https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html</a>.</li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="library" /><category term="technology" /><category term="reading" /><summary type="html"><![CDATA[Technology references I find useful.]]></summary></entry><entry><title type="html">How to set up a GitHub Pages technical blog?</title><link href="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog" rel="alternate" type="text/html" title="How to set up a GitHub Pages technical blog?" /><published>2020-05-25T00:00:00+01:00</published><updated>2020-05-25T00:00:00+01:00</updated><id>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</id><content type="html" xml:base="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog"><![CDATA[<p>This post describes how to set up a GitHub Pages site for a technical blog like this one.</p>
+
+<ol>
+  <li>Create a GitHub repository for hosting the blog source files: <a href="https://github.com/ovidiuparvu/gh-pages-blog-template/generate">gh-pages-blog-template</a>.</li>
+  <li>Clone the GitHub repository created at step 1 into a local directory, which will be denoted as <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> for the remainder of this post.</li>
+  <li>Set up <a href="https://www.ruby-lang.org/en/documentation/installation/">Ruby</a> and <a href="https://bundler.io/">Bundler</a> locally.</li>
+  <li>Install the gems required for testing the blog locally by running in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory the following:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle install
+</code></pre></div>    </div>
+  </li>
+  <li>Test the blog locally by running in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory the command below and opening in a browser the URL printed when running the command:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle exec jekyll serve
+</code></pre></div>    </div>
+  </li>
+  <li>Customize the structure and contents of the blog to your own liking. If you are new to Jekyll, going through the <a href="https://jekyllrb.com/docs/step-by-step/01-setup">Step by Step Tutorial</a> could help.
+    <ul>
+      <li>Search for all occurrences of the string <code class="language-plaintext highlighter-rouge">YOUR_NAME</code> in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory and replace them (and the surrounding text) as needed.</li>
+    </ul>
+  </li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="blog" /><category term="gh-pages" /><summary type="html"><![CDATA[Post that describes how to set up a GitHub Pages site for a technical blog like this one.]]></summary></entry></feed>
