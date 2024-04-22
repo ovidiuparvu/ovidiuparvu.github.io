@@ -12,6 +12,10 @@ tags: [library,technology,reading]
 1. <a href="https://itrevolution.com/product/accelerate">Accelerate</a> - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations, by Nicole Forsgren, Jez Humble, Gene Kim.
 
 
+# Concurrency
+
+1. Race conditions deep dive by Steve Gibson: https://www.grc.com/sn/SN-970-Notes.pdf
+
 
 # Storage aystems
 
