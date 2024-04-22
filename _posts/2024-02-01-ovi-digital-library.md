@@ -14,7 +14,7 @@ tags: [library,technology,reading]
 
 # Concurrency
 
-1. Race conditions deep dive by Steve Gibson: https://www.grc.com/sn/SN-970-Notes.pdf
+1. Race conditions deep dive by Steve Gibson: https://www.grc.com/sn/SN-970-Notes.pdf.
 
 
 # Storage systems
