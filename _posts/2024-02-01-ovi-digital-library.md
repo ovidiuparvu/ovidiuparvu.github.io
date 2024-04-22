@@ -17,6 +17,6 @@ tags: [library,technology,reading]
 1. Race conditions deep dive by Steve Gibson: https://www.grc.com/sn/SN-970-Notes.pdf
 
 
-# Storage aystems
+# Storage systems
 
 1. S3: [https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html](https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html).
