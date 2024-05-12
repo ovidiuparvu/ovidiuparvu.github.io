@@ -29,3 +29,186 @@ My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean S
 - According to Westrum's theory organizations with better information flow function more effectively.
 - The way to change culture is not to first change how people think, but instead to start by changing how people behave - what they do.
 - Test-driven development, continuous integration and comprehensive configuration management enable more frequent, higher-quality and lower-risk software releases (i.e. continuous delivery).
+- Continuous delivery (CD) = set of capabilities that enable to get changes into the hands of users safely, quickly and sustainably.
+- Key principles of CD:
+    - Build quality in.
+    - Work in small batches to reduce the cost of pushing out individual changes.
+    - Simplify and automate repetitive work to free up humans to solve higher-value problems.
+    - Relentlessly pursue continuous improvement.
+        - The most important characteristic of high-performing teams is that they are never satisfied.
+    - Everyone is responsible and should work together.
+- In order to implement CD the following foundations should be created:
+    - Comprehensive configuration management.
+    - Continuous integration (CI).
+    - Continuous testing.
+- Implementing continuous delivery means creating multiple feedback loops to ensure that high-quality software gets delivered to users more frequently and more reliably.
+- If you want to improve your culture, implementing CD practices will help.
+- Capabilities that have a significant impact on CD:
+    - A loosely coupled, well-encapsulated architecture.
+    - Teams can choose their own tools based on what is best for the users of those tools.
+- The authors research found that improvements in CD brought payoffs in the way that work felt.
+- On CD practices:
+    - Version control: Keeping system and application configuration in version control was more highly correlated with software delivery performance than keeping application code in version control.
+    - Testing:
+        - Have automated tests that are reliable: if they pass teams, should be confident that their software is releasable.
+        - Developers primarily create and maintain acceptance tests, which they can run on their own workstations.
+        - Test-driven development (TDD) is an important practice also because it forces developers to create more testable designs.
+        - Every commit should trigger a build of the software and running a set of fast, automated tests.
+        - Developers should get feedback from a comprehensive suite of acceptance and performance tests every day.
+- In their data, successful teams had adequate test data to run their full automated test suites and could acquire test data for running automated tests on demand.
+- Developing off trunk/master rather than on long-lived feature branches was correlated with high delivery performance.
+- Teams that do well have few active branches at any time, their branches had very short lifetimes (less than a day) before being merged into trunk and never had "code freeze" or stabilisation periods.
+- High-performing teams were more likely to incorporate information security into the delivery process.
+- A critical obstacle to implementing continuous delivery is enterprise and application architecture.
+- High performance is possible with all kinds of systems, provided that systems - and the teams that build and maintain them - are loosely coupled.
+- A loosely coupled well-encapsulated architecture drives IT performance. High performing teams can:
+    - Make large-scale changes to the design of their system w/o the permission of somebody outside the team and w/o depending on other teams to make changes in their systems or creating significant work for other teams.
+    - Complete their work w/o communicating and coordinating w/ people outside their team.
+    - Deploy and release their product or service on demand independently of other services it depends on.
+    - Do most of their testing on demand w/o the need of an integrated environment.
+    - Perform deployments during normal business hours w/ negligible downtime.
+- Melvin Conway (1986): "Organizations which design systems ... are constrained to produce designs which are copies of the communication structures of these organizations".
+- "Inverse Conway Maneuver": Organizations should evolve their team and organizational structure to achieve the desired architecture.
+- Practices that help to create a loosely coupled well-encapsulated architecture:
+    - The use of bounded contexts and APIs.
+    - The use of test doubles and virtualization as a way to test services or components in isolation.
+- The goal of a loosely coupled architecture is to ensure that the available communication bandwidth isn't overwhelmed by fine-grained decision-making at the implementation level.
+    - DevOps is all about better collaboration between teams.
+- When teams can decide which tools they use, it contributes to software delivery and organizational performance.
+- Teams that build security into their work do better at continuous delivery.
+- A focus on usability and customer satisfaction is as important when choosing or building tools for internal customers as it is when building products for external customers.
+- When building security into software is part of the daily work of developers, and when InfoSec teams provide tools, training, and support to make it easy for developers to do the right thing, delivery performance improves.
+- Lean management practices that help improve a team's performance:
+    - Limit work in progress (WIP) to drive process improvement and increase throughput;
+    - Create and maintain visual displays showing key quality and productivity metrics and the current status of work (and defects).
+    - Use data from application performance and infrastructure monitoring tools to make business decisions on a daily basis.
+- Use a lightweight change approval process (e.g. pair programming or intrateam code review) combined with a deployment pipeline to detect and reject bad changes.
+    - Approval by an external body (such as a manager or CAB) simply does not work to increase the stability of production systems, measured by the time to restore service and change fail rate.
+- Test your product's design and business model by performing user research frequently, from the very beginning of the product lifecycle.
+- Take an experimental approach to product development.
+- Build and validate prototypes from the very beginning, work in small batches, and evolve or "pivot" products and the business models behind them early and often.
+    - Work in small batches that can be completed in less than a week.
+        - The key to working in small batches is to have work decomposed into features that allow for rapid development.
+    - Release frequently.
+    - Have a good understanding of the flow of work from the business to customers and have visibility into this flow.
+    - Seek customer feedback and incorporate this feedback into the design of your products.
+    - Ensure development teams have the authority to create and change specifications as part of the development process w/o requiring approval.
+- Where code deployments are most painful, you will find the poorest software delivery performance, organizational performance, and culture.
+- Barriers that hide the work of deployment from developers are rarely good, because they isolate developers from the downstream consequences of their work.
+- Teams that implement comprehensive test and deployment automation, use continuous integration, including trunk-based development, shift left on security, effectively manage test data, use loosely coupled architectures, can work independently and use version control for everything required to reproduce production environments decrease their deployment pain.
+    - If deployments have to be performed outside of normal business hours, that's a sign of architectural problems that should be addressed.
+    - The probability of a failed deployment rises substantially when manual changes must be made to production environments as part of the deployment process.
+- Architectural patterns that enable to continuously deliver SaaS applications are described at [https://12factor.net](https://12factor.net).
+- Burnout is physical, mental, or emotional exhaustion caused by overwork or stress.
+- Employers have both a duty of case toward employees and a fiduciary obligation to ensure staff do not become burned out.
+- Software and technology is plagued by employee burnout.
+- Managers who want to avert employee burnout should concentrate on:
+    - Fostering a respectful, supportive work environment that emphasizes learning from failures rather than blaming.
+    - Communicating a strong sense of purpose.
+    - Investing in employee development.
+    - Asking employees what is preventing them from achieving their objectives and then fixing those things. For instance:
+        - Asking teams how painful their deployments are and fixing the things that hurt the most.
+        - Limiting work in progress and eliminating roadblocks for the team so they can get their work done.
+    - Giving employees time, space, and resources to experiment and learn.
+    - Give employees the authority to make decisions that affect their work and their jobs.
+- Risk factors that predict burnout:
+    - Work overload.
+    - Lack of control.
+    - Insufficient rewards.
+    - Unsupportive workplace environment.
+    - Lack of fairness in decision-making processes.
+    - Mismatch in organizational values and the individual's values.
+- Net promoter score (NPS):
+    - Using a 0-10 scale:
+        - Promoters: 9-10.
+        - Passives: 7-8.
+        - Detractors: 0-6.
+    - NPS = %Detractors - %Promoters.
+- People are an organization's greatest asset.
+- One of the key contributors to burnout is a mismatch of personal and organizational values.
+- Having employees who strongly identify with the company should prove a competitive advantage.
+- People who feel supported by their employers, who have the tools and resources to do their work, and who feel their judgment is valued, turn out better work.
+- Research shows that teams with more diversity with regard to gender or underrepresented minorities are smarter, achieve better team performance and achieve better business outcomes.
+- Inclusion must be present in order for diversity to take hold.
+- Being a leader doesn't mean you have people reporting to you on an organization chart. Leadership is about inspiring and motivating those around you.
+- Five characteristics of a transformational leader:
+    - Vision: Has a clear understanding of where the organization is going and where it should be in five years.
+    - Inspirational communication.
+    - Stimulates people intellectually by challenging them to think about problems in new ways.
+    - Demonstrates care and consideration of followers' personal needs and feelings.
+    - Personal recognition.
+- In the best case managers are also leaders.
+- Managers can improve matters by enabling specific DevOps practices in their teams and by visibly investing in DevOps and in their employees' professional development.
+- Managers should:
+    - Make performance metrics visible.
+    - Align performance metrics with organizational goals.
+    - Delegate more authority to their employees.
+- How to invest in your team as a manager:
+    - Ensure that existing resources are made available and accessible to everyone.
+    - Establish a dedicated training budget and make sure people know about it.
+    - Encourage staff to attend technical conferences at least once a year.
+    - Set up internal hack days.
+    - Encourage teams to organize internal "yak days".
+    - Organise internal DevOps mini-conferences.
+    - Give staff dedicated time (e.g. 20% time) to experiment with new tools and technologies.
+- Factors that contribute to a strong team culture:
+    - Cross-functional collaboration.
+    - A climate for learning.
+    - Tools.
+- Cross-functional collaborations could be enabled by:
+    - Building trust with your counterparts on other teams (e.g. run disaster recovery testing exercises).
+    - Encouraging practitioners to move between departments.
+    - Actively seek, encourage and reward work that facilitates collaboration.
+- Create a climate of learning by:
+    - Creating a training budget and advocating for it internally.
+    - Ensuring that your team has the resources to engage in informal learning and the space to explore ideas.
+    - Making it safe to fail.
+    - Creating opportunities and spaces to share information.
+    - Encourage sharing and innovation by having demo days and forums.
+- Tools:
+    - Make sure your team can choose their tools.
+    - Make monitoring a priority.
+- Correlation analysis only tells us if two variables move in tandem or in opposition; it doesn't tell us why or what is causing it.
+- Note that the book contains details about what makes a survey bad vs good.
+- A latent construct is a way of measuring something that can't be measured directly.
+    - Example: We need to measure culture by measing its component parts.
+- The benefit of latent constructs is that by using several measures (called manifest variables - the pieces of the latent variable that can be measured) to capture the underlying concept, you help shield yourself against bad measures and bad actors.
+- Taking time to do periodic assessments that include the perceptions of the technologists that make and deliver your technology can uncover key insights into the bottlenecks and constraints of your system.
+- If an employee's manager finds out they are actively looking for a job, the manager may lay the person off to make sure the employee is not counted in any turnover numbers.
+- Probability sampling is any method of statistical sampling that uses random selection.
+- A courageous and supportive leader is crucial to help teams "slow down to speed up", providing them with the permission and safety to put quality first which, in the long run, improves speed, consistency, and capacity while reducing cost, delays, and rework.
+- As a leader, you have to look at your own behaviours before you ask others to change.
+- High-Performance Team, Management and Leadership Behaviours and Practices:
+    - Develop your own coaches.
+    - Lead by example.
+    - Practice discipline. Change takes discipline and courage.
+    - Practice patience. It's going to take time to change actions and thought patterns until they become new habits and, eventually, your new culture.
+    - Learn, succeed, fail, learn, adjust, repeat.
+- Capabilities to drive improvement:
+    - Use version control for all production artifacts.
+    - Automate your deployment process.
+    - Implement continuous integration.
+    - Use trunk-based development methods.
+    - Implement test automation.
+    - Support test data management.
+    - Shift left on security.
+    - Implement continuous delivery.
+    - Use a loosely coupled architecture.
+    - Architect for empowered teams.
+    - Gather and implement customer feedback.
+    - Make the flow of work visible through the value stream.
+    - Work in small batches.
+    - Foster and enable team experimentation.
+    - Have a lightweight change approval process.
+    - Monitor across application and infrastructure to inform business decisions.
+    - Check system health proactively.
+    - Improve processes and manage work with work-in-progress (WIP) limits.
+    - Visualize work to monitor quality and communicate throughout the team.
+    - Support a generative culture (as outlined by Westrum).
+    - Encourage and support learning. Is learning, in your culture, considered essential for continued progress?
+    - Support and facilitate collaboration among teams.
+    - Provide resources and tools that make work meaningful.
+    - Support or embody transformational leadership.
+- The authors' analysis provides evidence that there are no trade-offs between improving performance and achieving higher levels of tempo and stability: they move in tandem.
+- High-performing teams reported having leaders with the strongest behaviours across all dimensions: vision, inspirational communication, intellectual stimulation, supportive leadership, and personal recognition.
+- Leadership is predictive of lean product development capabilities and technical practices.
