@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-12T14:41:55+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-12T15:06:17+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
 
 <ul>
   <li>High IT performance correlates with strong business performance.</li>
@@ -297,22 +297,61 @@
   <li>The authors’ analysis provides evidence that there are no trade-offs between improving performance and achieving higher levels of tempo and stability: they move in tandem.</li>
   <li>High-performing teams reported having leaders with the strongest behaviours across all dimensions: vision, inspirational communication, intellectual stimulation, supportive leadership, and personal recognition.</li>
   <li>Leadership is predictive of lean product development capabilities and technical practices.</li>
-</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="accelerate" /><category term="dora" /><category term="devops" /><summary type="html"><![CDATA[Accelerate reading notes]]></summary></entry><entry><title type="html">How can I start using GitHub Copilot from vim?</title><link href="http://localhost:4000/2024/02/29/copilot-setup-vim" rel="alternate" type="text/html" title="How can I start using GitHub Copilot from vim?" /><published>2024-02-29T00:00:00+00:00</published><updated>2024-02-29T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/29/copilot-setup-vim</id><content type="html" xml:base="http://localhost:4000/2024/02/29/copilot-setup-vim"><![CDATA[<h1 id="1-sign-up-for-github-copilot">1. Sign up for GitHub Copilot</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="vim" /><category term="copilot" /><category term="github" /><summary type="html"><![CDATA[How can I start using GitHub Copilot from vim?]]></summary></entry><entry><title type="html">How can I create a command line tool that creates a plot using plotly and opens it in your browser?</title><link href="http://localhost:4000/2024/02/27/typer-plotly-html-browser" rel="alternate" type="text/html" title="How can I create a command line tool that creates a plot using plotly and opens it in your browser?" /><published>2024-02-27T00:00:00+00:00</published><updated>2024-02-27T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/27/typer-plotly-html-browser</id><content type="html" xml:base="http://localhost:4000/2024/02/27/typer-plotly-html-browser"><![CDATA[<h1 id="todo">TODO</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="typer" /><category term="pyton" /><category term="cli" /><category term="plotly" /><category term="browser" /><category term="www" /><category term="html" /><summary type="html"><![CDATA[How can I create a command line tool that creates a plot using plotly and opens it in your browser?]]></summary></entry><entry><title type="html">Ovi’s Digital Library</title><link href="http://localhost:4000/2024/02/01/ovi-digital-library" rel="alternate" type="text/html" title="Ovi’s Digital Library" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/01/ovi-digital-library</id><content type="html" xml:base="http://localhost:4000/2024/02/01/ovi-digital-library"><![CDATA[<h1 id="devops">DevOps</h1>
+</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="accelerate" /><category term="dora" /><category term="devops" /><summary type="html"><![CDATA[Accelerate reading notes]]></summary></entry><entry><title type="html">How can I start using GitHub Copilot from vim?</title><link href="http://localhost:4000/2024/02/29/copilot-setup-vim" rel="alternate" type="text/html" title="How can I start using GitHub Copilot from vim?" /><published>2024-02-29T00:00:00+00:00</published><updated>2024-02-29T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/29/copilot-setup-vim</id><content type="html" xml:base="http://localhost:4000/2024/02/29/copilot-setup-vim"><![CDATA[<h1 id="1-sign-up-for-github-copilot">1. Sign up for GitHub Copilot</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="vim" /><category term="copilot" /><category term="github" /><summary type="html"><![CDATA[How can I start using GitHub Copilot from vim?]]></summary></entry><entry><title type="html">How can I create a command line tool that creates a plot using plotly and opens it in your browser?</title><link href="http://localhost:4000/2024/02/27/typer-plotly-html-browser" rel="alternate" type="text/html" title="How can I create a command line tool that creates a plot using plotly and opens it in your browser?" /><published>2024-02-27T00:00:00+00:00</published><updated>2024-02-27T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/27/typer-plotly-html-browser</id><content type="html" xml:base="http://localhost:4000/2024/02/27/typer-plotly-html-browser"><![CDATA[<h1 id="todo">TODO</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="typer" /><category term="pyton" /><category term="cli" /><category term="plotly" /><category term="browser" /><category term="www" /><category term="html" /><summary type="html"><![CDATA[How can I create a command line tool that creates a plot using plotly and opens it in your browser?]]></summary></entry><entry><title type="html">Ovi’s Digital Library</title><link href="http://localhost:4000/2024/02/01/ovi-digital-library" rel="alternate" type="text/html" title="Ovi’s Digital Library" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/01/ovi-digital-library</id><content type="html" xml:base="http://localhost:4000/2024/02/01/ovi-digital-library"><![CDATA[<h1 id="concurrency">Concurrency</h1>
+
+<ol>
+  <li>Race conditions deep dive by Steve Gibson: <a href="https://www.grc.com/sn/SN-970-Notes.pdf">https://www.grc.com/sn/SN-970-Notes.pdf</a>.</li>
+</ol>
+
+<h1 id="data-applications">Data applications</h1>
+
+<ol>
+  <li><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/">Designing Data-Intensive Applications</a> by Martin Kleppmann.</li>
+</ol>
+
+<h1 id="effectiveness">Effectiveness</h1>
+
+<ol>
+  <li><a href="https://jamesclear.com/atomic-habits">Atomic Habits</a>: An Easy &amp; Proven Way to Build Good Habits &amp; Break Bad Ones, by James Clear.</li>
+</ol>
+
+<h1 id="health">Health</h1>
+
+<ol>
+  <li><a href="https://www.waterstones.com/book/life-time/russell-foster/9780241529317">Life Time</a>: The New Science of the Body Clock, and How It Can Revolutionize Your Sleep and Health, by Russell Foster.</li>
+</ol>
+
+<h1 id="leadership">Leadership</h1>
+
+<ol>
+  <li><a href="https://www.waterstones.com/book/rise/patty-azzarello/9781607742609">Rise</a>: 3 Practical Steps for Advancing Your Career, Standing Out as a Leader, and Liking Your Life, by Patty Azzarello, Keith Ferrazzi.</li>
+</ol>
+
+<h1 id="project-management-and-planning">Project management and planning</h1>
+
+<ol>
+  <li><a href="https://basecamp.com/shapeup">Shape Up</a> - Stop Running in Circles and Ship Work that Matters, by Ryan Singer.</li>
+</ol>
+
+<h1 id="software-engineering">Software engineering</h1>
 
 <ol>
   <li><a href="https://itrevolution.com/product/accelerate">Accelerate</a> - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations, by Nicole Forsgren, Jez Humble, Gene Kim.</li>
-</ol>
-
-<h1 id="concurrency">Concurrency</h1>
-
-<ol>
-  <li>Race conditions deep dive by Steve Gibson: https://www.grc.com/sn/SN-970-Notes.pdf.</li>
+  <li><a href="https://www.oreilly.com/library/view/joel-on-software/9781590593899/">Joel on Software</a>: And on Diverse and Occasionally Related Matters That Will Prove of Interest to Software Developers, Designers, and Managers, and to Those Who, Whether by Good Fortune or Ill Luck, Work with Them in Some Capacity, by Joel Spolsky.</li>
+  <li><a href="https://pragprog.com/titles/mnee2/release-it-second-edition/">Release It! Second Edition</a> - Design and Deploy Production-Ready Software, by Michael Nygard.</li>
+  <li><a href="https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/">The Pragmatic Programmer, 20th Anniversary Edition</a> - your journey to mastery, by David Thomas, Andrew Hunt.</li>
 </ol>
 
 <h1 id="storage-systems">Storage systems</h1>
 
 <ol>
   <li>S3: <a href="https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html">https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html</a>.</li>
+</ol>
+
+<h1 id="tools">Tools</h1>
+
+<ol>
+  <li><a href="https://pragprog.com/titles/dnvim2/practical-vim-second-edition/">Practical Vim, Second Edition</a> - Edit Text at the Speed of Thought, by Drew Neil.</li>
 </ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="library" /><category term="technology" /><category term="reading" /><summary type="html"><![CDATA[Technology references I find useful.]]></summary></entry><entry><title type="html">How to set up a GitHub Pages technical blog?</title><link href="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog" rel="alternate" type="text/html" title="How to set up a GitHub Pages technical blog?" /><published>2020-05-25T00:00:00+01:00</published><updated>2020-05-25T00:00:00+01:00</updated><id>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</id><content type="html" xml:base="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog"><![CDATA[<p>This post describes how to set up a GitHub Pages site for a technical blog like this one.</p>
 
 <ol>
