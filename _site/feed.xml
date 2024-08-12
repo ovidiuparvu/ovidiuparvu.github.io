@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-05-12T15:03:39+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-12T14:41:55+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
 
 <ul>
   <li>High IT performance correlates with strong business performance.</li>
   <li>People are an organization’s #1 asset.</li>
-  <li>Queue theory in maths tells us that as utilization approaches 100%, lead times approach infinity.</li>
+  <li>Queue theory in maths tells us that as utilization approaches 100% lead times approach infinity.</li>
   <li>Useful measures of software delivery performance:
     <ol>
       <li>Delivery lead time: The time it takes to deliver a feature to customers.</li>
@@ -56,13 +56,13 @@
       <li>Teams can choose their own tools based on what is best for the users of those tools.</li>
     </ul>
   </li>
-  <li>The authors research found that improvements in CD brought payoffs in the way that work felt.</li>
+  <li>The authors’ research found that improvements in CD brought payoffs in the way that work felt.</li>
   <li>On CD practices:
     <ul>
       <li>Version control: Keeping system and application configuration in version control was more highly correlated with software delivery performance than keeping application code in version control.</li>
       <li>Testing:
         <ul>
-          <li>Have automated tests that are reliable: if they pass teams, should be confident that their software is releasable.</li>
+          <li>Have automated tests that are reliable: if they pass, teams should be confident that their software is releasable.</li>
           <li>Developers primarily create and maintain acceptance tests, which they can run on their own workstations.</li>
           <li>Test-driven development (TDD) is an important practice also because it forces developers to create more testable designs.</li>
           <li>Every commit should trigger a build of the software and running a set of fast, automated tests.</li>
@@ -110,7 +110,7 @@
       <li>Use data from application performance and infrastructure monitoring tools to make business decisions on a daily basis.</li>
     </ul>
   </li>
-  <li>Use a lightweight change approval process (e.g. pair programming or intrateam code review) combined with a deployment pipeline to detect and reject bad changes.
+  <li>Use a lightweight change approval process (e.g. pair programming or intra-team code review) combined with a deployment pipeline to detect and reject bad changes.
     <ul>
       <li>Approval by an external body (such as a manager or CAB) simply does not work to increase the stability of production systems, measured by the time to restore service and change fail rate.</li>
     </ul>
@@ -140,7 +140,7 @@
   </li>
   <li>Architectural patterns that enable to continuously deliver SaaS applications are described at <a href="https://12factor.net">https://12factor.net</a>.</li>
   <li>Burnout is physical, mental, or emotional exhaustion caused by overwork or stress.</li>
-  <li>Employers have both a duty of case toward employees and a fiduciary obligation to ensure staff do not become burned out.</li>
+  <li>Employers have both a duty of care toward employees and a fiduciary obligation to ensure staff do not become burned out.</li>
   <li>Software and technology is plagued by employee burnout.</li>
   <li>Managers who want to avert employee burnout should concentrate on:
     <ul>
@@ -248,7 +248,7 @@
   <li>Note that the book contains details about what makes a survey bad vs good.</li>
   <li>A latent construct is a way of measuring something that can’t be measured directly.
     <ul>
-      <li>Example: We need to measure culture by measing its component parts.</li>
+      <li>Example: We need to measure culture by measuring its component parts.</li>
     </ul>
   </li>
   <li>The benefit of latent constructs is that by using several measures (called manifest variables - the pieces of the latent variable that can be measured) to capture the underlying concept, you help shield yourself against bad measures and bad actors.</li>
@@ -303,7 +303,13 @@
   <li><a href="https://itrevolution.com/product/accelerate">Accelerate</a> - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations, by Nicole Forsgren, Jez Humble, Gene Kim.</li>
 </ol>
 
-<h1 id="storage-aystems">Storage aystems</h1>
+<h1 id="concurrency">Concurrency</h1>
+
+<ol>
+  <li>Race conditions deep dive by Steve Gibson: https://www.grc.com/sn/SN-970-Notes.pdf.</li>
+</ol>
+
+<h1 id="storage-systems">Storage systems</h1>
 
 <ol>
   <li>S3: <a href="https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html">https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html</a>.</li>

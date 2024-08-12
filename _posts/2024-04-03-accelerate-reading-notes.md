@@ -11,7 +11,7 @@ My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean S
 
 - High IT performance correlates with strong business performance.
 - People are an organization's #1 asset.
-- Queue theory in maths tells us that as utilization approaches 100%, lead times approach infinity.
+- Queue theory in maths tells us that as utilization approaches 100% lead times approach infinity.
 - Useful measures of software delivery performance:
     1. Delivery lead time: The time it takes to deliver a feature to customers.
     2. Deployment frequency (as a proxy for batch size).
@@ -46,11 +46,11 @@ My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean S
 - Capabilities that have a significant impact on CD:
     - A loosely coupled, well-encapsulated architecture.
     - Teams can choose their own tools based on what is best for the users of those tools.
-- The authors research found that improvements in CD brought payoffs in the way that work felt.
+- The authors' research found that improvements in CD brought payoffs in the way that work felt.
 - On CD practices:
     - Version control: Keeping system and application configuration in version control was more highly correlated with software delivery performance than keeping application code in version control.
     - Testing:
-        - Have automated tests that are reliable: if they pass teams, should be confident that their software is releasable.
+        - Have automated tests that are reliable: if they pass, teams should be confident that their software is releasable.
         - Developers primarily create and maintain acceptance tests, which they can run on their own workstations.
         - Test-driven development (TDD) is an important practice also because it forces developers to create more testable designs.
         - Every commit should trigger a build of the software and running a set of fast, automated tests.
@@ -82,7 +82,7 @@ My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean S
     - Limit work in progress (WIP) to drive process improvement and increase throughput;
     - Create and maintain visual displays showing key quality and productivity metrics and the current status of work (and defects).
     - Use data from application performance and infrastructure monitoring tools to make business decisions on a daily basis.
-- Use a lightweight change approval process (e.g. pair programming or intrateam code review) combined with a deployment pipeline to detect and reject bad changes.
+- Use a lightweight change approval process (e.g. pair programming or intra-team code review) combined with a deployment pipeline to detect and reject bad changes.
     - Approval by an external body (such as a manager or CAB) simply does not work to increase the stability of production systems, measured by the time to restore service and change fail rate.
 - Test your product's design and business model by performing user research frequently, from the very beginning of the product lifecycle.
 - Take an experimental approach to product development.
@@ -100,7 +100,7 @@ My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean S
     - The probability of a failed deployment rises substantially when manual changes must be made to production environments as part of the deployment process.
 - Architectural patterns that enable to continuously deliver SaaS applications are described at [https://12factor.net](https://12factor.net).
 - Burnout is physical, mental, or emotional exhaustion caused by overwork or stress.
-- Employers have both a duty of case toward employees and a fiduciary obligation to ensure staff do not become burned out.
+- Employers have both a duty of care toward employees and a fiduciary obligation to ensure staff do not become burned out.
 - Software and technology is plagued by employee burnout.
 - Managers who want to avert employee burnout should concentrate on:
     - Fostering a respectful, supportive work environment that emphasizes learning from failures rather than blaming.
@@ -171,7 +171,7 @@ My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean S
 - Correlation analysis only tells us if two variables move in tandem or in opposition; it doesn't tell us why or what is causing it.
 - Note that the book contains details about what makes a survey bad vs good.
 - A latent construct is a way of measuring something that can't be measured directly.
-    - Example: We need to measure culture by measing its component parts.
+    - Example: We need to measure culture by measuring its component parts.
 - The benefit of latent constructs is that by using several measures (called manifest variables - the pieces of the latent variable that can be measured) to capture the underlying concept, you help shield yourself against bad measures and bad actors.
 - Taking time to do periodic assessments that include the perceptions of the technologists that make and deliver your technology can uncover key insights into the bottlenecks and constraints of your system.
 - If an employee's manager finds out they are actively looking for a job, the manager may lay the person off to make sure the employee is not counted in any turnover numbers.
