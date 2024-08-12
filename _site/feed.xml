@@ -1,4 +1,341 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-12T15:06:17+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-12T16:52:30+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Vim cheatsheet</title><link href="http://localhost:4000/2024/08/12/vim-cheatsheet" rel="alternate" type="text/html" title="Vim cheatsheet" /><published>2024-08-12T00:00:00+01:00</published><updated>2024-08-12T00:00:00+01:00</updated><id>http://localhost:4000/2024/08/12/vim-cheatsheet</id><content type="html" xml:base="http://localhost:4000/2024/08/12/vim-cheatsheet"><![CDATA[<p>A vim cheatsheet created while reading <a href="https://pragprog.com/titles/dnvim2/practical-vim-second-edition">Practical Vim, Second Edition</a>, is given below.</p>
+
+<h1 id="undoredo">Undo/redo</h1>
+
+<p><code class="language-plaintext highlighter-rouge">.</code> - Repeats last change (including what happened from the moment one enters the Insert mode until one returns to the Normal mode)<br />
+<code class="language-plaintext highlighter-rouge">;</code> - Repeat last search that the <code class="language-plaintext highlighter-rouge">f</code> command performed<br />
+<code class="language-plaintext highlighter-rouge">,</code> - Repeat last search that the <code class="language-plaintext highlighter-rouge">f</code> command performed in the reverse direction<br />
+<code class="language-plaintext highlighter-rouge">n</code> - Repeat last search<br />
+<code class="language-plaintext highlighter-rouge">N</code> - Repeat last search in reverse<br />
+<code class="language-plaintext highlighter-rouge">&amp;</code> - Repeat last substitution<br />
+<code class="language-plaintext highlighter-rouge">@x</code> - Repeat sequence of changes recorded  in register x (using qx{changes}q)<br />
+<code class="language-plaintext highlighter-rouge">@:</code> - Repeat the last Ex command</p>
+
+<p><code class="language-plaintext highlighter-rouge">u</code> - Undo last change<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;</code> - Redo last change</p>
+
+<h1 id="motions">Motions</h1>
+
+<p><code class="language-plaintext highlighter-rouge">0</code> - Jump to beginning of line<br />
+<code class="language-plaintext highlighter-rouge">$</code> - Jump to EOL<br />
+<code class="language-plaintext highlighter-rouge">^</code> - Jump to beginning of non-whitespace line contents<br />
+<code class="language-plaintext highlighter-rouge">f/F{char}</code> - Scan line for next/previous character {char} and jump to it<br />
+<code class="language-plaintext highlighter-rouge">t/T{char}</code> - Scan line for next/previous character {char} and jump immediately before it<br />
+<code class="language-plaintext highlighter-rouge">/pattern&lt;CR&gt;</code> - Jump to next <pattern> match  
+`?pattern<CR>` - Jump to previous <pattern> match  
+`<C-r><C-w>` - Autocomplete the search field using the remainder of the current preview match</C-w></C-r></pattern></CR></pattern></p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;C-]&gt;</code> - Jump to definition (if ctags is configured)</p>
+
+<p><code class="language-plaintext highlighter-rouge">zz</code> - Redraw the screen with the current line in the vertical middle of the window</p>
+
+<h1 id="modes">Modes</h1>
+
+<p><code class="language-plaintext highlighter-rouge">i</code> - Enter Insert mode<br />
+<code class="language-plaintext highlighter-rouge">r</code> - Enter Replace mode for a single character<br />
+<code class="language-plaintext highlighter-rouge">R</code> - Enter Replace mode<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-g&gt;</code> - Toggle between Visual and Select mode<br />
+<code class="language-plaintext highlighter-rouge">v</code> - Enter character-wise Visual mode<br />
+<code class="language-plaintext highlighter-rouge">V</code> - Enter line-wise Visual mode<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-v&gt;</code> - Enter block-wise Visual mode<br />
+<code class="language-plaintext highlighter-rouge">gv</code> - Reselect the last visual selection<br />
+<code class="language-plaintext highlighter-rouge">:</code> - Enter command line mode</p>
+
+<p><code class="language-plaintext highlighter-rouge">q/</code> - Open command-line window</p>
+
+<h1 id="buffers-windows-and-tabs">Buffers, windows and tabs</h1>
+
+<p><code class="language-plaintext highlighter-rouge">:ls</code> - List all buffers that have been loaded into memory<br />
+<code class="language-plaintext highlighter-rouge">:args</code> - Populate or list contents of the argument list<br />
+<code class="language-plaintext highlighter-rouge">:w[rite]</code> - Write the contents of the buffer to disk<br />
+<code class="language-plaintext highlighter-rouge">:w !sudo tee % &gt;/dev/null</code> - Write the contents of the buffer to disk using sudo permissions<br />
+<code class="language-plaintext highlighter-rouge">:e[dit]!</code> - Re-read from disk the file corresponding to the current buffer<br />
+<code class="language-plaintext highlighter-rouge">:wa[ll]</code> - Write all modified buffers to disk<br />
+<code class="language-plaintext highlighter-rouge">:qa[ll]</code> - Close all windows, discarding changes without warning</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;C-w&gt;v</code> - Split window vertically<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;s</code> - Split window horizontally<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;w</code> - Cycle between open windows<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;h</code> - Focus the window to the left<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;j</code> - Focus the window below<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;k</code> - Focus the window above<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;l</code> - Focus the window to the right<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;c</code> - Close the active window<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;o</code> - Only leave the active window open<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;=</code> - Equalize width and height of all windows</p>
+
+<p><code class="language-plaintext highlighter-rouge">:tabe[dit] {filename}</code> - Open {filename} in a new tab<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;T</code> - Move the current window into its own tab<br />
+<code class="language-plaintext highlighter-rouge">:tabc[lose]</code> - Close the current tab page and all of its windows<br />
+<code class="language-plaintext highlighter-rouge">:tabo[nly]</code> - Keep the active tab page, close all others<br />
+<code class="language-plaintext highlighter-rouge">:tabn[ext] {N}</code> - Switch to tab page number {N} ({N}gt in normal mode)<br />
+<code class="language-plaintext highlighter-rouge">:tabn[ext] {N}</code> - Switch to next tab page (gt in normal mode)<br />
+<code class="language-plaintext highlighter-rouge">:tabp[revious]</code> - Switch to the previous tab page (gT in normal mode)</p>
+
+<p><code class="language-plaintext highlighter-rouge">:edit %&lt;Tab&gt;</code> - % symbol is a shorthand for the filepath of the active buffer<br />
+<code class="language-plaintext highlighter-rouge">:edit %:h&lt;Tab&gt;</code> - The :h modifier removes the filename while preserving the rest of the path<br />
+<code class="language-plaintext highlighter-rouge">:find {filename}</code> - Open a file by its filename (without fully qualifying it with the absolute path)<br />
+<code class="language-plaintext highlighter-rouge">:edit .</code> - Open file explorere for current working directory<br />
+<code class="language-plaintext highlighter-rouge">:Explore</code> - Open file explorer for the directory of the active buffer</p>
+
+<p><code class="language-plaintext highlighter-rouge">&lt;C-g&gt;</code> - Echo the name and status of the current file</p>
+
+<h1 id="marks">Marks</h1>
+
+<p><code class="language-plaintext highlighter-rouge">m{a-zA-Z}</code> - Create a mark at the current cursor location with the designated letter<br />
+<code class="language-plaintext highlighter-rouge">'{mark}</code> - Jump to the line where the mark was set<br />
+<code class="language-plaintext highlighter-rouge">`{mark}</code> - Jump to the cursor location of where the mark was set</p>
+
+<h1 id="commands">Commands</h1>
+
+<p><code class="language-plaintext highlighter-rouge">:vim[grep][!] /{pattern}/[g][j] {file} ...</code> - Project-wide search<br />
+<code class="language-plaintext highlighter-rouge">:copen</code> - Open quickfix window<br />
+<code class="language-plaintext highlighter-rouge">:cfdo {cmd}</code> - Run {cmd} against all files in the quickfix window</p>
+
+<p><code class="language-plaintext highlighter-rouge">:[range] global[!] /{pattern}/ {cmd}</code> - Run Ex command {cmd} against all lines in [range] matching {pattern}<br />
+<code class="language-plaintext highlighter-rouge">:[range] vglobal/v[!] /{pattern}/ {cmd}</code> - Run Ex command {cmd} against all lines in [range] that do not match {pattern}</p>
+
+<h1 id="registers">Registers</h1>
+
+<p><code class="language-plaintext highlighter-rouge">"{register}</code> - Reference a particular register<br />
+<code class="language-plaintext highlighter-rouge">"_</code> - Black hole register<br />
+<code class="language-plaintext highlighter-rouge">""</code> - Unnamed register<br />
+<code class="language-plaintext highlighter-rouge">"0</code> - yank register<br />
+<code class="language-plaintext highlighter-rouge">:reg "0</code> - Inspect the contents of the yank register<br />
+<code class="language-plaintext highlighter-rouge">"+</code> - System clipboard<br />
+<code class="language-plaintext highlighter-rouge">"*</code> - Selection register<br />
+<code class="language-plaintext highlighter-rouge">"=</code> - Expression register<br />
+<code class="language-plaintext highlighter-rouge">"%</code> - Name of the current file<br />
+<code class="language-plaintext highlighter-rouge">"#</code> - Name of the alternate file<br />
+<code class="language-plaintext highlighter-rouge">".</code> - Last inserted text<br />
+<code class="language-plaintext highlighter-rouge">":</code> - Last Ex command<br />
+<code class="language-plaintext highlighter-rouge">"/</code> - Last search pattern<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;{register}</code> - Paste contents of {register} register</p>
+
+<h1 id="macros">Macros</h1>
+
+<p><code class="language-plaintext highlighter-rouge">q{register}</code> - Start recording into {register} register<br />
+<code class="language-plaintext highlighter-rouge">q{uppercase register}</code> - Append to the {register} register<br />
+<code class="language-plaintext highlighter-rouge">q</code> - Stop recording<br />
+<code class="language-plaintext highlighter-rouge">@{register}</code> - Execute the contents of the {register} register<br />
+<code class="language-plaintext highlighter-rouge">@@</code> - Repeat macro invoked most recently<br />
+<code class="language-plaintext highlighter-rouge">:put {register}</code> - Paste the contents of the {register} register into the buffer</p>
+
+<h1 id="jump-list">Jump list</h1>
+
+<p><code class="language-plaintext highlighter-rouge">:jumps</code> - List contents of jump list<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-o&gt;</code> - Jump back<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-i&gt;</code> - Jump forward<br />
+<code class="language-plaintext highlighter-rouge">[count]G</code> - Jump to line number<br />
+<code class="language-plaintext highlighter-rouge">/pattern&lt;CR&gt;/?pattern&lt;CR&gt;/n/N</code> - Jump to next/previous occurrence of pattern<br />
+<code class="language-plaintext highlighter-rouge">%</code> - Jump between opening and closing sets of parentheses<br />
+<code class="language-plaintext highlighter-rouge">(/)</code> - Jump to start of previous/next sentence<br />
+<code class="language-plaintext highlighter-rouge">{/}</code> - Jump to start of previous/next paragraph<br />
+<code class="language-plaintext highlighter-rouge">H/M/L</code> - Jump to top/middle/bottom of screen<br />
+<code class="language-plaintext highlighter-rouge">gf</code> - Jump to file name under the cursor<br />
+<code class="language-plaintext highlighter-rouge">&lt;C-]&gt;</code> - Jump to definition of keyword under the cursor</p>
+
+<h1 id="change-list">Change list</h1>
+
+<p><code class="language-plaintext highlighter-rouge">:changes</code> - Open the change list<br />
+<code class="language-plaintext highlighter-rouge">g,</code> - Jump to next change in the change list<br />
+<code class="language-plaintext highlighter-rouge">g;</code> - Jump to the previous change in the change list<br />
+<code class="language-plaintext highlighter-rouge">gi</code> - Resume from last position from which we exited Insert mode</p>
+
+<h1 id="automatic-marks">Automatic marks</h1>
+
+<p><code class="language-plaintext highlighter-rouge">``</code> - Position before the last jump within the current file<br />
+<code class="language-plaintext highlighter-rouge">`.</code> - Position of last change<br />
+<code class="language-plaintext highlighter-rouge">`^</code> - Location of last insertion<br />
+<code class="language-plaintext highlighter-rouge">`[</code> - Start of last change or yank<br />
+<code class="language-plaintext highlighter-rouge">`]</code> - End of last change or yank<br />
+<code class="language-plaintext highlighter-rouge">`&lt;</code> - Start of last visual selection<br />
+<code class="language-plaintext highlighter-rouge">`&gt;</code> - End of last visual selection</p>
+
+<h1 id="text-objects">Text objects</h1>
+
+<p>Vim’s text objects consist of two characters, the first of which is always either i (i.e. inside) or a (i.e. around).</p>
+
+<p><code class="language-plaintext highlighter-rouge">i/a{)}]&gt;'"</code>}<code class="language-plaintext highlighter-rouge"> - inside/around {)}]&gt;'"</code>}<br />
+<code class="language-plaintext highlighter-rouge">i/a{t}</code> - inside/around tags<br />
+<code class="language-plaintext highlighter-rouge">i/a{w}</code> - inside/around words<br />
+<code class="language-plaintext highlighter-rouge">i/a{s}</code> - inside/around sentences<br />
+<code class="language-plaintext highlighter-rouge">i/a{p}</code> - inside/around paragraphs</p>
+
+<h1 id="compound-commands">Compound commands</h1>
+
+<p>C == c$ (change until EOL)
+s == cl (change letter)
+S == ^C (jump to beginning of non-whitespace line contents and change until EOL)
+I == ^i
+A == $a
+o == A<CR>
+O == ko</CR></p>
+
+<p>Motions:
+j - Down one real line
+gj - Down one display line
+k - Up one real line
+gk - Up one display line
+0 - The first character of real line
+g0 - The first character of display line
+^ - The first nonblank character of real line
+g^ - The first nonblank character of display line
+$ - The end of real line
+g$ - The end of display line
+w - Forward to start of next word
+b - Backward to start of current/previous word
+e - Forward to end of current/next word
+ge - Backward to end of previous word</p>
+
+<p>Operators:
+c - Change
+d - Delete
+y - Yank into register
+g~ - Swap case
+gu - Make lowercase
+gU - Make uppercase</p>
+<blockquote>
+  <ul>
+    <li>Shift right
+&lt; - Shift left
+= - Autoindent
+! - Filter {motion} lines through an external program</li>
+  </ul>
+</blockquote>
+
+<p>Autocomplete:</p>
+<C-n> - Invoke generic keyword autocompletion
+<C-x><C-n> - Invoke current buffer keyword autocompletion
+<C-x><C-i> - Invoke included file keyword autocompletion
+<C-x>&lt;C-]&gt; - Invoke tags file keyword autocompletion
+<C-x><C-k> - Invoke dictionary lookup autocompletion
+<C-x><C-l> - Invoke whole line autocompletion
+<C-x><C-f> - Invoke filename autocompletion
+<C-x><C-o> - Invoke omni-completion
+
+Autocomplete pop-up menu commands:
+<C-n> - Use the next match
+<C-p> - Use the previous match
+<Down> - Select the next match from the word list
+<Up> - Select the previous match from the word list
+<C-y> - Accept the currently selected match
+<C-e> - Exit and revert to the originally typed text
+<C-h> - Delete one character from current match
+<C-l> - Add one character from current match
+{char} - Stop completion and insert {char}
+
+In Insert mode:
+<C-h> - Delete back one character (like backspace)
+<C-w> - Delete back one word
+<C-u> - Delete back to start of line
+<C-o> - Switch to Insert Normal mode
+<C-r>{register} - Insert contents of register {register}
+<C-r>= - Access the expression register
+<C-v>{code} - Insert character using its numeric code.
+<C-v>u{code} - Insert Unicode character
+<C-v>{nondigit} - Insert nondigit literally
+<C-k>{char1}{char2} - Insert character represented by {char1}{char2} digraph
+
+In Visual mode:
+o - Go to the other end of highlighted text
+
+In Command line mode:
+:[range]delete [x] - Delete specified lines [into register x]
+:[range]yank [x] - Yank specified lines [into register x]
+:[line]put [x] - Put text from register x after the specified line
+:[range]copy {address} - Copy the specified lines to below the line specified by {address}. Shorthand - :t
+:[range]move {address} - Move the specified lines to below the line specified by {address}. Shorthand - :m
+:[range]join - Join the specified lines
+:[range]normal {commands} - Execute Normal mode {commands} on each specified line
+:[range]substitute/{pattern}/{string}/[flags] - Replace occurrences of {pattern} with {string} on each specified line
+:[range]global/{pattern}/[cmd] - Execute the Ex command [cmd] on all specified lines where the {pattern} matches
+:shell - Start an interactive shell session from vim
+:read !{cmd} - Put the output from {cmd} into our current buffer
+:[range]write !{cmd} - Pass the contents of the lines from the current buffer as standard input to the external command {cmd}
+:[range]!{filter} - Filter the specified [range] through external program {filter}
+:source {file} - Run all the Ex commands from {file} against the current buffer
+<C-d> - Show list of possible (auto-)completions
+<C-r><C-w> - Copy word under cursor and insert it at the command-line prompt
+<C-f> - Switch fom Command0Line mode to the command-line window
+q/ - Open the command-line window with history of searches
+q: - Open the command-line window with history of Ex commands
+
+Patterns
+
+    \v switch at the start of a search pattern enables the very magic search mode, which causes all subsequent characters to take on a special meaning.
+    \V switch at the start of a search pattern  enables the verbatic search mode.
+    \x character class stands for [0-9A-Fa-f].
+    \zs, \ze - for cropping a match
+    /{pattern}/e - Search and place the cursor at the end of any matches rather than at the start
+
+
+Ranges - {start},{end}
+
+    {start} and {end} are addresses.
+
+
+Addresses - {address}
+
+    They can be specified using a line number, a mark or a pattern.
+    Special address symbols:
+        0 - Virtual line before first line of file
+        1 - First line of file
+        . - Current line
+        $ - Last line of file
+        % - All lines in the current file
+        'm - Line containing mark m
+        '&lt; - First line of visual selection
+        '&gt; - Last line of visual selection
+    Offsets: Addresses can include offsets.
+        {address}+n
+
+
+Modes:
+
+    Normal
+    Insert
+    Replace (like Insert but overwrites existing text)
+    Visual (character-wise, block-wise, line-wise)
+    Select (like Visual but selected text will be replaced when typing)
+    Command line
+
+Tabs and Spaces options:
+
+    tabstop: Number of spaces that a <Tab> counts for
+    softtabstop: Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
+    shiftwidth: Number of spaces to use for each indent in Normal mode
+    expandtab: Insert spaces instead of <Tab>
+
+
+Uncategorized:
+
+    The Dot Formula: Use one keystroke to move and one keystroke to execute
+    Change in vim: Everything that happens from when we enter Insert mode until we return to Normal mode.
+        Cursor keys (e.g. up, down) reset the change.
+    Action = operator + motion.
+    When an operator command is invoked in duplicate, it acts upon the current line.
+    Install exhuberant-ctag Debian package for using ctags on Linux.
+
+Plugins to consider:
+
+    commentary.vim - Adds command for (un)commenting lines of code in all languages supported by Vim.
+    unimpaired.vim - Mappings for scrolling through the argument, quickfix, location, tag and buffer list.
+    vim-visual-star-search - Make it easy to search for the selected text
+    vim-abolish - Supercharged substitute command
+
+Config to consider:
+set history=2000 - length of vim command history, which is persisted across sessions
+set wildmenu - operate command-line completion in an enhanced mode
+set wildmode=full - complete the next full match
+cnoremap <expr> %%  getcmdtype() == ':' ? expand('%:h').'/' : '%%' - when we type %% on vim's c: command-line prompt, it automatically expands to the path of the active buffer
+set hlsearch - highlight search matches
+set incsearch - Enable incremental searching
+set smartcase - Vim will attempt to predict out case sensitivity intentions
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l> - Mute search highlighting when redrawing screen
+filtetype plugin on - Enable the file-type detection plugin which enables to customize your config based on the type of the file in the current buffer
+
+</C-l></CR></C-u></C-l></silent></expr></Tab></BS></Tab></Tab></Tab></C-f></C-w></C-r></C-d></C-k></C-v></C-v></C-v></C-r></C-r></C-o></C-u></C-w></C-h></C-l></C-h></C-e></C-y></Up></Down></C-p></C-n></C-o></C-x></C-f></C-x></C-l></C-x></C-k></C-x></C-x></C-i></C-x></C-n></C-x></C-n>]]></content><author><name>Ovidiu Pârvu</name></author><category term="vim" /><category term="editor" /><category term="cheatsheet" /><summary type="html"><![CDATA[A vim cheatsheet created while reading Practical Vim, Second Edition, is given below.]]></summary></entry><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
 
 <ul>
   <li>High IT performance correlates with strong business performance.</li>

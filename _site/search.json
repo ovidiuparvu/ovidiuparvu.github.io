@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "Vim cheatsheet",
+      "url"         : "/2024/08/12/vim-cheatsheet",
+      "category"    : "",
+      "tags"        : "vim, editor, cheatsheet",
+      "date"        : "2024-08-12 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "Accelerate reading notes",
       "url"         : "/2024/04/03/accelerate-reading-notes",
       "category"    : "",
