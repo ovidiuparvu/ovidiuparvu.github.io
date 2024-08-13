@@ -23,7 +23,7 @@ A vim cheatsheet created while reading <a href="https://pragprog.com/titles/dnvi
 `<C-r>` - Redo last change  
 
 
-# Motions
+# Jumping
 
 `0` - Jump to beginning of line  
 `$` - Jump to EOL  
@@ -183,170 +183,189 @@ Vim's text objects consist of two characters, the first of which is always eithe
 
 # Compound commands
 
-C == c$ (change until EOL)
-s == cl (change letter)
-S == ^C (jump to beginning of non-whitespace line contents and change until EOL)
-I == ^i
-A == $a
-o == A<CR>
-O == ko
+`C == c$` (change until EOL)  
+`s == cl` (change letter)  
+`S == ^C` (jump to beginning of non-whitespace line contents and change until EOL)  
+`I == ^i`  
+`A == $a`  
+`o == A<CR>`  
+`O == ko`  
 
-Motions:
-j - Down one real line
-gj - Down one display line
-k - Up one real line
-gk - Up one display line
-0 - The first character of real line
-g0 - The first character of display line
-^ - The first nonblank character of real line
-g^ - The first nonblank character of display line
-$ - The end of real line
-g$ - The end of display line
-w - Forward to start of next word
-b - Backward to start of current/previous word
-e - Forward to end of current/next word
-ge - Backward to end of previous word
+# Motions
 
-Operators:
-c - Change
-d - Delete
-y - Yank into register
-g~ - Swap case
-gu - Make lowercase
-gU - Make uppercase
-> - Shift right
-< - Shift left
-= - Autoindent
-! - Filter {motion} lines through an external program
-
-Autocomplete:
-<C-n> - Invoke generic keyword autocompletion
-<C-x><C-n> - Invoke current buffer keyword autocompletion
-<C-x><C-i> - Invoke included file keyword autocompletion
-<C-x><C-]> - Invoke tags file keyword autocompletion
-<C-x><C-k> - Invoke dictionary lookup autocompletion
-<C-x><C-l> - Invoke whole line autocompletion
-<C-x><C-f> - Invoke filename autocompletion
-<C-x><C-o> - Invoke omni-completion
-
-Autocomplete pop-up menu commands:
-<C-n> - Use the next match
-<C-p> - Use the previous match
-<Down> - Select the next match from the word list
-<Up> - Select the previous match from the word list
-<C-y> - Accept the currently selected match
-<C-e> - Exit and revert to the originally typed text
-<C-h> - Delete one character from current match
-<C-l> - Add one character from current match
-{char} - Stop completion and insert {char}
-
-In Insert mode:
-<C-h> - Delete back one character (like backspace)
-<C-w> - Delete back one word
-<C-u> - Delete back to start of line
-<C-o> - Switch to Insert Normal mode
-<C-r>{register} - Insert contents of register {register}
-<C-r>= - Access the expression register
-<C-v>{code} - Insert character using its numeric code.
-<C-v>u{code} - Insert Unicode character
-<C-v>{nondigit} - Insert nondigit literally
-<C-k>{char1}{char2} - Insert character represented by {char1}{char2} digraph
-
-In Visual mode:
-o - Go to the other end of highlighted text
-
-In Command line mode:
-:[range]delete [x] - Delete specified lines [into register x]
-:[range]yank [x] - Yank specified lines [into register x]
-:[line]put [x] - Put text from register x after the specified line
-:[range]copy {address} - Copy the specified lines to below the line specified by {address}. Shorthand - :t
-:[range]move {address} - Move the specified lines to below the line specified by {address}. Shorthand - :m
-:[range]join - Join the specified lines
-:[range]normal {commands} - Execute Normal mode {commands} on each specified line
-:[range]substitute/{pattern}/{string}/[flags] - Replace occurrences of {pattern} with {string} on each specified line
-:[range]global/{pattern}/[cmd] - Execute the Ex command [cmd] on all specified lines where the {pattern} matches
-:shell - Start an interactive shell session from vim
-:read !{cmd} - Put the output from {cmd} into our current buffer
-:[range]write !{cmd} - Pass the contents of the lines from the current buffer as standard input to the external command {cmd}
-:[range]!{filter} - Filter the specified [range] through external program {filter}
-:source {file} - Run all the Ex commands from {file} against the current buffer
-<C-d> - Show list of possible (auto-)completions
-<C-r><C-w> - Copy word under cursor and insert it at the command-line prompt
-<C-f> - Switch fom Command0Line mode to the command-line window
-q/ - Open the command-line window with history of searches
-q: - Open the command-line window with history of Ex commands
-
-Patterns
-
-    \v switch at the start of a search pattern enables the very magic search mode, which causes all subsequent characters to take on a special meaning.
-    \V switch at the start of a search pattern  enables the verbatic search mode.
-    \x character class stands for [0-9A-Fa-f].
-    \zs, \ze - for cropping a match
-    /{pattern}/e - Search and place the cursor at the end of any matches rather than at the start
+`j` - Down one real line  
+`gj` - Down one display line  
+`k` - Up one real line  
+`gk` - Up one display line  
+`0` - The first character of real line  
+`g0` - The first character of display line  
+`^` - The first nonblank character of real line  
+`g^` - The first nonblank character of display line  
+`$` - The end of real line  
+`g$` - The end of display line  
+`w` - Forward to start of next word  
+`b` - Backward to start of current/previous word  
+`e` - Forward to end of current/next word  
+`ge` - Backward to end of previous word  
 
 
-Ranges - {start},{end}
+# Operators
 
-    {start} and {end} are addresses.
-
-
-Addresses - {address}
-
-    They can be specified using a line number, a mark or a pattern.
-    Special address symbols:
-        0 - Virtual line before first line of file
-        1 - First line of file
-        . - Current line
-        $ - Last line of file
-        % - All lines in the current file
-        'm - Line containing mark m
-        '< - First line of visual selection
-        '> - Last line of visual selection
-    Offsets: Addresses can include offsets.
-        {address}+n
+`c` - Change  
+`d` - Delete  
+`y` - Yank into register  
+`g~` - Swap case  
+`gu` - Make lowercase  
+`gU` - Make uppercase  
+`>` - Shift right  
+`<` - Shift left  
+`=` - Autoindent  
+`!` - Filter {motion} lines through an external program  
 
 
-Modes:
+# Autocomplete
 
-    Normal
-    Insert
-    Replace (like Insert but overwrites existing text)
-    Visual (character-wise, block-wise, line-wise)
-    Select (like Visual but selected text will be replaced when typing)
-    Command line
-
-Tabs and Spaces options:
-
-    tabstop: Number of spaces that a <Tab> counts for
-    softtabstop: Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
-    shiftwidth: Number of spaces to use for each indent in Normal mode
-    expandtab: Insert spaces instead of <Tab>
+`<C-n>` - Invoke generic keyword autocompletion  
+`<C-x><C-n>` - Invoke current buffer keyword autocompletion  
+`<C-x><C-i>` - Invoke included file keyword autocompletion  
+`<C-x><C-]>` - Invoke tags file keyword autocompletion  
+`<C-x><C-k>` - Invoke dictionary lookup autocompletion  
+`<C-x><C-l>` - Invoke whole line autocompletion  
+`<C-x><C-f>` - Invoke filename autocompletion  
+`<C-x><C-o>` - Invoke omni-completion  
 
 
-Uncategorized:
+# Autocomplete pop-up menu commands
 
-    The Dot Formula: Use one keystroke to move and one keystroke to execute
-    Change in vim: Everything that happens from when we enter Insert mode until we return to Normal mode.
-        Cursor keys (e.g. up, down) reset the change.
-    Action = operator + motion.
-    When an operator command is invoked in duplicate, it acts upon the current line.
-    Install exhuberant-ctag Debian package for using ctags on Linux.
+`<C-n>` - Use the next match  
+`<C-p>` - Use the previous match  
+`<Down>` - Select the next match from the word list  
+`<Up>` - Select the previous match from the word list  
+`<C-y>` - Accept the currently selected match  
+`<C-e>` - Exit and revert to the originally typed text  
+`<C-h>` - Delete one character from current match  
+`<C-l>` - Add one character from current match  
+`{char}` - Stop completion and insert {char}  
 
-Plugins to consider:
 
-    commentary.vim - Adds command for (un)commenting lines of code in all languages supported by Vim.
-    unimpaired.vim - Mappings for scrolling through the argument, quickfix, location, tag and buffer list.
-    vim-visual-star-search - Make it easy to search for the selected text
-    vim-abolish - Supercharged substitute command
+# Insert mode
 
-Config to consider:
-set history=2000 - length of vim command history, which is persisted across sessions
-set wildmenu - operate command-line completion in an enhanced mode
-set wildmode=full - complete the next full match
-cnoremap <expr> %%  getcmdtype() == ':' ? expand('%:h').'/' : '%%' - when we type %% on vim's c: command-line prompt, it automatically expands to the path of the active buffer
-set hlsearch - highlight search matches
-set incsearch - Enable incremental searching
-set smartcase - Vim will attempt to predict out case sensitivity intentions
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l> - Mute search highlighting when redrawing screen
-filtetype plugin on - Enable the file-type detection plugin which enables to customize your config based on the type of the file in the current buffer
+`<C-h>` - Delete back one character (like backspace)  
+`<C-w>` - Delete back one word  
+`<C-u>` - Delete back to start of line  
+`<C-o>` - Switch to Insert Normal mode  
+`<C-r>{register}` - Insert contents of register {register}  
+`<C-r>=` - Access the expression register  
+`<C-v>{code}` - Insert character using its numeric code.  
+`<C-v>u{code}` - Insert Unicode character  
+`<C-v>{nondigit}` - Insert nondigit literally  
+`<C-k>{char1}{char2}` - Insert character represented by {char1}{char2} digraph  
+
+
+# Visual mode
+
+`o` - Go to the other end of highlighted text  
+
+# Command line mode
+
+`:[range]delete [x]` - Delete specified lines [into register x]  
+`:[range]yank [x]` - Yank specified lines [into register x]  
+`:[line]put [x]` - Put text from register x after the specified line  
+`:[range]copy {address}` - Copy the specified lines to below the line specified by {address}. Shorthand - :t  
+`:[range]move {address} `- Move the specified lines to below the line specified by {address}. Shorthand - :m  
+`:[range]join` - Join the specified lines  
+`:[range]normal {commands}` - Execute Normal mode {commands} on each specified line  
+`:[range]substitute/{pattern}/{string}/[flags]` - Replace occurrences of {pattern} with {string} on each specified line  
+`:[range]global/{pattern}/[cmd]` - Execute the Ex command [cmd] on all specified lines where the {pattern} matches  
+`:shell` - Start an interactive shell session from vim  
+`:read !{cmd}` - Put the output from {cmd} into our current buffer  
+`:[range]write !{cmd}` - Pass the contents of the lines from the current buffer as standard input to the external command {cmd}  
+`:[range]!{filter}` - Filter the specified [range] through external program {filter}  
+`:source {file}` - Run all the Ex commands from {file} against the current buffer  
+`<C-d>` - Show list of possible (auto-)completions  
+`<C-r><C-w>` - Copy word under cursor and insert it at the command-line prompt  
+`<C-f>` - Switch fom command-line mode to the command-line window  
+`q/` - Open the command-line window with history of searches  
+`q:` - Open the command-line window with history of Ex commands  
+
+
+# Patterns
+
+`\v` switch at the start of a search pattern enables the very magic search mode, which causes all subsequent characters to take on a special meaning.  
+`\V` switch at the start of a search pattern  enables the verbatim search mode.  
+`\x` character class stands for [0-9A-Fa-f].  
+`\zs`, `\ze` - for cropping a match  
+`/{pattern}/e` - Search and place the cursor at the end of any matches rather than at the start  
+
+
+# Ranges - {start},{end}
+
+`{start}` and `{end}` are addresses.
+
+
+# Addresses - {address}
+
+They can be specified using a line number, a mark or a pattern.
+
+Special address symbols:
+`0` - Virtual line before first line of file  
+`1` - First line of file  
+`.` - Current line  
+`$` - Last line of file   
+`%` - All lines in the current file  
+`'m` - Line containing mark m  
+`'<` - First line of visual selection  
+`'>` - Last line of visual selection  
+
+Offsets: Addresses can include offsets.  
+`{address}+n`
+
+
+# Modes
+
+- Normal
+- Insert
+- Replace (like Insert but overwrites existing text)
+- Visual (character-wise, block-wise, line-wise)
+- Select (like Visual but selected text will be replaced when typing)
+- Command line
+
+
+# Tabs and Spaces options:
+
+- `tabstop`: Number of spaces that a <Tab> counts for
+- `softtabstop`: Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS>
+- `shiftwidth`: Number of spaces to use for each indent in Normal mode
+- `expandtab`: Insert spaces instead of <Tab>
+
+
+# Uncategorized
+
+- The Dot Formula: Use one keystroke to move and one keystroke to execute
+- Change in vim: Everything that happens from when we enter Insert mode until we return to Normal mode.
+    Cursor keys (e.g. up, down) reset the change.
+- Action = operator + motion.
+- When an operator command is invoked in duplicate, it acts upon the current line.
+- Install exhuberant-ctag Debian package for using ctags on Linux.
+
+
+# Plugins to consider:
+
+`commentary.vim` - Adds command for (un)commenting lines of code in all languages supported by Vim.  
+`unimpaired.vim` - Mappings for scrolling through the argument, quickfix, location, tag and buffer list.  
+`vim-visual-star-search` - Make it easy to search for the selected text  
+`vim-abolish` - Supercharged substitute command  
+
+
+# Config to consider
+
+`set history=2000` - length of vim command history, which is persisted across sessions  
+`set wildmenu` - operate command-line completion in an enhanced mode  
+`set wildmode=full` - complete the next full match  
+`cnoremap <expr> %%  getcmdtype() == ':' ? expand('%:h').'/' : '%%'` - when we type %% on vim's c: command-line prompt, it automatically expands to the path of the active buffer  
+`set hlsearch` - highlight search matches  
+`set incsearch` - Enable incremental searching  
+`set smartcase` - Vim will attempt to predict out case sensitivity intentions  
+`nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>` - Mute search highlighting when redrawing screen  
+`filtetype plugin on` - Enable the file-type detection plugin which enables to customize your config based on the type of the file in the current buffer  
 
