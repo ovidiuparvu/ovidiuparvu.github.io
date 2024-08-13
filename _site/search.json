@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "How to stay up-to-date in tech",
+      "url"         : "/2024/08/13/how-to-stay-up-to-date-in-tech",
+      "category"    : "",
+      "tags"        : "tech, literature, acm",
+      "date"        : "2024-08-13 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "Vim cheatsheet",
       "url"         : "/2024/08/12/vim-cheatsheet",
       "category"    : "",
