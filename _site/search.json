@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "How can I visualise a large directed graph?",
+      "url"         : "/2024/10/01/how-to-visualise-directed-graph",
+      "category"    : "",
+      "tags"        : "digraph, visualisation, vis.js",
+      "date"        : "2024-10-01 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "How to stay up-to-date in tech",
       "url"         : "/2024/08/13/how-to-stay-up-to-date-in-tech",
       "category"    : "",
