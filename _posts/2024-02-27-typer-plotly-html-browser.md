@@ -7,5 +7,7 @@ comments: true
 tags: [typer,pyton,cli,plotly,browser,www,html]
 ---
 
-# TODO
+One approach is to use [typer](https://typer.tiangolo.com/) to create the command line tool and use [plotly](https://plotly.com/python/) to create the plot with the auto_open (in browser) option set to `True`.
+
+Sample code [here](https://github.com/ovidiuparvu/cli-plotly-html/blob/main/app.py).
 
