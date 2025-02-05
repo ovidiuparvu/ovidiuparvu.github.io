@@ -25,4 +25,4 @@ tags: [tech,literature,acm]
 - [Books](https://ovidiuparvu.me/2024/02/01/ovi-digital-library).
 - [Blinkist](https://www.blinkist.com).
 - Conferences:
-    [NDC London](https://ndclondon.com).
+    - [NDC London](https://ndclondon.com).

@@ -1,4 +1,166 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-05T14:34:55+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">How can I visualise a large directed graph?</title><link href="http://localhost:4000/2024/10/01/how-to-visualise-directed-graph" rel="alternate" type="text/html" title="How can I visualise a large directed graph?" /><published>2024-10-01T00:00:00+01:00</published><updated>2024-10-01T00:00:00+01:00</updated><id>http://localhost:4000/2024/10/01/how-to-visualise-directed-graph</id><content type="html" xml:base="http://localhost:4000/2024/10/01/how-to-visualise-directed-graph"><![CDATA[<p>Approaches for visualising a large directed graph include:</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-05T16:41:14+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">NDC London 2025</title><link href="http://localhost:4000/2025/02/05/ndc-london-2025" rel="alternate" type="text/html" title="NDC London 2025" /><published>2025-02-05T00:00:00+00:00</published><updated>2025-02-05T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/05/ndc-london-2025</id><content type="html" xml:base="http://localhost:4000/2025/02/05/ndc-london-2025"><![CDATA[<p>I have attended the NDC London 2025 conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several <a href="https://www.ndcconferences.com">countries</a>, so you do not need to wait for the next conference in London to attend.</p>
+
+<p>The ingredients that made my conference experience so enjoyable this year are:</p>
+<ol>
+  <li>A very useful 2 day practical workshop on <a href="https://ndclondon.com/workshops/practical-messaging-workshop/377bfb56107c">messaging</a>.</li>
+  <li>Insightful <a href="https://ndclondon.com/agenda">talks</a> with lots of demos for the next 3 days.</li>
+  <li>An awesome community which is welcoming to newcomers (like me).</li>
+  <li>Exciting companies to engage with at their booths.</li>
+  <li>An ad-hoc .NET London Meetup event during one of the evenings.</li>
+</ol>
+
+<h1 id="overview-of-topics-covered">Overview of topics covered</h1>
+
+<p>I have attended a workshop and several talks covering the following topics:</p>
+<ol>
+  <li>Artificial intelligence.</li>
+  <li>Messaging in distributed systems.</li>
+  <li>Software architecture.</li>
+  <li>C# and .NET.</li>
+</ol>
+
+<p>Given that several workshops and talks were running concurrently most of the time the topics listed above are only a small subset of the topics covered by the conference.</p>
+
+<p>I will summarize below my main takeaways for each topic.</p>
+
+<h1 id="artificial-intelligence-talks">Artificial intelligence talks</h1>
+
+<ul>
+  <li>The building blocks that I think can be integrated to build great AI applications are:
+    <ol>
+      <li>Local large language models (LLMs).</li>
+      <li>Retrieval Augmented Generation (RAG).</li>
+      <li>Predict + function call loops.</li>
+      <li>Voice instead of text input.</li>
+      <li>AI powered tools.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>Over the next few weeks I will create sample demos using the building blocks listed above, so periodically come back to my blog if you are interested.</p>
+
+<h2 id="ai-powered-tools">AI powered tools</h2>
+
+<h3 id="vs-code">VS Code</h3>
+
+<p>Useful features available in VS Code include:</p>
+<ul>
+  <li>Ability to use per-project custom Copilot instructions.</li>
+  <li>Button to automatically generate commit message.</li>
+  <li>Copilot in the terminal.</li>
+  <li>Ability to use Claude 3.5 Sonnet for code generation.</li>
+  <li>“Edit with Copilot” for large scale code generation.</li>
+  <li>Copilot commands: /tests, /fix, /explain</li>
+</ul>
+
+<h2 id="useful-references">Useful references</h2>
+
+<ol>
+  <li>For experimenting with local LLMs: <a href="https://lmstudio.ai/">LM Studio</a>.</li>
+  <li>Application for running local LLMs: <a href="https://ollama.com/">ollama</a>.</li>
+  <li>Repository of AI models: <a href="https://huggingface.co/">HuggingFace</a>.</li>
+</ol>
+
+<h1 id="messaging-in-distributed-systems-talks-and-workshop">Messaging in distributed systems talks and workshop</h1>
+
+<ul>
+  <li>In order to build large-scale distributed systems that are maintainable and evolvable over time the systems typically need to be split up into multiple components.</li>
+  <li>These components usually need to interact and ideally they would be as loosely coupled as possible.
+    <ul>
+      <li>Decoupling allows teams to work independently and an organisation to scale.</li>
+    </ul>
+  </li>
+  <li>Messaging can be used to allow components to be as loosely coupled as possible and to interact in a reliable manner.</li>
+  <li>Queuing theory (from mathematics) can be used to do capacity planning.</li>
+  <li>As long as components need to interact they need to be coupled to a certain extent.
+    <ul>
+      <li>Data coupling allows components to be loosely coupled.</li>
+      <li>Why switch from sync (e.g. HTTP) to async interactions between components? Resilience.</li>
+    </ul>
+  </li>
+  <li>There are design patterns for how to add messaging code to applications.</li>
+  <li>Message pump = forever loop that reads message off channel + translate to other representation + dispatch.</li>
+  <li>Break large messages into pieces (e.g 64-256KB).</li>
+  <li>To send large messages use claim checks (i.e. store content in distributed storage =&gt; token, send token to receivers, receiver uses token to retrieve content from distributed storage).</li>
+  <li>Messaging (has intent, uses commands) vs eventing (provides facts, events, notifications).</li>
+  <li>Popular message queuing solution: Rabbit MQ.</li>
+  <li>Popular streaming solution: Kafka.</li>
+  <li>Popular C# frameworks: Brighter, MassTransit, InServiceBus</li>
+  <li>Scaling out:
+    <ul>
+      <li>Message queues: Increase # of consumers.</li>
+      <li>Streams: Partition # of streams.</li>
+    </ul>
+  </li>
+  <li><a href="https://en.wikipedia.org/wiki/Robustness_principle">Postel’s law</a>: Enforce schemas on producer, be flexible on the consumer side
+    <ul>
+      <li>Forward transitive schema compatibility is typically used</li>
+    </ul>
+  </li>
+  <li>Patterns for reliably performing writes in one transactional DB and another data store:
+    <ol>
+      <li>Outbox model;</li>
+      <li>Outbox and inbox model;</li>
+      <li>Tailing DB log and writing to outbox using a sweeper.</li>
+      <li>State change capture.</li>
+    </ol>
+  </li>
+  <li>Standards:
+    <ul>
+      <li>AsyncAPI: like OpenAPI for messaging.</li>
+      <li>CloudEvents: for defining headers.</li>
+      <li>OTEL: Observability.</li>
+    </ul>
+  </li>
+  <li>Messaging patterns (involving requestor vs provider):
+    <ul>
+      <li>In-Only: Provider is a consumer.</li>
+      <li>Out-Only: Provider is a producer.</li>
+      <li>In-Out: Both provider and requestor are consumers and producers.</li>
+    </ul>
+  </li>
+  <li>Typically messaging is used for In-Only patterns and eventing is used for Out-Only patterns.</li>
+  <li>Red Panda Connect can be used to convert DB/stream/queue into stream/queue.</li>
+  <li>Miro can be used to design interactions between services.</li>
+</ul>
+
+<h2 id="useful-resources">Useful resources</h2>
+
+<ul>
+  <li>From messaging workshop:
+    <ul>
+      <li>Slides and excercises: <a href="https://github.com/iancooper/practical-messaging">https://github.com/iancooper/practical-messaging</a></li>
+      <li>Solutions for exercises implemented in C#: <a href="https://github.com/iancooper/Practical-Messaging-Sharp/tree/exercises">https://github.com/iancooper/Practical-Messaging-Sharp/tree/exercises</a></li>
+    </ul>
+  </li>
+  <li>Book on building microservices: <a href="https://samnewman.io/books/building_microservices_2nd_edition/">https://samnewman.io/books/building_microservices_2nd_edition/</a></li>
+  <li>Fallacies of distributed computing: <a href="https://cacmb4.acm.org/opinion/interviews/254622-l-peter-deutsch-on-the-fallacies-of-distributed-computing/fulltext">https://cacmb4.acm.org/opinion/interviews/254622-l-peter-deutsch-on-the-fallacies-of-distributed-computing/fulltext</a></li>
+  <li>Enterprise Integration Patterns: <a href="https://www.amazon.com/o/asin/0321200683/ref=nosim/enterpriseint-20">https://www.amazon.com/o/asin/0321200683/ref=nosim/enterpriseint-20</a></li>
+  <li>Transitional architecture: <a href="https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html">https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html</a></li>
+  <li>Domain storytelling: <a href="https://domainstorytelling.org/">https://domainstorytelling.org/</a></li>
+  <li>Value stream mapping: <a href="https://www.lean.org/the-lean-post/articles/understanding-the-fundamentals-of-value-stream-mapping/">https://www.lean.org/the-lean-post/articles/understanding-the-fundamentals-of-value-stream-mapping/</a></li>
+</ul>
+
+<h1 id="software-architecture-talks">Software architecture talks</h1>
+
+<h2 id="software-architects">Software architects</h2>
+
+<ul>
+  <li>“Architects aren’t the smartest people in the room. They make everyone else smarter.”</li>
+  <li>What makes architects valuable to a business:
+    <ol>
+      <li>Connect the different levels in an organisation.</li>
+      <li>Use metaphors to help people understand concepts using their own language.
+3.</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="migrating-legacy-web-applications-to-a-modern-stack">Migrating legacy web applications to a modern stack</h2>
+
+<h1 id="c-and-net-talks">C# and .NET talks</h1>
+
+<h1 id="summary">Summary</h1>]]></content><author><name>Ovidiu Pârvu</name></author><category term="tech" /><category term="conference" /><category term="ndc" /><category term="london" /><category term="ai" /><category term="messaging" /><category term="architecture" /><category term="dotnet" /><category term="csharp" /><category term="C#" /><category term=".NET" /><summary type="html"><![CDATA[I have attended the NDC London 2025 conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several countries, so you do not need to wait for the next conference in London to attend.]]></summary></entry><entry><title type="html">How can I visualise a large directed graph?</title><link href="http://localhost:4000/2024/10/01/how-to-visualise-directed-graph" rel="alternate" type="text/html" title="How can I visualise a large directed graph?" /><published>2024-10-01T00:00:00+01:00</published><updated>2024-10-01T00:00:00+01:00</updated><id>http://localhost:4000/2024/10/01/how-to-visualise-directed-graph</id><content type="html" xml:base="http://localhost:4000/2024/10/01/how-to-visualise-directed-graph"><![CDATA[<p>Approaches for visualising a large directed graph include:</p>
 <ol>
   <li>Vis.js - <a href="https://github.com/ovidiuparvu/digraph-visualisation-vis-js/blob/main/visualise_directed_graph.html">Sample code</a>.</li>
   <li>pyvisjs - <a href="https://github.com/ovidiuparvu/digraph-visualisation-pyvisjs/blob/main/visualise_directed_graph.py">Sample code</a>.</li>
@@ -26,7 +188,10 @@
   <li><a href="https://ovidiuparvu.me/2024/02/01/ovi-digital-library">Books</a>.</li>
   <li><a href="https://www.blinkist.com">Blinkist</a>.</li>
   <li>Conferences:
-  <a href="https://ndclondon.com">NDC London</a>.</li>
+    <ul>
+      <li><a href="https://ndclondon.com">NDC London</a>.</li>
+    </ul>
+  </li>
 </ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="tech" /><category term="literature" /><category term="acm" /><summary type="html"><![CDATA[hacker news (news)letter. Wired newsletter. Communications of the ACM. Podcasts: .NET Rocks!. Coding blocks. Data Engineering Podcast. Python Test. Security Now. Ship It!. Software Engineering Daily. Software Engineering Radio. The Changelog. The InfoQ Podcast. The Modern .NET Show. Thoughtworks Technology Podcast. Engineering blogs. Books. Blinkist. Conferences: NDC London.]]></summary></entry><entry><title type="html">Vim cheatsheet</title><link href="http://localhost:4000/2024/08/12/vim-cheatsheet" rel="alternate" type="text/html" title="Vim cheatsheet" /><published>2024-08-12T00:00:00+01:00</published><updated>2024-08-12T00:00:00+01:00</updated><id>http://localhost:4000/2024/08/12/vim-cheatsheet</id><content type="html" xml:base="http://localhost:4000/2024/08/12/vim-cheatsheet"><![CDATA[<p>A vim cheatsheet created while reading <a href="https://pragprog.com/titles/dnvim2/practical-vim-second-edition">Practical Vim, Second Edition</a>, is given below.</p>
 
 <h1 id="undoredo">Undo/redo</h1>
