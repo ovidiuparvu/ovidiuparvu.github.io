@@ -46,17 +46,6 @@
   
     {
 
-      "title"       : "How can I start using GitHub Copilot from vim?",
-      "url"         : "/2024/02/29/copilot-setup-vim",
-      "category"    : "",
-      "tags"        : "vim, copilot, github",
-      "date"        : "2024-02-29 00:00:00 +0000",
-      "description" : "How can I start using GitHub Copilot from vim?"
-
-    } ,
-  
-    {
-
       "title"       : "How can I create a command line tool that creates a plot using plotly and opens it in your browser?",
       "url"         : "/2024/02/27/typer-plotly-html-browser",
       "category"    : "",

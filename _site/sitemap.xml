@@ -2,11 +2,11 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://localhost:4000/about</loc>
-<lastmod>2024-10-05T20:52:53+01:00</lastmod>
+<lastmod>2025-02-05T14:34:55+00:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/search</loc>
-<lastmod>2024-10-05T20:52:53+01:00</lastmod>
+<lastmod>2025-02-05T14:34:55+00:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</loc>
@@ -19,10 +19,6 @@
 <url>
 <loc>http://localhost:4000/2024/02/27/typer-plotly-html-browser</loc>
 <lastmod>2024-02-27T00:00:00+00:00</lastmod>
-</url>
-<url>
-<loc>http://localhost:4000/2024/02/29/copilot-setup-vim</loc>
-<lastmod>2024-02-29T00:00:00+00:00</lastmod>
 </url>
 <url>
 <loc>http://localhost:4000/2024/04/03/accelerate-reading-notes</loc>
@@ -80,15 +76,6 @@
 <loc>http://localhost:4000/tag/html/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/tag/vim/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/tag/copilot/</loc>
-</url>
-<url>
-<loc>http://localhost:4000/tag/github/</loc>
-</url>
-<url>
 <loc>http://localhost:4000/tag/accelerate/</loc>
 </url>
 <url>
@@ -96,6 +83,9 @@
 </url>
 <url>
 <loc>http://localhost:4000/tag/devops/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/tag/vim/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/tag/editor/</loc>
