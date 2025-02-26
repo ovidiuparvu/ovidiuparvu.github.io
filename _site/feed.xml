@@ -1,4 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-06T07:09:46+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">NDC London 2025</title><link href="http://localhost:4000/2025/02/05/ndc-london-2025" rel="alternate" type="text/html" title="NDC London 2025" /><published>2025-02-05T00:00:00+00:00</published><updated>2025-02-05T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/05/ndc-london-2025</id><content type="html" xml:base="http://localhost:4000/2025/02/05/ndc-london-2025"><![CDATA[<p>I have attended the <a href="https://ndclondon.com">NDC London 2025</a> conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several <a href="https://www.ndcconferences.com">countries</a>, so you do not need to wait for the next conference in London to attend.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-26T06:44:29+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Conditionally include typeguard in Python project</title><link href="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project" rel="alternate" type="text/html" title="Conditionally include typeguard in Python project" /><published>2025-02-24T00:00:00+00:00</published><updated>2025-02-24T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project</id><content type="html" xml:base="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project"><![CDATA[<p>In this post I will show how to use environment variables to conditionally include <a href="https://pypi.org/project/typeguard/">typeguard</a> in a Python project. The source code underpinning this blog post is made available <a href="https://github.com/ovidiuparvu/typeguard-conditional-import">here</a>.</p>
+
+<h2 id="problem">Problem</h2>
+
+<p>Let’s say we maintain some code using typeguard and a snippet of it is the following.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span> <span class="n">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
+
+<span class="nd">@typechecked</span>
+<span class="k">class</span> <span class="nc">Formatter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">bold_green</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">[bold green]</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s">[/green bold]</span><span class="sh">"</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="n">console</span> <span class="o">=</span> <span class="nc">Console</span><span class="p">()</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="nc">Formatter</span><span class="p">()</span>
+    <span class="n">console</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">formatter</span><span class="p">.</span><span class="nf">bold_green</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, World!</span><span class="sh">"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>As per <a href="https://github.com/agronholm/typeguard/issues/468">this</a> issue, importing <code class="language-plaintext highlighter-rouge">typeguard</code> can add a noticeable execution time performance overhead to the import of a module.</p>
+
+<p>Now let us assume you would like to use the same code for both of the following scenarios.</p>
+
+<ol>
+  <li>User wants to benefit from typeguard features and the execution time overhead that typeguard adds is acceptable.</li>
+  <li>User wants to use our code w/o typeguard because the execution time overhead that typeguard adds is <em>not</em> acceptable.</li>
+</ol>
+
+<p>So the question is how can we update the code to support both scenarios?</p>
+
+<h2 id="solution">Solution</h2>
+
+<p>One option is to use the value of an environment variable to decide whether to import typeguard annotations/types or dummy ones instead. The updated code using this approach is given below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="n">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
+
+
+<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">"</span><span class="s">ENABLE_TYPEGUARD</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">)</span> <span class="o">==</span> <span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="n">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Define a no-op decorator
+</span>    <span class="k">def</span> <span class="nf">typechecked</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[...,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[...,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">func</span>
+
+<span class="nd">@typechecked</span>
+<span class="k">class</span> <span class="nc">Formatter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">bold_green</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">[bold green]</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s">[/green bold]</span><span class="sh">"</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="n">console</span> <span class="o">=</span> <span class="nc">Console</span><span class="p">()</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="nc">Formatter</span><span class="p">()</span>
+    <span class="n">console</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">formatter</span><span class="p">.</span><span class="nf">bold_green</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, World!</span><span class="sh">"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>If the value of the <code class="language-plaintext highlighter-rouge">ENABLE_TYPEGUARD</code> environment variable is set to a value different from <code class="language-plaintext highlighter-rouge">1</code> then typeguard is not used. Otherwise typeguard is used.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="Python" /><category term="typeguard" /><category term="conditional" /><category term="performance" /><summary type="html"><![CDATA[In this post I will show how to use environment variables to conditionally include typeguard in a Python project. The source code underpinning this blog post is made available here.]]></summary></entry><entry><title type="html">NDC London 2025</title><link href="http://localhost:4000/2025/02/05/ndc-london-2025" rel="alternate" type="text/html" title="NDC London 2025" /><published>2025-02-05T00:00:00+00:00</published><updated>2025-02-05T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/05/ndc-london-2025</id><content type="html" xml:base="http://localhost:4000/2025/02/05/ndc-london-2025"><![CDATA[<p>I have attended the <a href="https://ndclondon.com">NDC London 2025</a> conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several <a href="https://www.ndcconferences.com">countries</a>, so you do not need to wait for the next conference in London to attend.</p>
 
 <p>The ingredients that made my conference experience so enjoyable this year are:</p>
 <ol>

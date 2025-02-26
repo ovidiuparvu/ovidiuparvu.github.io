@@ -20,6 +20,14 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+# Syntax highlighting
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  syntax_highlighter: rouge
+
+# Compression
 compress_html:
   clippings: all
   comments: ["<!-- ", " -->"]

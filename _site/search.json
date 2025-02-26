@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "Conditionally include typeguard in Python project",
+      "url"         : "/2025/02/24/conditionally-include-typeguard-in-project",
+      "category"    : "",
+      "tags"        : "Python, typeguard, conditional, performance",
+      "date"        : "2025-02-24 00:00:00 +0000",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "NDC London 2025",
       "url"         : "/2025/02/05/ndc-london-2025",
       "category"    : "",
