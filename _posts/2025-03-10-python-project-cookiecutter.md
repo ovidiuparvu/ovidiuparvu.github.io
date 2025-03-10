@@ -20,5 +20,6 @@ The cookiecutter uses:
 9. [mkdocs](https://www.mkdocs.org/) for creating documentation pages.
 
 Examples of toy Python projects created using the cookiecutter are linked below.
+
 1. Library: .
 2. CLI tool: .
