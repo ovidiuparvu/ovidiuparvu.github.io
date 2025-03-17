@@ -15,7 +15,7 @@ The cookiecutter uses:
 4. [mypy](https://mypy.readthedocs.io/en/stable/index.html) for type checking.
 5. [pylint](https://github.com/pylint-dev/pylint) for linting.
 6. [pytest](https://docs.pytest.org/en/stable/) for testing.
-7. [pypgrade](https://pypi.org/project/pyupgrade/) for upgrading to newer Python language syntax.
+7. [pyupgrade](https://pypi.org/project/pyupgrade/) for upgrading to newer Python language syntax.
 8. [typer](https://typer.tiangolo.com/) and [rich](https://github.com/Textualize/rich) for CLI applications.
 9. [mkdocs](https://www.mkdocs.org/) for creating documentation pages.
 
