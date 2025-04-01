@@ -10,11 +10,10 @@ First set up a virtual environment. Then go through the polars examples below.
 ## Set up a virtual environment
 
 ```bash
-uv venv;
+uv venv --seed;
 source .venv/bin/activate;
-python -m ensurepip;
 python -m pip install uv;
-uv pip install jupyter pandas polars;
+python -m uv pip install jupyter pandas polars pyarrow;
 ```
 
 ## Create a DataFrame
