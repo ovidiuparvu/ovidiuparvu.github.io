@@ -5,7 +5,9 @@ comments: true
 tags: [polars,python,data,analysis]
 ---
 
-First set up a virtual environment. Then go through the polars examples below.
+This introduction to Polars is my attempt to make it easy for future me to recollect what I have learnt during Polars training sessions provided by [Quansight](https://quansight.com/training).
+
+Right, let's get to it. First set up a virtual environment. Then go through the examples below.
 
 ## Set up a virtual environment
 
@@ -36,6 +38,19 @@ pl.DataFrame(
         'value': pl.Int16,
     }
 )
+```
+
+### Reading from a file eagerly
+
+```python
+pl.read_parquet('dataset.parquet')
+```
+
+### Reading from a file lazily
+
+```python
+df = pl.scan_parquet('dataset.parquet')
+df.collect()
 ```
 
 ## Working with DataFrame columns
@@ -142,7 +157,48 @@ df.schema
 
 ### Arrays
 
-TODO: Continue from here
+pl.Array is used to represent a fixed-size collection of values. Conversely pl.List is used to represent a variable-size collection of values.
+
+```python
+pl.DataFrame(
+    {
+        'friends': [
+            ['Mark', 'Mary'],
+            ['John', 'Jane'],
+        ],
+    },
+    schema={
+        'friends': pl.Array(pl.String, 2),
+    },
+)
+```
+
+## Aggregations
+
+### Mean of the values in a column
+
+```python
+df = pl.scan_parquet("../titanic.parquet")
+df.select('survived').mean().collect()
+```
+
+### Mean of the values in a column grouped by values in another column
+
+```python
+df = pl.scan_parquet("../titanic.parquet")
+df.group_by('class').agg(pl.col('survived').mean()).collect()
+```
+
+### Mean of the values in a column grouped by values in another column and joined back into the initial DataFrame
+
+```python
+df = pl.scan_parquet("../titanic.parquet")
+df.select(
+    'class',
+    'survived',
+    class_mean_survival = pl.col('survived').mean().over('class')
+).collect()
+```
 
 ## Miscellaneous
 
