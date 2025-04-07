@@ -229,8 +229,6 @@ df.filter(pl.col('deck').is_not_null()).collect()
 - In Polars objects are usually immutable.
 - In order to improve execution time performance use non-eval approach first, eval second, map_elements third (because of jumping btw. Python and a Rust binary)
 - Use struct column type if the format/structure of a column is fixed. Otherwise use object type.
-- pl.Array -> fixed size limit
 - pl.Series()._get_buffers() -> underlying representation.
-- .count() -> only valid values. .len() -> actual length including null values.
 - pl.enable_string_cache() for global strings caching. Use StringCache context manager for non-global use cases.
 - .collect([new_]streaming=True, gpu=True) for using streaming and/or GPUs when collecting results from a lazy DataFrame.
