@@ -200,6 +200,29 @@ df.select(
 ).collect()
 ```
 
+## Handling missing/invalid values
+
+### Null vs NaN in Polars
+
+In Polars there is:
+- null: missing data.
+- nan: floating point number, which results from e.g. 0/0.
+
+### Counting values when some are missing/invalid
+
+```python
+df = pl.scan_parquet("../titanic.parquet")
+df.group_by('deck').len().collect()
+```
+
+### Dropping missing/invalid values
+
+```python
+df = pl.scan_parquet("../titanic.parquet")
+df.drop_nulls().collect()
+df.filter(pl.col('deck').is_not_null()).collect()
+```
+
 ## Miscellaneous
 
 - Data is stored in a columnar (Arrow) format when using Polars.
