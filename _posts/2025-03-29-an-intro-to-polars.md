@@ -223,6 +223,24 @@ df.drop_nulls().collect()
 df.filter(pl.col('deck').is_not_null()).collect()
 ```
 
+## Working with multiple DataFrames
+
+### Joining DataFrames
+
+```python
+df1 = pl.DataFrame({'x': [0.2, 1.3, 9.1], 'y': [-9.2, 88.2, 1.5]})
+df2 = pl.DataFrame({'x': [9.1, 0.2], 'z': [13124.0, 559.3]})
+df1.join(df2, on='x')
+```
+
+### Concatenating DataFrames (vertically)
+
+```python
+df1 = pl.DataFrame({'x': [0.2, 1.3, 9.1], 'y': [-9.2, 88.2, 1.5]})
+df2 = pl.DataFrame({'x': [9.1, 0.2], 'z': [13124.0, 559.3]})
+pl.concat([df1, df2], how='diagonal')
+```
+
 ## Miscellaneous
 
 - Data is stored in a columnar (Arrow) format when using Polars.
