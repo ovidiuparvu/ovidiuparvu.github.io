@@ -244,6 +244,7 @@ df.select(
 ### Null vs NaN in Polars
 
 In Polars there is:
+
 - null: missing data.
 - nan: floating point number, which results from e.g. 0/0.
 
@@ -282,7 +283,25 @@ pl.concat([df1, df2], how='diagonal')
 
 ## Categorical data
 
-
+```python
+# Use a StringCache for the code block below in order to map strings to the same uints when
+# creating df1, df2 and pl.concat([df1, df2])
+#
+# Alternatively, use pl.enable_string_cache() to enable the global string cache if you do not
+# have a large number of strings.
+with pl.StringCache():
+    df1 = pl.DataFrame(
+        {"a": ["blue", "blue", "green"], "b": [4, 5, 6]},
+        schema_overrides={"a": pl.Categorical},
+    )
+    df2 = pl.DataFrame(
+        {"a": ["green", "green", "blue"], "b": [4, 5, 6]},
+        schema_overrides={"a": pl.Categorical},
+    )
+    df1.with_columns(pl.col('a').to_physical().name.suffix('_physical'))
+    df2.with_columns(pl.col('a').to_physical().name.suffix('_physical'))
+    pl.concat([df1, df2])
+```
 
 ## Miscellaneous
 
@@ -291,5 +310,4 @@ pl.concat([df1, df2], how='diagonal')
 - In order to improve execution time performance use non-eval approach first, eval second, map_elements third (because of jumping btw. Python and a Rust binary)
 - Use struct column type if the format/structure of a column is fixed. Otherwise use object type.
 - pl.Series()._get_buffers() -> underlying representation.
-- pl.enable_string_cache() for global strings caching. Use StringCache context manager for non-global use cases.
 - .collect([new_]streaming=True, gpu=True) for using streaming and/or GPUs when collecting results from a lazy DataFrame.
