@@ -34,4 +34,4 @@ If you use VS Code, the [Markdown All in One extension](https://marketplace.visu
 ...
 ```
 
-Option 2, namely the VSCode extension, worked great for me.
+Option 2, namely the VSCode extension, worked great for me. It makes it easy to create a table of contents as well as updates it automatically whenever the Markdown file is modified in a relevant manner (e.g. a new heading is added).

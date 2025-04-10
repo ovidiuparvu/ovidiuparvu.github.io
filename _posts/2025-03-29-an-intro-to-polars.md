@@ -44,6 +44,7 @@ This introduction to Polars is my attempt to make it easy for future me to recol
   - [Joining DataFrames](#joining-dataframes)
   - [Concatenating DataFrames (vertically)](#concatenating-dataframes-vertically)
 - [Categorical data](#categorical-data)
+  - [Restricting values to Enum values](#restricting-values-to-enum-values)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -301,6 +302,13 @@ with pl.StringCache():
     df1.with_columns(pl.col('a').to_physical().name.suffix('_physical'))
     df2.with_columns(pl.col('a').to_physical().name.suffix('_physical'))
     pl.concat([df1, df2])
+```
+
+### Restricting values to Enum values
+
+```python
+s = pl.Series(["flower", "tree", "flower"], dtype=pl.Enum(["flower", "tree", "bonsai"]))
+s.dtype
 ```
 
 ## Miscellaneous
