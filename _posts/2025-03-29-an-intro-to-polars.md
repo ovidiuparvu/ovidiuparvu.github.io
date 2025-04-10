@@ -7,6 +7,45 @@ tags: [polars,python,data,analysis]
 
 This introduction to Polars is my attempt to make it easy for future me to recollect what I have learnt during Polars training sessions provided by [Quansight](https://quansight.com/training).
 
+- [Set up a virtual environment](#set-up-a-virtual-environment)
+- [Create a DataFrame](#create-a-dataframe)
+  - [Basic](#basic)
+  - [Specify column types](#specify-column-types)
+  - [Reading from a file eagerly](#reading-from-a-file-eagerly)
+  - [Reading from a file lazily](#reading-from-a-file-lazily)
+- [Working with DataFrame columns](#working-with-dataframe-columns)
+  - [Select columns](#select-columns)
+  - [Add/replace columns](#addreplace-columns)
+  - [Drop columns](#drop-columns)
+- [Working with DataFrame rows](#working-with-dataframe-rows)
+  - [Select rows](#select-rows)
+  - [Select every N rows](#select-every-n-rows)
+  - [Adding a row index column similar to what is used for pandas DataFrames](#adding-a-row-index-column-similar-to-what-is-used-for-pandas-dataframes)
+- [Non-primitive data type columns](#non-primitive-data-type-columns)
+  - [Lists](#lists)
+    - [Creating lists from values](#creating-lists-from-values)
+    - [Creating lists using values from other columns](#creating-lists-using-values-from-other-columns)
+    - [Processing lists values](#processing-lists-values)
+  - [Structs](#structs)
+    - [Creating DataFrames with struct columns](#creating-dataframes-with-struct-columns)
+    - [Unnesting a struct column](#unnesting-a-struct-column)
+    - [Selecting a field of a struct column](#selecting-a-field-of-a-struct-column)
+    - [Viewing the schema of a DataFrame containing struct columns](#viewing-the-schema-of-a-dataframe-containing-struct-columns)
+  - [Arrays](#arrays)
+- [Aggregations](#aggregations)
+  - [Mean of the values in a column](#mean-of-the-values-in-a-column)
+  - [Mean of the values in a column grouped by values in another column](#mean-of-the-values-in-a-column-grouped-by-values-in-another-column)
+  - [Mean of the values in a column grouped by values in another column and joined back into the initial DataFrame](#mean-of-the-values-in-a-column-grouped-by-values-in-another-column-and-joined-back-into-the-initial-dataframe)
+- [Handling missing/invalid values](#handling-missinginvalid-values)
+  - [Null vs NaN in Polars](#null-vs-nan-in-polars)
+  - [Counting values when some are missing/invalid](#counting-values-when-some-are-missinginvalid)
+  - [Dropping missing/invalid values](#dropping-missinginvalid-values)
+- [Working with multiple DataFrames](#working-with-multiple-dataframes)
+  - [Joining DataFrames](#joining-dataframes)
+  - [Concatenating DataFrames (vertically)](#concatenating-dataframes-vertically)
+- [Categorical data](#categorical-data)
+- [Miscellaneous](#miscellaneous)
+
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
 
 ## Set up a virtual environment
@@ -240,6 +279,10 @@ df1 = pl.DataFrame({'x': [0.2, 1.3, 9.1], 'y': [-9.2, 88.2, 1.5]})
 df2 = pl.DataFrame({'x': [9.1, 0.2], 'z': [13124.0, 559.3]})
 pl.concat([df1, df2], how='diagonal')
 ```
+
+## Categorical data
+
+
 
 ## Miscellaneous
 
