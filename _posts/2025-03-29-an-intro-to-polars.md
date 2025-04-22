@@ -45,6 +45,9 @@ This introduction to Polars is my attempt to make it easy for future me to recol
   - [Concatenating DataFrames (vertically)](#concatenating-dataframes-vertically)
 - [Categorical data](#categorical-data)
   - [Restricting values to Enum values](#restricting-values-to-enum-values)
+- [Using LazyFrames instead of (eager) DataFrames](#using-lazyframes-instead-of-eager-dataframes)
+  - [Textual representation of query plan](#textual-representation-of-query-plan)
+  - [Digraph representation of query plan](#digraph-representation-of-query-plan)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -309,6 +312,29 @@ with pl.StringCache():
 ```python
 s = pl.Series(["flower", "tree", "flower"], dtype=pl.Enum(["flower", "tree", "bonsai"]))
 s.dtype
+```
+
+## Using LazyFrames instead of (eager) DataFrames
+
+- Using LazyFrames enables lazy evaluation makes it possible for optimizations to be applied automatically instead of requiring hand-rolled optimizations to be used instead.
+- If you use expressions the lazy mode should be equivalent to the eager mode (except the need to call `.collect()` at the end).
+
+### Textual representation of query plan
+
+```python
+import polars as pl
+
+df = pl.LazyFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+print(df.explain())
+```
+
+### Digraph representation of query plan
+
+```python
+import polars as pl
+
+df = pl.LazyFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+df.show_graph()
 ```
 
 ## Miscellaneous
