@@ -48,6 +48,8 @@ This introduction to Polars is my attempt to make it easy for future me to recol
 - [Using LazyFrames instead of (eager) DataFrames](#using-lazyframes-instead-of-eager-dataframes)
   - [Textual representation of query plan](#textual-representation-of-query-plan)
   - [Digraph representation of query plan](#digraph-representation-of-query-plan)
+- [Executing row-wise operations](#executing-row-wise-operations)
+- [Streaming](#streaming)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -331,17 +333,32 @@ print(df.explain())
 ### Digraph representation of query plan
 
 ```python
-import polars as pl
-
 df = pl.LazyFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
 df.show_graph()
+```
+
+## Executing row-wise operations
+
+In order to execute some row-wise operations when using Polars one might need to use nested data types.
+
+```python
+df = pl.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
+df.select(pl.cum_sum_horizontal(pl.all())).unnest('cum_sum')
+```
+
+## Streaming
+
+```python
+df = pl.LazyFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+df.with_columns(c=pl.col('a') + pl.col('b')).collect(engine='streaming')
 ```
 
 ## Miscellaneous
 
 - Data is stored in a columnar (Arrow) format when using Polars.
 - In Polars objects are usually immutable.
-- In order to improve execution time performance use non-eval approach first, eval second, map_elements third (because of jumping btw. Python and a Rust binary)
+- In order to improve execution time performance use non-eval approach first, eval second, map_batches third and map_elements fourth (because of jumping btw. Python and a Rust binary)
 - Use struct column type if the format/structure of a column is fixed. Otherwise use object type.
 - pl.Series()._get_buffers() -> underlying representation.
 - .collect([new_]streaming=True, gpu=True) for using streaming and/or GPUs when collecting results from a lazy DataFrame.
+- Using sorted data enables Polars to use some optimizations which reduce execution time. Use `set_sorted` to tell Polars that data is sorted (Polars won't check, so use w/ care).
