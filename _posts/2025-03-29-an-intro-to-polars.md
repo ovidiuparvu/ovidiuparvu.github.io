@@ -50,6 +50,8 @@ This introduction to Polars is my attempt to make it easy for future me to recol
   - [Digraph representation of query plan](#digraph-representation-of-query-plan)
 - [Executing row-wise operations](#executing-row-wise-operations)
 - [Streaming](#streaming)
+- [Working with timeseries](#working-with-timeseries)
+  - [Creating datetime Series](#creating-datetime-series)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -351,6 +353,16 @@ df.select(pl.cum_sum_horizontal(pl.all())).unnest('cum_sum')
 ```python
 df = pl.LazyFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
 df.with_columns(c=pl.col('a') + pl.col('b')).collect(engine='streaming')
+```
+
+## Working with timeseries
+
+### Creating datetime Series
+
+```python
+pl.date_range(start_date=date(2025, 1, 1), end_date=date(2025, 1, 31), interval='1d')
+pl.Series(['2025-01-01T01:43', '2025-01-03T18:44']).str.to_datetime()
+pl.Series(["2025 January 01 01:43", "2025 January 03 18:44"]).str.to_datetime('%Y %B %d %H:%M')
 ```
 
 ## Miscellaneous
