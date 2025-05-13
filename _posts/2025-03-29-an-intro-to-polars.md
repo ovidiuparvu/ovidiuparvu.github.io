@@ -52,6 +52,8 @@ This introduction to Polars is my attempt to make it easy for future me to recol
 - [Streaming](#streaming)
 - [Working with timeseries](#working-with-timeseries)
   - [Creating datetime Series](#creating-datetime-series)
+  - [Filtering based on datetimes](#filtering-based-on-datetimes)
+  - [Datetime difference between consecutive rows](#datetime-difference-between-consecutive-rows)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -360,9 +362,28 @@ df.with_columns(c=pl.col('a') + pl.col('b')).collect(engine='streaming')
 ### Creating datetime Series
 
 ```python
-pl.date_range(start_date=date(2025, 1, 1), end_date=date(2025, 1, 31), interval='1d')
+pl.date_range(start=date(2025, 1, 1), end=date(2025, 1, 31), interval='1d')
 pl.Series(['2025-01-01T01:43', '2025-01-03T18:44']).str.to_datetime()
 pl.Series(["2025 January 01 01:43", "2025 January 03 18:44"]).str.to_datetime('%Y %B %d %H:%M')
+```
+
+### Filtering based on datetimes
+
+```python
+df = pl.DataFrame({
+  'now': pl.date_range(start=date(2025, 1, 1), end=date(2025, 1, 31), interval='1d', eager=True)
+})
+df.filter(pl.col('now') > pl.date(2025, 1, 10))
+df.filter(pl.col('now').dt.day() == 10)
+```
+
+### Datetime difference between consecutive rows
+
+```python
+df = pl.DataFrame({
+  'now': pl.date_range(start=date(2025, 1, 1), end=date(2025, 1, 31), interval='1d', eager=True)
+})
+df['now'].diff()
 ```
 
 ## Miscellaneous
