@@ -54,6 +54,7 @@ This introduction to Polars is my attempt to make it easy for future me to recol
   - [Creating datetime Series](#creating-datetime-series)
   - [Filtering based on datetimes](#filtering-based-on-datetimes)
   - [Datetime difference between consecutive rows](#datetime-difference-between-consecutive-rows)
+  - [Handling time zones](#handling-time-zones)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -384,6 +385,20 @@ df = pl.DataFrame({
   'now': pl.date_range(start=date(2025, 1, 1), end=date(2025, 1, 31), interval='1d', eager=True)
 })
 df['now'].diff()
+```
+
+### Handling time zones
+
+```python
+# Time stamp and time zone (if set) are stored separately
+ser = pl.Series(['2025-01-01T01:43', '2025-01-03T18:44']).str.to_datetime()                           # time zone unaware
+ser = pl.Series(['2025-01-01T01:43', '2025-01-03T18:44']).str.to_datetime(time_zone='Europe/London')  # time zone aware
+# Change time zone w/o changing underlying timestamp
+ser = ser.dt.convert_time_zone('Asia/Kathmandu')
+# Change timestamp ignoring current time zone
+ser = ser.dt.replace_time_zone('Asia/Kathmandu')
+# Unset time zone
+ser = ser.dt.replace_time_zone(time_zone=None)
 ```
 
 ## Miscellaneous
