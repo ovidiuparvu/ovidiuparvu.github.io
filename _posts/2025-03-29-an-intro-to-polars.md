@@ -55,6 +55,7 @@ This introduction to Polars is my attempt to make it easy for future me to recol
   - [Filtering based on datetimes](#filtering-based-on-datetimes)
   - [Datetime difference between consecutive rows](#datetime-difference-between-consecutive-rows)
   - [Handling time zones](#handling-time-zones)
+  - [Daylight Saving Time (DST)](#daylight-saving-time-dst)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -399,6 +400,27 @@ ser = ser.dt.convert_time_zone('Asia/Kathmandu')
 ser = ser.dt.replace_time_zone('Asia/Kathmandu')
 # Unset time zone
 ser = ser.dt.replace_time_zone(time_zone=None)
+```
+
+### Daylight Saving Time (DST)
+
+```python
+# Convert a Series into a DataFrame
+df = pl.datetime_range(
+    date(2020, 10, 25),
+    datetime(2020, 10, 25, 4),
+    "1h",
+    time_zone="Europe/London",
+    eager=True,
+).to_frame('date')
+df = df.with_columns(
+  # Determine the DST offset
+  dst_offset=pl.col('date').dt.dst_offset(),
+  # Add 1d to date ignoring DST
+  day_plus_1d=pl.col('date').dt.offset_by('1d'),
+  # Add 24h (i.e. 1d) to date considering DST
+  day_plus_24h=pl.col('date').dt.offset_by('24h'),
+)
 ```
 
 ## Miscellaneous
