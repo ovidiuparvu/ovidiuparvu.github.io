@@ -420,6 +420,11 @@ df = df.with_columns(
   day_plus_1d=pl.col('date').dt.offset_by('1d'),
   # Add 24h (i.e. 1d) to date considering DST
   day_plus_24h=pl.col('date').dt.offset_by('24h'),
+  # Handle ambiguities due to DST explicitly
+  replaced_time_zone=pl.col('date').dt.replace_time_zone(
+    'Europe/London',
+    ambiguous=pl.Series(['earliest', 'earliest', 'latest', 'latest', 'latest', 'latest']),
+  )
 )
 ```
 
