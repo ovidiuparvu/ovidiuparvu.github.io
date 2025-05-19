@@ -56,6 +56,9 @@ This introduction to Polars is my attempt to make it easy for future me to recol
   - [Datetime difference between consecutive rows](#datetime-difference-between-consecutive-rows)
   - [Handling time zones](#handling-time-zones)
   - [Daylight Saving Time (DST)](#daylight-saving-time-dst)
+  - [Grouping data over time](#grouping-data-over-time)
+  - [Rolling computations](#rolling-computations)
+  - [Upsampling](#upsampling)
 - [Miscellaneous](#miscellaneous)
 
 Right, let's get to it. First set up a virtual environment. Then go through the examples below.
@@ -426,6 +429,61 @@ df = df.with_columns(
     ambiguous=pl.Series(['earliest', 'earliest', 'latest', 'latest', 'latest', 'latest']),
   )
 )
+```
+
+### Grouping data over time
+
+```python
+df = pl.scan_csv("../assets.csv", try_parse_dates=True)
+df.group_by_dynamic(
+  'date',
+  every='1mo',
+  group_by='symbol',
+).agg(pl.mean('price')).collect()
+```
+
+### Rolling computations
+
+```python
+# Using rolling_mean_by()
+df = pl.scan_csv("../assets.csv", try_parse_dates=True)
+(
+  df.with_columns(pl.col('price').rolling_mean_by('date', window_size='5d'))
+  .collect()
+)
+# Using rolling()
+(
+  df
+  .filter(pl.col('symbol') == 'ABBV')
+  .rolling('date', period='5d')
+  .agg(pl.col('price').mean().alias('rolling_price'))
+  .collect()
+)
+# Rolling mean for each group using over()
+(
+  df.with_columns(pl.col('price').rolling_mean_by('date', window_size='5d').over('symbol'))
+  .collect()
+)
+# Exponentially weighted averages
+(
+  df.with_columns(pl.col('price').ewm_mean_by('date', half_life='10d'))
+  .collect()
+)
+```
+
+### Upsampling
+
+```python
+df = pl.DataFrame(
+    {
+        'ts': pl.date_range(date(2025, 5, 1), date(2025, 5, 10), interval='4d', eager=True),
+        'value': [4.0, 1.5, 7.0]
+    }
+)
+# Without filling in missing values
+df.upsample('ts', every='1d')
+# Filling in missing values
+df.upsample('ts', every='1d').interpolate()
 ```
 
 ## Miscellaneous
