@@ -19,7 +19,7 @@ python -m uv pip install Jinja2
 
 #### **templates/report.html.j2**
 
-```
+```jinja2
 <!DOCTYPE html>
 <html lang="en">
 <head>
