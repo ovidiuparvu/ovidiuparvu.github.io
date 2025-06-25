@@ -2,6 +2,94 @@
   
     {
 
+      "title"       : "Creating HTML reports from Python using Jinja",
+      "url"         : "/2025/06/20/creating-html-report-from-python-using-jinja",
+      "category"    : "",
+      "tags"        : "html, report, python, jinja",
+      "date"        : "2025-06-20 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Creating a new Python virtual env in 2025",
+      "url"         : "/2025/06/02/creating-python-venv-2025",
+      "category"    : "",
+      "tags"        : "python, venv, uv",
+      "date"        : "2025-06-02 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Determining disk usage for modern disks fast",
+      "url"         : "/2025/05/14/determining-disk-usage",
+      "category"    : "",
+      "tags"        : "disk, usage, gdu, du, dust",
+      "date"        : "2025-05-14 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Checking your internet speed",
+      "url"         : "/2025/05/13/checking-internet-speed",
+      "category"    : "",
+      "tags"        : "internet, speed, test",
+      "date"        : "2025-05-13 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Creating a table of contents for a Markdown file",
+      "url"         : "/2025/04/10/create-toc-for-md-file",
+      "category"    : "",
+      "tags"        : "toc, md, markdown",
+      "date"        : "2025-04-10 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "An intro to Polars",
+      "url"         : "/2025/03/29/an-intro-to-polars",
+      "category"    : "",
+      "tags"        : "polars, python, data, analysis",
+      "date"        : "2025-03-29 00:00:00 +0000",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Python project cookiecutter",
+      "url"         : "/2025/03/10/python-project-cookiecutter",
+      "category"    : "",
+      "tags"        : "python, cookiecutter, library, cli, typer",
+      "date"        : "2025-03-10 00:00:00 +0000",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Testing Python functions running git commands",
+      "url"         : "/2025/03/05/test-python-functions-running-git-commands",
+      "category"    : "",
+      "tags"        : "test, python, git",
+      "date"        : "2025-03-05 00:00:00 +0000",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "Conditionally include typeguard in Python project",
       "url"         : "/2025/02/24/conditionally-include-typeguard-in-project",
       "category"    : "",

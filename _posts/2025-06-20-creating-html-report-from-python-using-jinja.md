@@ -24,7 +24,7 @@ python -m uv pip install Jinja2
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ title }}</title>
+  <title>{% raw %}{{ title }}{% endraw %}</title>
   <style>
     table { border-collapse: collapse; width: 100%; }
     th, td { border: 1px solid #ccc; padding: 8px; }
@@ -32,7 +32,7 @@ python -m uv pip install Jinja2
   </style>
 </head>
 <body>
-  <h1>{{ title }}</h1>
+  <h1>{% raw %}{{ title }}{% endraw %}</h1>
   <table>
     <thead>
       <tr>
@@ -41,12 +41,12 @@ python -m uv pip install Jinja2
       </tr>
     </thead>
     <tbody>
-      {% for item in items %}
+      {% raw %}{% for item in items %}{% endraw %}
       <tr>
-        <td>{{ item.name }}</td>
-        <td>{{ item.value }}</td>
+        <td>{% raw %}{{ item.name }}{% endraw %}</td>
+        <td>{% raw %}{{ item.value }}{% endraw %}</td>
       </tr>
-      {% endfor %}
+      {% raw %}{% endfor %}{% endraw %}
     </tbody>
   </table>
 </body>

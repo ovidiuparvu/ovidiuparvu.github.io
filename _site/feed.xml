@@ -1,4 +1,703 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-26T06:44:29+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Conditionally include typeguard in Python project</title><link href="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project" rel="alternate" type="text/html" title="Conditionally include typeguard in Python project" /><published>2025-02-24T00:00:00+00:00</published><updated>2025-02-24T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project</id><content type="html" xml:base="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project"><![CDATA[<p>In this post I will show how to use environment variables to conditionally include <a href="https://pypi.org/project/typeguard/">typeguard</a> in a Python project. The source code underpinning this blog post is made available <a href="https://github.com/ovidiuparvu/typeguard-conditional-import">here</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-06-25T06:20:31+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Creating HTML reports from Python using Jinja</title><link href="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja" rel="alternate" type="text/html" title="Creating HTML reports from Python using Jinja" /><published>2025-06-20T00:00:00+01:00</published><updated>2025-06-20T00:00:00+01:00</updated><id>http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja</id><content type="html" xml:base="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja"><![CDATA[<p>In this post we will go over one approach for generating HTML reports from Python using <a href="https://pypi.org/project/Jinja2">Jinja</a>.</p>
+
+<p>Using Python for data loading and analysis is great due to the rich ecosystem of relevant Python packages. Using Jinja for creating HTML reports is great due to the powerful templating capabilities of Jinja.</p>
+
+<h2 id="step-1-install-jinja">Step 1: Install Jinja</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> uv pip <span class="nb">install </span>Jinja2
+</code></pre></div></div>
+
+<h2 id="step-2-create-an-html-jinja-template">Step 2: Create an html Jinja template</h2>
+
+<h4 id="templatesreporthtmlj2"><strong>templates/report.html.j2</strong></h4>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>{{ title }}<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nt">table</span> <span class="p">{</span> <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span> <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span> <span class="p">{</span> <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="nx">#ccc</span><span class="p">;</span> <span class="nl">padding</span><span class="p">:</span> <span class="m">8px</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nt">th</span> <span class="p">{</span> <span class="nl">background</span><span class="p">:</span> <span class="nx">#f4f4f4</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>{{ title }}<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;table&gt;</span>
+    <span class="nt">&lt;thead&gt;</span>
+      <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;th&gt;</span>Name<span class="nt">&lt;/th&gt;</span>
+        <span class="nt">&lt;th&gt;</span>Value<span class="nt">&lt;/th&gt;</span>
+      <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/thead&gt;</span>
+    <span class="nt">&lt;tbody&gt;</span>
+      {% for item in items %}
+      <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td&gt;</span>{{ item.name }}<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>{{ item.value }}<span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;/tr&gt;</span>
+      {% endfor %}
+    <span class="nt">&lt;/tbody&gt;</span>
+  <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h2 id="step-3-load-data-and-render-template-using-it">Step 3: Load data and render template using it</h2>
+
+<h4 id="generate_reportpy"><strong>generate_report.py</strong></h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="n">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="n">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">def</span> <span class="nf">render_report</span><span class="p">(</span><span class="n">template_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">],</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="c1"># 1. Configure Jinja to load from the 'templates' folder
+</span>    <span class="n">env</span> <span class="o">=</span> <span class="nc">Environment</span><span class="p">(</span>
+        <span class="n">loader</span><span class="o">=</span><span class="nc">FileSystemLoader</span><span class="p">(</span><span class="sh">"</span><span class="s">templates</span><span class="sh">"</span><span class="p">),</span>
+        <span class="n">autoescape</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  <span class="c1"># for HTML safety
+</span>    <span class="p">)</span>
+
+    <span class="c1"># 2. Load the template
+</span>    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">get_template</span><span class="p">(</span><span class="n">template_name</span><span class="p">)</span>
+
+    <span class="c1"># 3. Render with your context
+</span>    <span class="n">rendered_html</span> <span class="o">=</span> <span class="n">template</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="o">**</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="c1"># 4. Write to a file
+</span>    <span class="k">with</span> <span class="n">output_path</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">rendered_html</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nc">Data</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Region</span><span class="sh">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">"</span><span class="s">EU</span><span class="sh">"</span><span class="p">),</span>
+        <span class="nc">Data</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Weather</span><span class="sh">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">"</span><span class="s">Hot</span><span class="sh">"</span><span class="p">),</span>
+        <span class="nc">Data</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">PopulationDensity</span><span class="sh">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">"</span><span class="s">High</span><span class="sh">"</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">title</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Regional report</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">items</span><span class="sh">"</span><span class="p">:</span> <span class="n">items</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nf">render_report</span><span class="p">(</span><span class="sh">"</span><span class="s">report.html.j2</span><span class="sh">"</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="nc">Path</span><span class="p">(</span><span class="sh">"</span><span class="s">report.html</span><span class="sh">"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="step-4-generate-the-report">Step 4: Generate the report</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python generate_report.py
+</code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="html" /><category term="report" /><category term="python" /><category term="jinja" /><summary type="html"><![CDATA[In this post we will go over one approach for generating HTML reports from Python using Jinja.]]></summary></entry><entry><title type="html">Creating a new Python virtual env in 2025</title><link href="http://localhost:4000/2025/06/02/creating-python-venv-2025" rel="alternate" type="text/html" title="Creating a new Python virtual env in 2025" /><published>2025-06-02T00:00:00+01:00</published><updated>2025-06-02T00:00:00+01:00</updated><id>http://localhost:4000/2025/06/02/creating-python-venv-2025</id><content type="html" xml:base="http://localhost:4000/2025/06/02/creating-python-venv-2025"><![CDATA[<p>The approach I use to create and activate a new Python virtual environment in 2025 is illustrated below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv venv <span class="nt">--seed</span> <span class="nt">-p</span><span class="o">=</span>python3.13
+<span class="nb">.</span> .venv/bin/activate
+</code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="python" /><category term="venv" /><category term="uv" /><summary type="html"><![CDATA[The approach I use to create and activate a new Python virtual environment in 2025 is illustrated below:]]></summary></entry><entry><title type="html">Determining disk usage for modern disks fast</title><link href="http://localhost:4000/2025/05/14/determining-disk-usage" rel="alternate" type="text/html" title="Determining disk usage for modern disks fast" /><published>2025-05-14T00:00:00+01:00</published><updated>2025-05-14T00:00:00+01:00</updated><id>http://localhost:4000/2025/05/14/determining-disk-usage</id><content type="html" xml:base="http://localhost:4000/2025/05/14/determining-disk-usage"><![CDATA[<p>Tools for determining disk usage for modern disks fast (w/o double-counting hard links, at the time of writing) include:</p>
+
+<ol>
+  <li><a href="https://github.com/dundee/gdu">gdu</a>.</li>
+  <li><a href="https://github.com/sharkdp/diskus">diskus</a>.</li>
+  <li><a href="https://github.com/bootandy/dust">dust</a>.</li>
+  <li><a href="https://www.man7.org/linux/man-pages/man1/du.1.html">du</a>.</li>
+</ol>
+
+<p>Tools for determining disk usage for modern disks fast (w/ double-counting hard links, at the time of writing) include:</p>
+
+<ol>
+  <li><a href="https://github.com/KSXGitHub/parallel-disk-usage">pdu</a>.</li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="disk" /><category term="usage" /><category term="gdu" /><category term="du" /><category term="dust" /><summary type="html"><![CDATA[Tools for determining disk usage for modern disks fast (w/o double-counting hard links, at the time of writing) include:]]></summary></entry><entry><title type="html">Checking your internet speed</title><link href="http://localhost:4000/2025/05/13/checking-internet-speed" rel="alternate" type="text/html" title="Checking your internet speed" /><published>2025-05-13T00:00:00+01:00</published><updated>2025-05-13T00:00:00+01:00</updated><id>http://localhost:4000/2025/05/13/checking-internet-speed</id><content type="html" xml:base="http://localhost:4000/2025/05/13/checking-internet-speed"><![CDATA[<p>If you would like to check the “speed” of your Internet connection without being bombarded w/ ads give Cloudflare’s <a href="https://speed.cloudflare.com/">Speed Test</a> a try.</p>
+
+<p>Like with any other Internet speed test, note that in theory your ISP could infer that you are running a speed test and therefore adjust constraints for your Internet connection to make the results look as good as possible.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="internet" /><category term="speed" /><category term="test" /><summary type="html"><![CDATA[If you would like to check the “speed” of your Internet connection without being bombarded w/ ads give Cloudflare’s Speed Test a try.]]></summary></entry><entry><title type="html">Creating a table of contents for a Markdown file</title><link href="http://localhost:4000/2025/04/10/create-toc-for-md-file" rel="alternate" type="text/html" title="Creating a table of contents for a Markdown file" /><published>2025-04-10T00:00:00+01:00</published><updated>2025-04-10T00:00:00+01:00</updated><id>http://localhost:4000/2025/04/10/create-toc-for-md-file</id><content type="html" xml:base="http://localhost:4000/2025/04/10/create-toc-for-md-file"><![CDATA[<p>I wanted to create a table of contents (ToC) for a Markdown file and have an easy way to update the ToC as the markdown file changes. So I asked ChatGPT.</p>
+
+<p>Prompt:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>How can I generate a toc for a markdown file?
+</code></pre></div></div>
+
+<p>Answer:</p>
+
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Generating a table of contents (TOC) for a Markdown file can be accomplished in several ways—ranging from using command-line tools and editor extensions to writing your own script. Below are several methods, along with step-by-step instructions and insights into each approach.
+
+...
+
+<span class="gu">## 2. Using Editor Extensions</span>
+
+<span class="gu">### Visual Studio Code and Markdown All in One  </span>
+If you use VS Code, the <span class="p">[</span><span class="nv">Markdown All in One extension</span><span class="p">](</span><span class="sx">https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one</span><span class="p">)</span> makes generating a TOC easy:
+<span class="p">
+-</span> <span class="gs">**Installation:**</span>  
+  Install the extension from the VS Code marketplace.
+<span class="p">  
+-</span> <span class="gs">**Usage:**</span>  
+  Open your Markdown file and open the Command Palette (<span class="sb">`Ctrl+Shift+P`</span> or <span class="sb">`Cmd+Shift+P`</span>), then type and select <span class="gs">**"Markdown All in One: Create Table of Contents"**</span>. The extension inserts a TOC at your cursor or replaces an existing one.
+
+...
+</code></pre></div></div>
+
+<p>Option 2, namely the VSCode extension, worked great for me. It makes it easy to create a table of contents as well as updates it automatically whenever the Markdown file is modified in a relevant manner (e.g. a new heading is added).</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="toc" /><category term="md" /><category term="markdown" /><summary type="html"><![CDATA[I wanted to create a table of contents (ToC) for a Markdown file and have an easy way to update the ToC as the markdown file changes. So I asked ChatGPT.]]></summary></entry><entry><title type="html">An intro to Polars</title><link href="http://localhost:4000/2025/03/29/an-intro-to-polars" rel="alternate" type="text/html" title="An intro to Polars" /><published>2025-03-29T00:00:00+00:00</published><updated>2025-03-29T00:00:00+00:00</updated><id>http://localhost:4000/2025/03/29/an-intro-to-polars</id><content type="html" xml:base="http://localhost:4000/2025/03/29/an-intro-to-polars"><![CDATA[<p>This introduction to Polars is my attempt to make it easy for future me to recollect what I have learnt during Polars training sessions provided by <a href="https://quansight.com/training">Quansight</a>.</p>
+
+<ul>
+  <li><a href="#set-up-a-virtual-environment">Set up a virtual environment</a></li>
+  <li><a href="#create-a-dataframe">Create a DataFrame</a>
+    <ul>
+      <li><a href="#basic">Basic</a></li>
+      <li><a href="#specify-column-types">Specify column types</a></li>
+      <li><a href="#reading-from-a-file-eagerly">Reading from a file eagerly</a></li>
+      <li><a href="#reading-from-a-file-lazily">Reading from a file lazily</a></li>
+    </ul>
+  </li>
+  <li><a href="#working-with-dataframe-columns">Working with DataFrame columns</a>
+    <ul>
+      <li><a href="#select-columns">Select columns</a></li>
+      <li><a href="#addreplace-columns">Add/replace columns</a></li>
+      <li><a href="#drop-columns">Drop columns</a></li>
+    </ul>
+  </li>
+  <li><a href="#working-with-dataframe-rows">Working with DataFrame rows</a>
+    <ul>
+      <li><a href="#select-rows">Select rows</a></li>
+      <li><a href="#select-every-n-rows">Select every N rows</a></li>
+      <li><a href="#adding-a-row-index-column-similar-to-what-is-used-for-pandas-dataframes">Adding a row index column similar to what is used for pandas DataFrames</a></li>
+    </ul>
+  </li>
+  <li><a href="#non-primitive-data-type-columns">Non-primitive data type columns</a>
+    <ul>
+      <li><a href="#lists">Lists</a>
+        <ul>
+          <li><a href="#creating-lists-from-values">Creating lists from values</a></li>
+          <li><a href="#creating-lists-using-values-from-other-columns">Creating lists using values from other columns</a></li>
+          <li><a href="#processing-lists-values">Processing lists values</a></li>
+        </ul>
+      </li>
+      <li><a href="#structs">Structs</a>
+        <ul>
+          <li><a href="#creating-dataframes-with-struct-columns">Creating DataFrames with struct columns</a></li>
+          <li><a href="#unnesting-a-struct-column">Unnesting a struct column</a></li>
+          <li><a href="#selecting-a-field-of-a-struct-column">Selecting a field of a struct column</a></li>
+          <li><a href="#viewing-the-schema-of-a-dataframe-containing-struct-columns">Viewing the schema of a DataFrame containing struct columns</a></li>
+        </ul>
+      </li>
+      <li><a href="#arrays">Arrays</a></li>
+    </ul>
+  </li>
+  <li><a href="#aggregations">Aggregations</a>
+    <ul>
+      <li><a href="#mean-of-the-values-in-a-column">Mean of the values in a column</a></li>
+      <li><a href="#mean-of-the-values-in-a-column-grouped-by-values-in-another-column">Mean of the values in a column grouped by values in another column</a></li>
+      <li><a href="#mean-of-the-values-in-a-column-grouped-by-values-in-another-column-and-joined-back-into-the-initial-dataframe">Mean of the values in a column grouped by values in another column and joined back into the initial DataFrame</a></li>
+    </ul>
+  </li>
+  <li><a href="#handling-missinginvalid-values">Handling missing/invalid values</a>
+    <ul>
+      <li><a href="#null-vs-nan-in-polars">Null vs NaN in Polars</a></li>
+      <li><a href="#counting-values-when-some-are-missinginvalid">Counting values when some are missing/invalid</a></li>
+      <li><a href="#dropping-missinginvalid-values">Dropping missing/invalid values</a></li>
+    </ul>
+  </li>
+  <li><a href="#working-with-multiple-dataframes">Working with multiple DataFrames</a>
+    <ul>
+      <li><a href="#joining-dataframes">Joining DataFrames</a></li>
+      <li><a href="#concatenating-dataframes-vertically">Concatenating DataFrames (vertically)</a></li>
+    </ul>
+  </li>
+  <li><a href="#categorical-data">Categorical data</a>
+    <ul>
+      <li><a href="#restricting-values-to-enum-values">Restricting values to Enum values</a></li>
+    </ul>
+  </li>
+  <li><a href="#using-lazyframes-instead-of-eager-dataframes">Using LazyFrames instead of (eager) DataFrames</a>
+    <ul>
+      <li><a href="#textual-representation-of-query-plan">Textual representation of query plan</a></li>
+      <li><a href="#digraph-representation-of-query-plan">Digraph representation of query plan</a></li>
+    </ul>
+  </li>
+  <li><a href="#executing-row-wise-operations">Executing row-wise operations</a></li>
+  <li><a href="#streaming">Streaming</a></li>
+  <li><a href="#working-with-timeseries">Working with timeseries</a>
+    <ul>
+      <li><a href="#creating-datetime-series">Creating datetime Series</a></li>
+      <li><a href="#filtering-based-on-datetimes">Filtering based on datetimes</a></li>
+      <li><a href="#datetime-difference-between-consecutive-rows">Datetime difference between consecutive rows</a></li>
+      <li><a href="#handling-time-zones">Handling time zones</a></li>
+      <li><a href="#daylight-saving-time-dst">Daylight Saving Time (DST)</a></li>
+      <li><a href="#grouping-data-over-time">Grouping data over time</a></li>
+      <li><a href="#rolling-computations">Rolling computations</a></li>
+      <li><a href="#upsampling">Upsampling</a></li>
+    </ul>
+  </li>
+  <li><a href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+
+<p>Right, let’s get to it. First set up a virtual environment. Then go through the examples below.</p>
+
+<h2 id="set-up-a-virtual-environment">Set up a virtual environment</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv venv <span class="nt">--seed</span><span class="p">;</span>
+<span class="nb">source</span> .venv/bin/activate<span class="p">;</span>
+python <span class="nt">-m</span> pip <span class="nb">install </span>uv<span class="p">;</span>
+python <span class="nt">-m</span> uv pip <span class="nb">install </span>jupyter pandas polars pyarrow<span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="create-a-dataframe">Create a DataFrame</h2>
+
+<h3 id="basic">Basic</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars</span> <span class="k">as</span> <span class="n">pl</span>
+
+<span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+</code></pre></div></div>
+
+<h3 id="specify-column-types">Specify column types</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]},</span>
+    <span class="n">schema_overrides</span><span class="o">=</span><span class="p">{</span>
+        <span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">String</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">Int16</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="reading-from-a-file-eagerly">Reading from a file eagerly</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nf">read_parquet</span><span class="p">(</span><span class="sh">'</span><span class="s">dataset.parquet</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="reading-from-a-file-lazily">Reading from a file lazily</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">'</span><span class="s">dataset.parquet</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="working-with-dataframe-columns">Working with DataFrame columns</h2>
+
+<h3 id="select-columns">Select columns</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars.selectors</span> <span class="k">as</span> <span class="n">cs</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">cs</span><span class="p">.</span><span class="nf">all</span><span class="p">()</span> <span class="o">-</span> <span class="n">cs</span><span class="p">.</span><span class="nf">numeric</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="addreplace-columns">Add/replace columns</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span>
+    <span class="n">keyvalue</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">).</span><span class="nf">cast</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="n">String</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="drop-columns">Drop columns</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="working-with-dataframe-rows">Working with DataFrame rows</h2>
+
+<h3 id="select-rows">Select rows</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="select-every-n-rows">Select every N rows</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>             <span class="c1"># Gather every 2nd row
+</span><span class="n">df</span><span class="p">.</span><span class="nf">gather_every</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Gather every 2nd row
+</span></code></pre></div></div>
+
+<h3 id="adding-a-row-index-column-similar-to-what-is-used-for-pandas-dataframes">Adding a row index column similar to what is used for pandas DataFrames</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">with_row_index</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="non-primitive-data-type-columns">Non-primitive data type columns</h2>
+
+<h3 id="lists">Lists</h3>
+
+<h4 id="creating-lists-from-values">Creating lists from values</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]})</span>
+</code></pre></div></div>
+
+<h4 id="creating-lists-using-values-from-other-columns">Creating lists using values from other columns</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">x_y</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">concat_list</span><span class="p">(</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="processing-lists-values">Processing lists values</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">z_mean</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">).</span><span class="nb">list</span><span class="p">.</span><span class="nf">mean</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="structs">Structs</h3>
+
+<h4 id="creating-dataframes-with-struct-columns">Creating DataFrames with struct columns</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">cars</span><span class="sh">'</span><span class="p">:</span> <span class="p">[{</span><span class="sh">'</span><span class="s">make</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Audi</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">year</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2020</span><span class="p">},</span> <span class="p">{</span><span class="sh">'</span><span class="s">make</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Volkswagen</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">year</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2024</span><span class="p">}]})</span>
+</code></pre></div></div>
+
+<h4 id="unnesting-a-struct-column">Unnesting a struct column</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="nf">unnest</span><span class="p">(</span><span class="sh">'</span><span class="s">cars</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="selecting-a-field-of-a-struct-column">Selecting a field of a struct column</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">cars</span><span class="sh">'</span><span class="p">).</span><span class="n">struct</span><span class="p">.</span><span class="nf">field</span><span class="p">(</span><span class="sh">'</span><span class="s">make</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="viewing-the-schema-of-a-dataframe-containing-struct-columns">Viewing the schema of a DataFrame containing struct columns</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">schema</span>
+</code></pre></div></div>
+
+<h3 id="arrays">Arrays</h3>
+
+<p>pl.Array is used to represent a fixed-size collection of values. Conversely pl.List is used to represent a variable-size collection of values.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="sh">'</span><span class="s">friends</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">[</span><span class="sh">'</span><span class="s">Mark</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Mary</span><span class="sh">'</span><span class="p">],</span>
+            <span class="p">[</span><span class="sh">'</span><span class="s">John</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Jane</span><span class="sh">'</span><span class="p">],</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">schema</span><span class="o">=</span><span class="p">{</span>
+        <span class="sh">'</span><span class="s">friends</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Array</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="n">String</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="aggregations">Aggregations</h2>
+
+<h3 id="mean-of-the-values-in-a-column">Mean of the values in a column</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">().</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="mean-of-the-values-in-a-column-grouped-by-values-in-another-column">Mean of the values in a column grouped by values in another column</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">group_by</span><span class="p">(</span><span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">).</span><span class="nf">agg</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">()).</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="mean-of-the-values-in-a-column-grouped-by-values-in-another-column-and-joined-back-into-the-initial-dataframe">Mean of the values in a column grouped by values in another column and joined back into the initial DataFrame</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span>
+    <span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">class_mean_survival</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">().</span><span class="nf">over</span><span class="p">(</span><span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">)</span>
+<span class="p">).</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="handling-missinginvalid-values">Handling missing/invalid values</h2>
+
+<h3 id="null-vs-nan-in-polars">Null vs NaN in Polars</h3>
+
+<p>In Polars there is:</p>
+
+<ul>
+  <li>null: missing data.</li>
+  <li>nan: floating point number, which results from e.g. 0/0.</li>
+</ul>
+
+<h3 id="counting-values-when-some-are-missinginvalid">Counting values when some are missing/invalid</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">group_by</span><span class="p">(</span><span class="sh">'</span><span class="s">deck</span><span class="sh">'</span><span class="p">).</span><span class="nf">len</span><span class="p">().</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="dropping-missinginvalid-values">Dropping missing/invalid values</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">drop_nulls</span><span class="p">().</span><span class="nf">collect</span><span class="p">()</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">deck</span><span class="sh">'</span><span class="p">).</span><span class="nf">is_not_null</span><span class="p">()).</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="working-with-multiple-dataframes">Working with multiple DataFrames</h2>
+
+<h3 id="joining-dataframes">Joining DataFrames</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">9.1</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">9.2</span><span class="p">,</span> <span class="mf">88.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">9.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">13124.0</span><span class="p">,</span> <span class="mf">559.3</span><span class="p">]})</span>
+<span class="n">df1</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="concatenating-dataframes-vertically">Concatenating DataFrames (vertically)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">9.1</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">9.2</span><span class="p">,</span> <span class="mf">88.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]})</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">9.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">13124.0</span><span class="p">,</span> <span class="mf">559.3</span><span class="p">]})</span>
+<span class="n">pl</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="sh">'</span><span class="s">diagonal</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="categorical-data">Categorical data</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use a StringCache for the code block below in order to map strings to the same uints when
+# creating df1, df2 and pl.concat([df1, df2])
+#
+# Alternatively, use pl.enable_string_cache() to enable the global string cache if you do not
+# have a large number of strings.
+</span><span class="k">with</span> <span class="n">pl</span><span class="p">.</span><span class="nc">StringCache</span><span class="p">():</span>
+    <span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]},</span>
+        <span class="n">schema_overrides</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">Categorical</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]},</span>
+        <span class="n">schema_overrides</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">Categorical</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="n">df1</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">).</span><span class="nf">to_physical</span><span class="p">().</span><span class="n">name</span><span class="p">.</span><span class="nf">suffix</span><span class="p">(</span><span class="sh">'</span><span class="s">_physical</span><span class="sh">'</span><span class="p">))</span>
+    <span class="n">df2</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">).</span><span class="nf">to_physical</span><span class="p">().</span><span class="n">name</span><span class="p">.</span><span class="nf">suffix</span><span class="p">(</span><span class="sh">'</span><span class="s">_physical</span><span class="sh">'</span><span class="p">))</span>
+    <span class="n">pl</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h3 id="restricting-values-to-enum-values">Restricting values to Enum values</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">"</span><span class="s">flower</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tree</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">flower</span><span class="sh">"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nc">Enum</span><span class="p">([</span><span class="sh">"</span><span class="s">flower</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tree</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">bonsai</span><span class="sh">"</span><span class="p">]))</span>
+<span class="n">s</span><span class="p">.</span><span class="n">dtype</span>
+</code></pre></div></div>
+
+<h2 id="using-lazyframes-instead-of-eager-dataframes">Using LazyFrames instead of (eager) DataFrames</h2>
+
+<ul>
+  <li>Using LazyFrames enables lazy evaluation makes it possible for optimizations to be applied automatically instead of requiring hand-rolled optimizations to be used instead.</li>
+  <li>If you use expressions the lazy mode should be equivalent to the eager mode (except the need to call <code class="language-plaintext highlighter-rouge">.collect()</code> at the end).</li>
+</ul>
+
+<h3 id="textual-representation-of-query-plan">Textual representation of query plan</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars</span> <span class="k">as</span> <span class="n">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">LazyFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">explain</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="digraph-representation-of-query-plan">Digraph representation of query plan</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">LazyFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">show_graph</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="executing-row-wise-operations">Executing row-wise operations</h2>
+
+<p>In order to execute some row-wise operations when using Polars one might need to use nested data types.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">cum_sum_horizontal</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">all</span><span class="p">())).</span><span class="nf">unnest</span><span class="p">(</span><span class="sh">'</span><span class="s">cum_sum</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="streaming">Streaming</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">LazyFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">)).</span><span class="nf">collect</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="sh">'</span><span class="s">streaming</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="working-with-timeseries">Working with timeseries</h2>
+
+<h3 id="creating-datetime-series">Creating datetime Series</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">2025-01-01T01:43</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025-01-03T18:44</span><span class="sh">'</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">()</span>
+<span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">"</span><span class="s">2025 January 01 01:43</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">2025 January 03 18:44</span><span class="sh">"</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y %B %d %H:%M</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="filtering-based-on-datetimes">Filtering based on datetimes</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span>
+  <span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">,</span> <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">day</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="datetime-difference-between-consecutive-rows">Datetime difference between consecutive rows</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span>
+  <span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">,</span> <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">})</span>
+<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">].</span><span class="nf">diff</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="handling-time-zones">Handling time zones</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Time stamp and time zone (if set) are stored separately
+</span><span class="n">ser</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">2025-01-01T01:43</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025-01-03T18:44</span><span class="sh">'</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">()</span>                           <span class="c1"># time zone unaware
+</span><span class="n">ser</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">2025-01-01T01:43</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025-01-03T18:44</span><span class="sh">'</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">time_zone</span><span class="o">=</span><span class="sh">'</span><span class="s">Europe/London</span><span class="sh">'</span><span class="p">)</span>  <span class="c1"># time zone aware
+# Change time zone w/o changing underlying timestamp
+</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="nf">convert_time_zone</span><span class="p">(</span><span class="sh">'</span><span class="s">Asia/Kathmandu</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># Change timestamp ignoring current time zone
+</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="nf">replace_time_zone</span><span class="p">(</span><span class="sh">'</span><span class="s">Asia/Kathmandu</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># Unset time zone
+</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="nf">replace_time_zone</span><span class="p">(</span><span class="n">time_zone</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="daylight-saving-time-dst">Daylight Saving Time (DST)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Convert a Series into a DataFrame
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">datetime_range</span><span class="p">(</span>
+    <span class="nf">date</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+    <span class="nf">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="sh">"</span><span class="s">1h</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">time_zone</span><span class="o">=</span><span class="sh">"</span><span class="s">Europe/London</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">).</span><span class="nf">to_frame</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span>
+  <span class="c1"># Determine the DST offset
+</span>  <span class="n">dst_offset</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">dst_offset</span><span class="p">(),</span>
+  <span class="c1"># Add 1d to date ignoring DST
+</span>  <span class="n">day_plus_1d</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">offset_by</span><span class="p">(</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">),</span>
+  <span class="c1"># Add 24h (i.e. 1d) to date considering DST
+</span>  <span class="n">day_plus_24h</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">offset_by</span><span class="p">(</span><span class="sh">'</span><span class="s">24h</span><span class="sh">'</span><span class="p">),</span>
+  <span class="c1"># Handle ambiguities due to DST explicitly
+</span>  <span class="n">replaced_time_zone</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">replace_time_zone</span><span class="p">(</span>
+    <span class="sh">'</span><span class="s">Europe/London</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">ambiguous</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">earliest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">earliest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">]),</span>
+  <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="grouping-data-over-time">Grouping data over time</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">../assets.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">try_parse_dates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="nf">group_by_dynamic</span><span class="p">(</span>
+  <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span>
+  <span class="n">every</span><span class="o">=</span><span class="sh">'</span><span class="s">1mo</span><span class="sh">'</span><span class="p">,</span>
+  <span class="n">group_by</span><span class="o">=</span><span class="sh">'</span><span class="s">symbol</span><span class="sh">'</span><span class="p">,</span>
+<span class="p">).</span><span class="nf">agg</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">)).</span><span class="nf">collect</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="rolling-computations">Rolling computations</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Using rolling_mean_by()
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">../assets.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">try_parse_dates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">(</span>
+  <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">rolling_mean_by</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="sh">'</span><span class="s">5d</span><span class="sh">'</span><span class="p">))</span>
+  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># Using rolling()
+</span><span class="p">(</span>
+  <span class="n">df</span>
+  <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">symbol</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="sh">'</span><span class="s">ABBV</span><span class="sh">'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nf">rolling</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="sh">'</span><span class="s">5d</span><span class="sh">'</span><span class="p">)</span>
+  <span class="p">.</span><span class="nf">agg</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">().</span><span class="nf">alias</span><span class="p">(</span><span class="sh">'</span><span class="s">rolling_price</span><span class="sh">'</span><span class="p">))</span>
+  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># Rolling mean for each group using over()
+</span><span class="p">(</span>
+  <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">rolling_mean_by</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="sh">'</span><span class="s">5d</span><span class="sh">'</span><span class="p">).</span><span class="nf">over</span><span class="p">(</span><span class="sh">'</span><span class="s">symbol</span><span class="sh">'</span><span class="p">))</span>
+  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="c1"># Exponentially weighted averages
+</span><span class="p">(</span>
+  <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">ewm_mean_by</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">half_life</span><span class="o">=</span><span class="sh">'</span><span class="s">10d</span><span class="sh">'</span><span class="p">))</span>
+  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="upsampling">Upsampling</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="sh">'</span><span class="s">ts</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">4d</span><span class="sh">'</span><span class="p">,</span> <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+        <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="c1"># Without filling in missing values
+</span><span class="n">df</span><span class="p">.</span><span class="nf">upsample</span><span class="p">(</span><span class="sh">'</span><span class="s">ts</span><span class="sh">'</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># Filling in missing values
+</span><span class="n">df</span><span class="p">.</span><span class="nf">upsample</span><span class="p">(</span><span class="sh">'</span><span class="s">ts</span><span class="sh">'</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">).</span><span class="nf">interpolate</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="miscellaneous">Miscellaneous</h2>
+
+<ul>
+  <li>Data is stored in a columnar (Arrow) format when using Polars.</li>
+  <li>In Polars objects are usually immutable.</li>
+  <li>In order to improve execution time performance use non-eval approach first, eval second, map_batches third and map_elements fourth (because of jumping btw. Python and a Rust binary)</li>
+  <li>Use struct column type if the format/structure of a column is fixed. Otherwise use object type.</li>
+  <li>pl.Series()._get_buffers() -&gt; underlying representation.</li>
+  <li>.collect([new_]streaming=True, gpu=True) for using streaming and/or GPUs when collecting results from a lazy DataFrame.</li>
+  <li>Using sorted data enables Polars to use some optimizations which reduce execution time. Use <code class="language-plaintext highlighter-rouge">set_sorted</code> to tell Polars that data is sorted (Polars won’t check, so use w/ care).</li>
+</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="polars" /><category term="python" /><category term="data" /><category term="analysis" /><summary type="html"><![CDATA[This introduction to Polars is my attempt to make it easy for future me to recollect what I have learnt during Polars training sessions provided by Quansight.]]></summary></entry><entry><title type="html">Python project cookiecutter</title><link href="http://localhost:4000/2025/03/10/python-project-cookiecutter" rel="alternate" type="text/html" title="Python project cookiecutter" /><published>2025-03-10T00:00:00+00:00</published><updated>2025-03-10T00:00:00+00:00</updated><id>http://localhost:4000/2025/03/10/python-project-cookiecutter</id><content type="html" xml:base="http://localhost:4000/2025/03/10/python-project-cookiecutter"><![CDATA[<p>In order to make it easier and faster than it is usually to create a new library or CLI Python project I have created <a href="https://github.com/ovidiuparvu/python-project-cookiecutter/tree/main">this</a> cookiecutter; see the README.md file in the linked repository for details on how to use it.</p>
+
+<p>The cookiecutter uses:</p>
+
+<ol>
+  <li><a href="https://hatch.pypa.io/dev/">hatch</a> for Python package and virtual environments management.</li>
+  <li><a href="https://docs.astral.sh/uv/">uv</a> for Python package management.</li>
+  <li><a href="https://docs.astral.sh/ruff/">ruff</a> for linting and formatting.</li>
+  <li><a href="https://mypy.readthedocs.io/en/stable/index.html">mypy</a> for type checking.</li>
+  <li><a href="https://github.com/pylint-dev/pylint">pylint</a> for linting.</li>
+  <li><a href="https://docs.pytest.org/en/stable/">pytest</a> for testing.</li>
+  <li><a href="https://pypi.org/project/pyupgrade/">pyupgrade</a> for upgrading to newer Python language syntax.</li>
+  <li><a href="https://typer.tiangolo.com/">typer</a> and <a href="https://github.com/Textualize/rich">rich</a> for CLI applications.</li>
+  <li><a href="https://www.mkdocs.org/">mkdocs</a> for creating documentation pages.</li>
+</ol>
+
+<p>Examples of toy Python projects created using the cookiecutter are linked below.</p>
+
+<ol>
+  <li>Library: .</li>
+  <li>CLI tool: .</li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="python" /><category term="cookiecutter" /><category term="library" /><category term="cli" /><category term="typer" /><summary type="html"><![CDATA[In order to make it easier and faster than it is usually to create a new library or CLI Python project I have created this cookiecutter; see the README.md file in the linked repository for details on how to use it.]]></summary></entry><entry><title type="html">Testing Python functions running git commands</title><link href="http://localhost:4000/2025/03/05/test-python-functions-running-git-commands" rel="alternate" type="text/html" title="Testing Python functions running git commands" /><published>2025-03-05T00:00:00+00:00</published><updated>2025-03-05T00:00:00+00:00</updated><id>http://localhost:4000/2025/03/05/test-python-functions-running-git-commands</id><content type="html" xml:base="http://localhost:4000/2025/03/05/test-python-functions-running-git-commands"><![CDATA[<p>Let us assume that we would like to implement some Python functions that use the <code class="language-plaintext highlighter-rouge">subprocess</code> module to run some git commands. The question is how would you (unit) test such functions?</p>
+
+<h2 id="sample-python-function-running-a-git-command">Sample Python function running a git command</h2>
+
+<p>First of all let’s consider the sample Python function below that runs a git command to determine the current git branch.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">current_branch</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">rev-parse</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">--abbrev-ref</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">HEAD</span><span class="sh">'</span><span class="p">],</span>
+            <span class="n">cwd</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">check</span><span class="o">=</span><span class="bp">True</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h2 id="how-can-we-test-python-functions-running-git-commands">How can we test Python functions running git commands?</h2>
+
+<p>To test the function above one can write a helper function that initializes a git repo in a temporary test directory and then runs the tests against this directory.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@pytest.fixture</span>
+<span class="k">def</span> <span class="nf">temp_git_repo</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="n">os</span><span class="p">.</span><span class="nf">chdir</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">init</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">config</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">user.name</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Test User</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">config</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">user.email</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test@example.com</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">test_file</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="sh">"</span><span class="s">test.txt</span><span class="sh">"</span>
+    <span class="n">test_file</span><span class="p">.</span><span class="nf">write_text</span><span class="p">(</span><span class="sh">"</span><span class="s">test content</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">add</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">commit</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">-m</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Initial commit</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">tmp_path</span>
+
+<span class="k">def</span> <span class="nf">test_current_branch_main</span><span class="p">(</span><span class="n">temp_git_repo</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nf">current_branch</span><span class="p">(</span><span class="n">temp_git_repo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">'</span><span class="s">main</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">master</span><span class="sh">'</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Source code is made available on <a href="https://github.com/ovidiuparvu/python-git-function-testing/tree/main">GitHub</a> illustrating the testing approach described in this post.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="test" /><category term="python" /><category term="git" /><summary type="html"><![CDATA[Let us assume that we would like to implement some Python functions that use the subprocess module to run some git commands. The question is how would you (unit) test such functions?]]></summary></entry><entry><title type="html">Conditionally include typeguard in Python project</title><link href="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project" rel="alternate" type="text/html" title="Conditionally include typeguard in Python project" /><published>2025-02-24T00:00:00+00:00</published><updated>2025-02-24T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project</id><content type="html" xml:base="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project"><![CDATA[<p>In this post I will show how to use environment variables to conditionally include <a href="https://pypi.org/project/typeguard/">typeguard</a> in a Python project. The source code underpinning this blog post is made available <a href="https://github.com/ovidiuparvu/typeguard-conditional-import">here</a>.</p>
 
 <h2 id="problem">Problem</h2>
 
@@ -396,754 +1095,4 @@
 
 <h1 id="summary">Summary</h1>
 
-<p>To sum it up in one phrase, NDC London 2025 was a great learning experience and I hope to be able to attend future editions. If you are unsure if you should do the same, just do it!</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="tech" /><category term="conference" /><category term="ndc" /><category term="london" /><category term="ai" /><category term="messaging" /><category term="architecture" /><category term="dotnet" /><category term="csharp" /><category term="C#" /><category term=".NET" /><summary type="html"><![CDATA[I have attended the NDC London 2025 conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several countries, so you do not need to wait for the next conference in London to attend.]]></summary></entry><entry><title type="html">How can I visualise a large directed graph?</title><link href="http://localhost:4000/2024/10/01/how-to-visualise-directed-graph" rel="alternate" type="text/html" title="How can I visualise a large directed graph?" /><published>2024-10-01T00:00:00+01:00</published><updated>2024-10-01T00:00:00+01:00</updated><id>http://localhost:4000/2024/10/01/how-to-visualise-directed-graph</id><content type="html" xml:base="http://localhost:4000/2024/10/01/how-to-visualise-directed-graph"><![CDATA[<p>Approaches for visualising a large directed graph include:</p>
-<ol>
-  <li>Vis.js - <a href="https://github.com/ovidiuparvu/digraph-visualisation-vis-js/blob/main/visualise_directed_graph.html">Sample code</a>.</li>
-  <li>pyvisjs - <a href="https://github.com/ovidiuparvu/digraph-visualisation-pyvisjs/blob/main/visualise_directed_graph.py">Sample code</a>.</li>
-</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="digraph" /><category term="visualisation" /><category term="vis.js" /><summary type="html"><![CDATA[Approaches for visualising a large directed graph include: Vis.js - Sample code. pyvisjs - Sample code.]]></summary></entry><entry><title type="html">How to stay up-to-date in tech</title><link href="http://localhost:4000/2024/08/13/how-to-stay-up-to-date-in-tech" rel="alternate" type="text/html" title="How to stay up-to-date in tech" /><published>2024-08-13T00:00:00+01:00</published><updated>2024-08-13T00:00:00+01:00</updated><id>http://localhost:4000/2024/08/13/how-to-stay-up-to-date-in-tech</id><content type="html" xml:base="http://localhost:4000/2024/08/13/how-to-stay-up-to-date-in-tech"><![CDATA[<ul>
-  <li><a href="https://hackernewsletter.com">hacker news (news)letter</a>.</li>
-  <li><a href="https://www.wired.com/newsletter">Wired newsletter</a>.</li>
-  <li><a href="https://cacm.acm.org">Communications of the ACM</a>.</li>
-  <li>Podcasts:
-    <ul>
-      <li><a href="https://www.dotnetrocks.com/">.NET Rocks!</a>.</li>
-      <li><a href="https://www.codingblocks.net/">Coding blocks</a>.</li>
-      <li><a href="https://www.dataengineeringpodcast.com">Data Engineering Podcast</a>.</li>
-      <li><a href="https://podcast.pythontest.com/">Python Test</a>.</li>
-      <li><a href="https://www.grc.com/securitynow.htm">Security Now</a>.</li>
-      <li><a href="https://changelog.com/shipit">Ship It!</a>.</li>
-      <li><a href="https://softwareengineeringdaily.com/">Software Engineering Daily</a>.</li>
-      <li><a href="https://se-radio.net/">Software Engineering Radio</a>.</li>
-      <li><a href="https://changelog.com/podcast">The Changelog</a>.</li>
-      <li><a href="https://www.infoq.com/the-infoq-podcast/">The InfoQ Podcast</a>.</li>
-      <li><a href="https://dotnetcore.show/">The Modern .NET Show</a>.</li>
-      <li><a href="https://www.thoughtworks.com/en-gb/insights/podcasts/technology-podcasts">Thoughtworks Technology Podcast</a>.</li>
-    </ul>
-  </li>
-  <li>Engineering blogs.</li>
-  <li><a href="https://ovidiuparvu.me/2024/02/01/ovi-digital-library">Books</a>.</li>
-  <li><a href="https://www.blinkist.com">Blinkist</a>.</li>
-  <li>Conferences:
-    <ul>
-      <li><a href="https://ndclondon.com">NDC London</a>.</li>
-    </ul>
-  </li>
-</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="tech" /><category term="literature" /><category term="acm" /><summary type="html"><![CDATA[hacker news (news)letter. Wired newsletter. Communications of the ACM. Podcasts: .NET Rocks!. Coding blocks. Data Engineering Podcast. Python Test. Security Now. Ship It!. Software Engineering Daily. Software Engineering Radio. The Changelog. The InfoQ Podcast. The Modern .NET Show. Thoughtworks Technology Podcast. Engineering blogs. Books. Blinkist. Conferences: NDC London.]]></summary></entry><entry><title type="html">Vim cheatsheet</title><link href="http://localhost:4000/2024/08/12/vim-cheatsheet" rel="alternate" type="text/html" title="Vim cheatsheet" /><published>2024-08-12T00:00:00+01:00</published><updated>2024-08-12T00:00:00+01:00</updated><id>http://localhost:4000/2024/08/12/vim-cheatsheet</id><content type="html" xml:base="http://localhost:4000/2024/08/12/vim-cheatsheet"><![CDATA[<p>A vim cheatsheet created while reading <a href="https://pragprog.com/titles/dnvim2/practical-vim-second-edition">Practical Vim, Second Edition</a>, is given below.</p>
-
-<h1 id="undoredo">Undo/redo</h1>
-
-<p><code class="language-plaintext highlighter-rouge">.</code> - Repeats last change (including what happened from the moment one enters the Insert mode until one returns to the Normal mode)<br />
-<code class="language-plaintext highlighter-rouge">;</code> - Repeat last search that the <code class="language-plaintext highlighter-rouge">f</code> command performed<br />
-<code class="language-plaintext highlighter-rouge">,</code> - Repeat last search that the <code class="language-plaintext highlighter-rouge">f</code> command performed in the reverse direction<br />
-<code class="language-plaintext highlighter-rouge">n</code> - Repeat last search<br />
-<code class="language-plaintext highlighter-rouge">N</code> - Repeat last search in reverse<br />
-<code class="language-plaintext highlighter-rouge">&amp;</code> - Repeat last substitution<br />
-<code class="language-plaintext highlighter-rouge">@x</code> - Repeat sequence of changes recorded  in register x (using qx{changes}q)<br />
-<code class="language-plaintext highlighter-rouge">@:</code> - Repeat the last Ex command</p>
-
-<p><code class="language-plaintext highlighter-rouge">u</code> - Undo last change<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;</code> - Redo last change</p>
-
-<h1 id="jumping">Jumping</h1>
-
-<p><code class="language-plaintext highlighter-rouge">0</code> - Jump to beginning of line<br />
-<code class="language-plaintext highlighter-rouge">$</code> - Jump to EOL<br />
-<code class="language-plaintext highlighter-rouge">^</code> - Jump to beginning of non-whitespace line contents<br />
-<code class="language-plaintext highlighter-rouge">f/F{char}</code> - Scan line for next/previous character {char} and jump to it<br />
-<code class="language-plaintext highlighter-rouge">t/T{char}</code> - Scan line for next/previous character {char} and jump immediately before it<br />
-<code class="language-plaintext highlighter-rouge">/pattern&lt;CR&gt;</code> - Jump to next <pattern> match  
-`?pattern<CR>` - Jump to previous <pattern> match  
-`<C-r><C-w>` - Autocomplete the search field using the remainder of the current preview match</C-w></C-r></pattern></CR></pattern></p>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;C-]&gt;</code> - Jump to definition (if ctags is configured)</p>
-
-<p><code class="language-plaintext highlighter-rouge">zz</code> - Redraw the screen with the current line in the vertical middle of the window</p>
-
-<h1 id="modes">Modes</h1>
-
-<p><code class="language-plaintext highlighter-rouge">i</code> - Enter Insert mode<br />
-<code class="language-plaintext highlighter-rouge">r</code> - Enter Replace mode for a single character<br />
-<code class="language-plaintext highlighter-rouge">R</code> - Enter Replace mode<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-g&gt;</code> - Toggle between Visual and Select mode<br />
-<code class="language-plaintext highlighter-rouge">v</code> - Enter character-wise Visual mode<br />
-<code class="language-plaintext highlighter-rouge">V</code> - Enter line-wise Visual mode<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-v&gt;</code> - Enter block-wise Visual mode<br />
-<code class="language-plaintext highlighter-rouge">gv</code> - Reselect the last visual selection<br />
-<code class="language-plaintext highlighter-rouge">:</code> - Enter command line mode</p>
-
-<p><code class="language-plaintext highlighter-rouge">q/</code> - Open command-line window</p>
-
-<h1 id="buffers-windows-and-tabs">Buffers, windows and tabs</h1>
-
-<p><code class="language-plaintext highlighter-rouge">:ls</code> - List all buffers that have been loaded into memory<br />
-<code class="language-plaintext highlighter-rouge">:args</code> - Populate or list contents of the argument list<br />
-<code class="language-plaintext highlighter-rouge">:w[rite]</code> - Write the contents of the buffer to disk<br />
-<code class="language-plaintext highlighter-rouge">:w !sudo tee % &gt;/dev/null</code> - Write the contents of the buffer to disk using sudo permissions<br />
-<code class="language-plaintext highlighter-rouge">:e[dit]!</code> - Re-read from disk the file corresponding to the current buffer<br />
-<code class="language-plaintext highlighter-rouge">:wa[ll]</code> - Write all modified buffers to disk<br />
-<code class="language-plaintext highlighter-rouge">:qa[ll]</code> - Close all windows, discarding changes without warning</p>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;C-w&gt;v</code> - Split window vertically<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;s</code> - Split window horizontally<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;w</code> - Cycle between open windows<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;h</code> - Focus the window to the left<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;j</code> - Focus the window below<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;k</code> - Focus the window above<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;l</code> - Focus the window to the right<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;c</code> - Close the active window<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;o</code> - Only leave the active window open<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;=</code> - Equalize width and height of all windows</p>
-
-<p><code class="language-plaintext highlighter-rouge">:tabe[dit] {filename}</code> - Open {filename} in a new tab<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;T</code> - Move the current window into its own tab<br />
-<code class="language-plaintext highlighter-rouge">:tabc[lose]</code> - Close the current tab page and all of its windows<br />
-<code class="language-plaintext highlighter-rouge">:tabo[nly]</code> - Keep the active tab page, close all others<br />
-<code class="language-plaintext highlighter-rouge">:tabn[ext] {N}</code> - Switch to tab page number {N} ({N}gt in normal mode)<br />
-<code class="language-plaintext highlighter-rouge">:tabn[ext] {N}</code> - Switch to next tab page (gt in normal mode)<br />
-<code class="language-plaintext highlighter-rouge">:tabp[revious]</code> - Switch to the previous tab page (gT in normal mode)</p>
-
-<p><code class="language-plaintext highlighter-rouge">:edit %&lt;Tab&gt;</code> - % symbol is a shorthand for the filepath of the active buffer<br />
-<code class="language-plaintext highlighter-rouge">:edit %:h&lt;Tab&gt;</code> - The :h modifier removes the filename while preserving the rest of the path<br />
-<code class="language-plaintext highlighter-rouge">:find {filename}</code> - Open a file by its filename (without fully qualifying it with the absolute path)<br />
-<code class="language-plaintext highlighter-rouge">:edit .</code> - Open file explorere for current working directory<br />
-<code class="language-plaintext highlighter-rouge">:Explore</code> - Open file explorer for the directory of the active buffer</p>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;C-g&gt;</code> - Echo the name and status of the current file</p>
-
-<h1 id="marks">Marks</h1>
-
-<p><code class="language-plaintext highlighter-rouge">m{a-zA-Z}</code> - Create a mark at the current cursor location with the designated letter<br />
-<code class="language-plaintext highlighter-rouge">'{mark}</code> - Jump to the line where the mark was set<br />
-<code class="language-plaintext highlighter-rouge">`{mark}</code> - Jump to the cursor location of where the mark was set</p>
-
-<h1 id="commands">Commands</h1>
-
-<p><code class="language-plaintext highlighter-rouge">:vim[grep][!] /{pattern}/[g][j] {file} ...</code> - Project-wide search<br />
-<code class="language-plaintext highlighter-rouge">:copen</code> - Open quickfix window<br />
-<code class="language-plaintext highlighter-rouge">:cfdo {cmd}</code> - Run {cmd} against all files in the quickfix window</p>
-
-<p><code class="language-plaintext highlighter-rouge">:[range] global[!] /{pattern}/ {cmd}</code> - Run Ex command {cmd} against all lines in [range] matching {pattern}<br />
-<code class="language-plaintext highlighter-rouge">:[range] vglobal/v[!] /{pattern}/ {cmd}</code> - Run Ex command {cmd} against all lines in [range] that do not match {pattern}</p>
-
-<h1 id="registers">Registers</h1>
-
-<p><code class="language-plaintext highlighter-rouge">"{register}</code> - Reference a particular register<br />
-<code class="language-plaintext highlighter-rouge">"_</code> - Black hole register<br />
-<code class="language-plaintext highlighter-rouge">""</code> - Unnamed register<br />
-<code class="language-plaintext highlighter-rouge">"0</code> - yank register<br />
-<code class="language-plaintext highlighter-rouge">:reg "0</code> - Inspect the contents of the yank register<br />
-<code class="language-plaintext highlighter-rouge">"+</code> - System clipboard<br />
-<code class="language-plaintext highlighter-rouge">"*</code> - Selection register<br />
-<code class="language-plaintext highlighter-rouge">"=</code> - Expression register<br />
-<code class="language-plaintext highlighter-rouge">"%</code> - Name of the current file<br />
-<code class="language-plaintext highlighter-rouge">"#</code> - Name of the alternate file<br />
-<code class="language-plaintext highlighter-rouge">".</code> - Last inserted text<br />
-<code class="language-plaintext highlighter-rouge">":</code> - Last Ex command<br />
-<code class="language-plaintext highlighter-rouge">"/</code> - Last search pattern<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;{register}</code> - Paste contents of {register} register</p>
-
-<h1 id="macros">Macros</h1>
-
-<p><code class="language-plaintext highlighter-rouge">q{register}</code> - Start recording into {register} register<br />
-<code class="language-plaintext highlighter-rouge">q{uppercase register}</code> - Append to the {register} register<br />
-<code class="language-plaintext highlighter-rouge">q</code> - Stop recording<br />
-<code class="language-plaintext highlighter-rouge">@{register}</code> - Execute the contents of the {register} register<br />
-<code class="language-plaintext highlighter-rouge">@@</code> - Repeat macro invoked most recently<br />
-<code class="language-plaintext highlighter-rouge">:put {register}</code> - Paste the contents of the {register} register into the buffer</p>
-
-<h1 id="jump-list">Jump list</h1>
-
-<p><code class="language-plaintext highlighter-rouge">:jumps</code> - List contents of jump list<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-o&gt;</code> - Jump back<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-i&gt;</code> - Jump forward<br />
-<code class="language-plaintext highlighter-rouge">[count]G</code> - Jump to line number<br />
-<code class="language-plaintext highlighter-rouge">/pattern&lt;CR&gt;/?pattern&lt;CR&gt;/n/N</code> - Jump to next/previous occurrence of pattern<br />
-<code class="language-plaintext highlighter-rouge">%</code> - Jump between opening and closing sets of parentheses<br />
-<code class="language-plaintext highlighter-rouge">(/)</code> - Jump to start of previous/next sentence<br />
-<code class="language-plaintext highlighter-rouge">{/}</code> - Jump to start of previous/next paragraph<br />
-<code class="language-plaintext highlighter-rouge">H/M/L</code> - Jump to top/middle/bottom of screen<br />
-<code class="language-plaintext highlighter-rouge">gf</code> - Jump to file name under the cursor<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-]&gt;</code> - Jump to definition of keyword under the cursor</p>
-
-<h1 id="change-list">Change list</h1>
-
-<p><code class="language-plaintext highlighter-rouge">:changes</code> - Open the change list<br />
-<code class="language-plaintext highlighter-rouge">g,</code> - Jump to next change in the change list<br />
-<code class="language-plaintext highlighter-rouge">g;</code> - Jump to the previous change in the change list<br />
-<code class="language-plaintext highlighter-rouge">gi</code> - Resume from last position from which we exited Insert mode</p>
-
-<h1 id="automatic-marks">Automatic marks</h1>
-
-<p><code class="language-plaintext highlighter-rouge">``</code> - Position before the last jump within the current file<br />
-<code class="language-plaintext highlighter-rouge">`.</code> - Position of last change<br />
-<code class="language-plaintext highlighter-rouge">`^</code> - Location of last insertion<br />
-<code class="language-plaintext highlighter-rouge">`[</code> - Start of last change or yank<br />
-<code class="language-plaintext highlighter-rouge">`]</code> - End of last change or yank<br />
-<code class="language-plaintext highlighter-rouge">`&lt;</code> - Start of last visual selection<br />
-<code class="language-plaintext highlighter-rouge">`&gt;</code> - End of last visual selection</p>
-
-<h1 id="text-objects">Text objects</h1>
-
-<p>Vim’s text objects consist of two characters, the first of which is always either i (i.e. inside) or a (i.e. around).</p>
-
-<p><code class="language-plaintext highlighter-rouge">i/a{)}]&gt;'"</code>}<code class="language-plaintext highlighter-rouge"> - inside/around {)}]&gt;'"</code>}<br />
-<code class="language-plaintext highlighter-rouge">i/a{t}</code> - inside/around tags<br />
-<code class="language-plaintext highlighter-rouge">i/a{w}</code> - inside/around words<br />
-<code class="language-plaintext highlighter-rouge">i/a{s}</code> - inside/around sentences<br />
-<code class="language-plaintext highlighter-rouge">i/a{p}</code> - inside/around paragraphs</p>
-
-<h1 id="compound-commands">Compound commands</h1>
-
-<p><code class="language-plaintext highlighter-rouge">C == c$</code> (change until EOL)<br />
-<code class="language-plaintext highlighter-rouge">s == cl</code> (change letter)<br />
-<code class="language-plaintext highlighter-rouge">S == ^C</code> (jump to beginning of non-whitespace line contents and change until EOL)<br />
-<code class="language-plaintext highlighter-rouge">I == ^i</code><br />
-<code class="language-plaintext highlighter-rouge">A == $a</code><br />
-<code class="language-plaintext highlighter-rouge">o == A&lt;CR&gt;</code><br />
-<code class="language-plaintext highlighter-rouge">O == ko</code></p>
-
-<h1 id="motions">Motions</h1>
-
-<p><code class="language-plaintext highlighter-rouge">j</code> - Down one real line<br />
-<code class="language-plaintext highlighter-rouge">gj</code> - Down one display line<br />
-<code class="language-plaintext highlighter-rouge">k</code> - Up one real line<br />
-<code class="language-plaintext highlighter-rouge">gk</code> - Up one display line<br />
-<code class="language-plaintext highlighter-rouge">0</code> - The first character of real line<br />
-<code class="language-plaintext highlighter-rouge">g0</code> - The first character of display line<br />
-<code class="language-plaintext highlighter-rouge">^</code> - The first nonblank character of real line<br />
-<code class="language-plaintext highlighter-rouge">g^</code> - The first nonblank character of display line<br />
-<code class="language-plaintext highlighter-rouge">$</code> - The end of real line<br />
-<code class="language-plaintext highlighter-rouge">g$</code> - The end of display line<br />
-<code class="language-plaintext highlighter-rouge">w</code> - Forward to start of next word<br />
-<code class="language-plaintext highlighter-rouge">b</code> - Backward to start of current/previous word<br />
-<code class="language-plaintext highlighter-rouge">e</code> - Forward to end of current/next word<br />
-<code class="language-plaintext highlighter-rouge">ge</code> - Backward to end of previous word</p>
-
-<h1 id="operators">Operators</h1>
-
-<p><code class="language-plaintext highlighter-rouge">c</code> - Change<br />
-<code class="language-plaintext highlighter-rouge">d</code> - Delete<br />
-<code class="language-plaintext highlighter-rouge">y</code> - Yank into register<br />
-<code class="language-plaintext highlighter-rouge">g~</code> - Swap case<br />
-<code class="language-plaintext highlighter-rouge">gu</code> - Make lowercase<br />
-<code class="language-plaintext highlighter-rouge">gU</code> - Make uppercase<br />
-<code class="language-plaintext highlighter-rouge">&gt;</code> - Shift right<br />
-<code class="language-plaintext highlighter-rouge">&lt;</code> - Shift left<br />
-<code class="language-plaintext highlighter-rouge">=</code> - Autoindent<br />
-<code class="language-plaintext highlighter-rouge">!</code> - Filter {motion} lines through an external program</p>
-
-<h1 id="autocomplete">Autocomplete</h1>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;C-n&gt;</code> - Invoke generic keyword autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-n&gt;</code> - Invoke current buffer keyword autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-i&gt;</code> - Invoke included file keyword autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-]&gt;</code> - Invoke tags file keyword autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-k&gt;</code> - Invoke dictionary lookup autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-l&gt;</code> - Invoke whole line autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-f&gt;</code> - Invoke filename autocompletion<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-x&gt;&lt;C-o&gt;</code> - Invoke omni-completion</p>
-
-<h1 id="autocomplete-pop-up-menu-commands">Autocomplete pop-up menu commands</h1>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;C-n&gt;</code> - Use the next match<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-p&gt;</code> - Use the previous match<br />
-<code class="language-plaintext highlighter-rouge">&lt;Down&gt;</code> - Select the next match from the word list<br />
-<code class="language-plaintext highlighter-rouge">&lt;Up&gt;</code> - Select the previous match from the word list<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-y&gt;</code> - Accept the currently selected match<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-e&gt;</code> - Exit and revert to the originally typed text<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-h&gt;</code> - Delete one character from current match<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-l&gt;</code> - Add one character from current match<br />
-<code class="language-plaintext highlighter-rouge">{char}</code> - Stop completion and insert {char}</p>
-
-<h1 id="insert-mode">Insert mode</h1>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;C-h&gt;</code> - Delete back one character (like backspace)<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-w&gt;</code> - Delete back one word<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-u&gt;</code> - Delete back to start of line<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-o&gt;</code> - Switch to Insert Normal mode<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;{register}</code> - Insert contents of register {register}<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;=</code> - Access the expression register<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-v&gt;{code}</code> - Insert character using its numeric code.<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-v&gt;u{code}</code> - Insert Unicode character<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-v&gt;{nondigit}</code> - Insert nondigit literally<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-k&gt;{char1}{char2}</code> - Insert character represented by {char1}{char2} digraph</p>
-
-<h1 id="visual-mode">Visual mode</h1>
-
-<p><code class="language-plaintext highlighter-rouge">o</code> - Go to the other end of highlighted text</p>
-
-<h1 id="command-line-mode">Command line mode</h1>
-
-<p><code class="language-plaintext highlighter-rouge">:[range]delete [x]</code> - Delete specified lines [into register x]<br />
-<code class="language-plaintext highlighter-rouge">:[range]yank [x]</code> - Yank specified lines [into register x]<br />
-<code class="language-plaintext highlighter-rouge">:[line]put [x]</code> - Put text from register x after the specified line<br />
-<code class="language-plaintext highlighter-rouge">:[range]copy {address}</code> - Copy the specified lines to below the line specified by {address}. Shorthand - :t<br />
-<code class="language-plaintext highlighter-rouge">:[range]move {address} </code>- Move the specified lines to below the line specified by {address}. Shorthand - :m<br />
-<code class="language-plaintext highlighter-rouge">:[range]join</code> - Join the specified lines<br />
-<code class="language-plaintext highlighter-rouge">:[range]normal {commands}</code> - Execute Normal mode {commands} on each specified line<br />
-<code class="language-plaintext highlighter-rouge">:[range]substitute/{pattern}/{string}/[flags]</code> - Replace occurrences of {pattern} with {string} on each specified line<br />
-<code class="language-plaintext highlighter-rouge">:[range]global/{pattern}/[cmd]</code> - Execute the Ex command [cmd] on all specified lines where the {pattern} matches<br />
-<code class="language-plaintext highlighter-rouge">:shell</code> - Start an interactive shell session from vim<br />
-<code class="language-plaintext highlighter-rouge">:read !{cmd}</code> - Put the output from {cmd} into our current buffer<br />
-<code class="language-plaintext highlighter-rouge">:[range]write !{cmd}</code> - Pass the contents of the lines from the current buffer as standard input to the external command {cmd}<br />
-<code class="language-plaintext highlighter-rouge">:[range]!{filter}</code> - Filter the specified [range] through external program {filter}<br />
-<code class="language-plaintext highlighter-rouge">:source {file}</code> - Run all the Ex commands from {file} against the current buffer<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-d&gt;</code> - Show list of possible (auto-)completions<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-r&gt;&lt;C-w&gt;</code> - Copy word under cursor and insert it at the command-line prompt<br />
-<code class="language-plaintext highlighter-rouge">&lt;C-f&gt;</code> - Switch fom command-line mode to the command-line window<br />
-<code class="language-plaintext highlighter-rouge">q/</code> - Open the command-line window with history of searches<br />
-<code class="language-plaintext highlighter-rouge">q:</code> - Open the command-line window with history of Ex commands</p>
-
-<h1 id="patterns">Patterns</h1>
-
-<p><code class="language-plaintext highlighter-rouge">\v</code> switch at the start of a search pattern enables the very magic search mode, which causes all subsequent characters to take on a special meaning.<br />
-<code class="language-plaintext highlighter-rouge">\V</code> switch at the start of a search pattern  enables the verbatim search mode.<br />
-<code class="language-plaintext highlighter-rouge">\x</code> character class stands for [0-9A-Fa-f].<br />
-<code class="language-plaintext highlighter-rouge">\zs</code>, <code class="language-plaintext highlighter-rouge">\ze</code> - for cropping a match<br />
-<code class="language-plaintext highlighter-rouge">/{pattern}/e</code> - Search and place the cursor at the end of any matches rather than at the start</p>
-
-<h1 id="ranges---startend">Ranges - {start},{end}</h1>
-
-<p><code class="language-plaintext highlighter-rouge">{start}</code> and <code class="language-plaintext highlighter-rouge">{end}</code> are addresses.</p>
-
-<h1 id="addresses---address">Addresses - {address}</h1>
-
-<p>They can be specified using a line number, a mark or a pattern.</p>
-
-<p>Special address symbols:
-<code class="language-plaintext highlighter-rouge">0</code> - Virtual line before first line of file<br />
-<code class="language-plaintext highlighter-rouge">1</code> - First line of file<br />
-<code class="language-plaintext highlighter-rouge">.</code> - Current line<br />
-<code class="language-plaintext highlighter-rouge">$</code> - Last line of file <br />
-<code class="language-plaintext highlighter-rouge">%</code> - All lines in the current file<br />
-<code class="language-plaintext highlighter-rouge">'m</code> - Line containing mark m<br />
-<code class="language-plaintext highlighter-rouge">'&lt;</code> - First line of visual selection<br />
-<code class="language-plaintext highlighter-rouge">'&gt;</code> - Last line of visual selection</p>
-
-<p>Offsets: Addresses can include offsets.<br />
-<code class="language-plaintext highlighter-rouge">{address}+n</code></p>
-
-<h1 id="modes-1">Modes</h1>
-
-<ul>
-  <li>Normal</li>
-  <li>Insert</li>
-  <li>Replace (like Insert but overwrites existing text)</li>
-  <li>Visual (character-wise, block-wise, line-wise)</li>
-  <li>Select (like Visual but selected text will be replaced when typing)</li>
-  <li>Command line</li>
-</ul>
-
-<h1 id="tabs-and-spaces-options">Tabs and Spaces options:</h1>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">tabstop</code>: Number of spaces that a <Tab> counts for</Tab></li>
-  <li><code class="language-plaintext highlighter-rouge">softtabstop</code>: Number of spaces that a <Tab> counts for while performing editing operations, like inserting a <Tab> or using <BS></BS></Tab></Tab></li>
-  <li><code class="language-plaintext highlighter-rouge">shiftwidth</code>: Number of spaces to use for each indent in Normal mode</li>
-  <li><code class="language-plaintext highlighter-rouge">expandtab</code>: Insert spaces instead of <Tab></Tab></li>
-</ul>
-
-<h1 id="uncategorized">Uncategorized</h1>
-
-<ul>
-  <li>The Dot Formula: Use one keystroke to move and one keystroke to execute</li>
-  <li>Change in vim: Everything that happens from when we enter Insert mode until we return to Normal mode.
-  Cursor keys (e.g. up, down) reset the change.</li>
-  <li>Action = operator + motion.</li>
-  <li>When an operator command is invoked in duplicate, it acts upon the current line.</li>
-  <li>Install exhuberant-ctag Debian package for using ctags on Linux.</li>
-</ul>
-
-<h1 id="plugins-to-consider">Plugins to consider:</h1>
-
-<p><code class="language-plaintext highlighter-rouge">commentary.vim</code> - Adds command for (un)commenting lines of code in all languages supported by Vim.<br />
-<code class="language-plaintext highlighter-rouge">unimpaired.vim</code> - Mappings for scrolling through the argument, quickfix, location, tag and buffer list.<br />
-<code class="language-plaintext highlighter-rouge">vim-visual-star-search</code> - Make it easy to search for the selected text<br />
-<code class="language-plaintext highlighter-rouge">vim-abolish</code> - Supercharged substitute command</p>
-
-<h1 id="config-to-consider">Config to consider</h1>
-
-<p><code class="language-plaintext highlighter-rouge">set history=2000</code> - length of vim command history, which is persisted across sessions<br />
-<code class="language-plaintext highlighter-rouge">set wildmenu</code> - operate command-line completion in an enhanced mode<br />
-<code class="language-plaintext highlighter-rouge">set wildmode=full</code> - complete the next full match<br />
-<code class="language-plaintext highlighter-rouge">cnoremap &lt;expr&gt; %%  getcmdtype() == ':' ? expand('%:h').'/' : '%%'</code> - when we type %% on vim’s c: command-line prompt, it automatically expands to the path of the active buffer<br />
-<code class="language-plaintext highlighter-rouge">set hlsearch</code> - highlight search matches<br />
-<code class="language-plaintext highlighter-rouge">set incsearch</code> - Enable incremental searching<br />
-<code class="language-plaintext highlighter-rouge">set smartcase</code> - Vim will attempt to predict out case sensitivity intentions<br />
-<code class="language-plaintext highlighter-rouge">nnoremap &lt;silent&gt; &lt;C-l&gt; :&lt;C-u&gt;nohlsearch&lt;CR&gt;&lt;C-l&gt;</code> - Mute search highlighting when redrawing screen<br />
-<code class="language-plaintext highlighter-rouge">filtetype plugin on</code> - Enable the file-type detection plugin which enables to customize your config based on the type of the file in the current buffer</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="vim" /><category term="editor" /><category term="cheatsheet" /><summary type="html"><![CDATA[A vim cheatsheet created while reading Practical Vim, Second Edition, is given below.]]></summary></entry><entry><title type="html">Accelerate reading notes</title><link href="http://localhost:4000/2024/04/03/accelerate-reading-notes" rel="alternate" type="text/html" title="Accelerate reading notes" /><published>2024-04-03T00:00:00+01:00</published><updated>2024-04-03T00:00:00+01:00</updated><id>http://localhost:4000/2024/04/03/accelerate-reading-notes</id><content type="html" xml:base="http://localhost:4000/2024/04/03/accelerate-reading-notes"><![CDATA[<p>My takewaways and/or quotes from the book <em>Accelerate - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations</em> by Nicole Forsgren, Jez Humble, Gene Kim are given below.</p>
-
-<ul>
-  <li>High IT performance correlates with strong business performance.</li>
-  <li>People are an organization’s #1 asset.</li>
-  <li>Queue theory in maths tells us that as utilization approaches 100% lead times approach infinity.</li>
-  <li>Useful measures of software delivery performance:
-    <ol>
-      <li>Delivery lead time: The time it takes to deliver a feature to customers.</li>
-      <li>Deployment frequency (as a proxy for batch size).</li>
-      <li>Mean Time to Restore (MTTR).</li>
-      <li>Change fail percentage.</li>
-    </ol>
-  </li>
-  <li>The ability to take an experimental approach to product development is highly correlated with the technical practices that contribute to continuous delivery.</li>
-  <li>Use a Wardley map to find opportunity, remove waste, help to organise a team of people or determine the strategy for a company (<a href="https://medium.com/wardleymaps/on-being-lost-2ef5f05eb1ec">https://medium.com/wardleymaps/on-being-lost-2ef5f05eb1ec</a>).</li>
-  <li>Westrum’s classification of organizational cultures:
-    <ul>
-      <li>Pathological (power-oriented): Organizations are characterized by large amounts of fear and threat. People often hoard information or withhold it for political reasons or distort it to make themselves look better.</li>
-      <li>Bureaucratic (rule-oriented): Organizations protect departments. Those in the department want to maintain their “turf”, insist on their own rules, and generally do this by the book - their book.</li>
-      <li>Generative (performance-oriented): Organizations focus on the mission. How do we accomplish our goal? Everything is subordinated to good performance, to doing what we are supposed to do.</li>
-    </ul>
-  </li>
-  <li>According to Westrum organizational culture predicts the way information flows through an organisation.</li>
-  <li>Table 3.1 comparing organizational cultures looks useful; see p32 for details.</li>
-  <li>Figure 3.1 provides an example of the type of questions that can be used to measure culture.</li>
-  <li>According to Westrum’s theory organizations with better information flow function more effectively.</li>
-  <li>The way to change culture is not to first change how people think, but instead to start by changing how people behave - what they do.</li>
-  <li>Test-driven development, continuous integration and comprehensive configuration management enable more frequent, higher-quality and lower-risk software releases (i.e. continuous delivery).</li>
-  <li>Continuous delivery (CD) = set of capabilities that enable to get changes into the hands of users safely, quickly and sustainably.</li>
-  <li>Key principles of CD:
-    <ul>
-      <li>Build quality in.</li>
-      <li>Work in small batches to reduce the cost of pushing out individual changes.</li>
-      <li>Simplify and automate repetitive work to free up humans to solve higher-value problems.</li>
-      <li>Relentlessly pursue continuous improvement.
-        <ul>
-          <li>The most important characteristic of high-performing teams is that they are never satisfied.</li>
-        </ul>
-      </li>
-      <li>Everyone is responsible and should work together.</li>
-    </ul>
-  </li>
-  <li>In order to implement CD the following foundations should be created:
-    <ul>
-      <li>Comprehensive configuration management.</li>
-      <li>Continuous integration (CI).</li>
-      <li>Continuous testing.</li>
-    </ul>
-  </li>
-  <li>Implementing continuous delivery means creating multiple feedback loops to ensure that high-quality software gets delivered to users more frequently and more reliably.</li>
-  <li>If you want to improve your culture, implementing CD practices will help.</li>
-  <li>Capabilities that have a significant impact on CD:
-    <ul>
-      <li>A loosely coupled, well-encapsulated architecture.</li>
-      <li>Teams can choose their own tools based on what is best for the users of those tools.</li>
-    </ul>
-  </li>
-  <li>The authors’ research found that improvements in CD brought payoffs in the way that work felt.</li>
-  <li>On CD practices:
-    <ul>
-      <li>Version control: Keeping system and application configuration in version control was more highly correlated with software delivery performance than keeping application code in version control.</li>
-      <li>Testing:
-        <ul>
-          <li>Have automated tests that are reliable: if they pass, teams should be confident that their software is releasable.</li>
-          <li>Developers primarily create and maintain acceptance tests, which they can run on their own workstations.</li>
-          <li>Test-driven development (TDD) is an important practice also because it forces developers to create more testable designs.</li>
-          <li>Every commit should trigger a build of the software and running a set of fast, automated tests.</li>
-          <li>Developers should get feedback from a comprehensive suite of acceptance and performance tests every day.</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>In their data, successful teams had adequate test data to run their full automated test suites and could acquire test data for running automated tests on demand.</li>
-  <li>Developing off trunk/master rather than on long-lived feature branches was correlated with high delivery performance.</li>
-  <li>Teams that do well have few active branches at any time, their branches had very short lifetimes (less than a day) before being merged into trunk and never had “code freeze” or stabilisation periods.</li>
-  <li>High-performing teams were more likely to incorporate information security into the delivery process.</li>
-  <li>A critical obstacle to implementing continuous delivery is enterprise and application architecture.</li>
-  <li>High performance is possible with all kinds of systems, provided that systems - and the teams that build and maintain them - are loosely coupled.</li>
-  <li>A loosely coupled well-encapsulated architecture drives IT performance. High performing teams can:
-    <ul>
-      <li>Make large-scale changes to the design of their system w/o the permission of somebody outside the team and w/o depending on other teams to make changes in their systems or creating significant work for other teams.</li>
-      <li>Complete their work w/o communicating and coordinating w/ people outside their team.</li>
-      <li>Deploy and release their product or service on demand independently of other services it depends on.</li>
-      <li>Do most of their testing on demand w/o the need of an integrated environment.</li>
-      <li>Perform deployments during normal business hours w/ negligible downtime.</li>
-    </ul>
-  </li>
-  <li>Melvin Conway (1986): “Organizations which design systems … are constrained to produce designs which are copies of the communication structures of these organizations”.</li>
-  <li>“Inverse Conway Maneuver”: Organizations should evolve their team and organizational structure to achieve the desired architecture.</li>
-  <li>Practices that help to create a loosely coupled well-encapsulated architecture:
-    <ul>
-      <li>The use of bounded contexts and APIs.</li>
-      <li>The use of test doubles and virtualization as a way to test services or components in isolation.</li>
-    </ul>
-  </li>
-  <li>The goal of a loosely coupled architecture is to ensure that the available communication bandwidth isn’t overwhelmed by fine-grained decision-making at the implementation level.
-    <ul>
-      <li>DevOps is all about better collaboration between teams.</li>
-    </ul>
-  </li>
-  <li>When teams can decide which tools they use, it contributes to software delivery and organizational performance.</li>
-  <li>Teams that build security into their work do better at continuous delivery.</li>
-  <li>A focus on usability and customer satisfaction is as important when choosing or building tools for internal customers as it is when building products for external customers.</li>
-  <li>When building security into software is part of the daily work of developers, and when InfoSec teams provide tools, training, and support to make it easy for developers to do the right thing, delivery performance improves.</li>
-  <li>Lean management practices that help improve a team’s performance:
-    <ul>
-      <li>Limit work in progress (WIP) to drive process improvement and increase throughput;</li>
-      <li>Create and maintain visual displays showing key quality and productivity metrics and the current status of work (and defects).</li>
-      <li>Use data from application performance and infrastructure monitoring tools to make business decisions on a daily basis.</li>
-    </ul>
-  </li>
-  <li>Use a lightweight change approval process (e.g. pair programming or intra-team code review) combined with a deployment pipeline to detect and reject bad changes.
-    <ul>
-      <li>Approval by an external body (such as a manager or CAB) simply does not work to increase the stability of production systems, measured by the time to restore service and change fail rate.</li>
-    </ul>
-  </li>
-  <li>Test your product’s design and business model by performing user research frequently, from the very beginning of the product lifecycle.</li>
-  <li>Take an experimental approach to product development.</li>
-  <li>Build and validate prototypes from the very beginning, work in small batches, and evolve or “pivot” products and the business models behind them early and often.
-    <ul>
-      <li>Work in small batches that can be completed in less than a week.
-        <ul>
-          <li>The key to working in small batches is to have work decomposed into features that allow for rapid development.</li>
-        </ul>
-      </li>
-      <li>Release frequently.</li>
-      <li>Have a good understanding of the flow of work from the business to customers and have visibility into this flow.</li>
-      <li>Seek customer feedback and incorporate this feedback into the design of your products.</li>
-      <li>Ensure development teams have the authority to create and change specifications as part of the development process w/o requiring approval.</li>
-    </ul>
-  </li>
-  <li>Where code deployments are most painful, you will find the poorest software delivery performance, organizational performance, and culture.</li>
-  <li>Barriers that hide the work of deployment from developers are rarely good, because they isolate developers from the downstream consequences of their work.</li>
-  <li>Teams that implement comprehensive test and deployment automation, use continuous integration, including trunk-based development, shift left on security, effectively manage test data, use loosely coupled architectures, can work independently and use version control for everything required to reproduce production environments decrease their deployment pain.
-    <ul>
-      <li>If deployments have to be performed outside of normal business hours, that’s a sign of architectural problems that should be addressed.</li>
-      <li>The probability of a failed deployment rises substantially when manual changes must be made to production environments as part of the deployment process.</li>
-    </ul>
-  </li>
-  <li>Architectural patterns that enable to continuously deliver SaaS applications are described at <a href="https://12factor.net">https://12factor.net</a>.</li>
-  <li>Burnout is physical, mental, or emotional exhaustion caused by overwork or stress.</li>
-  <li>Employers have both a duty of care toward employees and a fiduciary obligation to ensure staff do not become burned out.</li>
-  <li>Software and technology is plagued by employee burnout.</li>
-  <li>Managers who want to avert employee burnout should concentrate on:
-    <ul>
-      <li>Fostering a respectful, supportive work environment that emphasizes learning from failures rather than blaming.</li>
-      <li>Communicating a strong sense of purpose.</li>
-      <li>Investing in employee development.</li>
-      <li>Asking employees what is preventing them from achieving their objectives and then fixing those things. For instance:
-        <ul>
-          <li>Asking teams how painful their deployments are and fixing the things that hurt the most.</li>
-          <li>Limiting work in progress and eliminating roadblocks for the team so they can get their work done.</li>
-        </ul>
-      </li>
-      <li>Giving employees time, space, and resources to experiment and learn.</li>
-      <li>Give employees the authority to make decisions that affect their work and their jobs.</li>
-    </ul>
-  </li>
-  <li>Risk factors that predict burnout:
-    <ul>
-      <li>Work overload.</li>
-      <li>Lack of control.</li>
-      <li>Insufficient rewards.</li>
-      <li>Unsupportive workplace environment.</li>
-      <li>Lack of fairness in decision-making processes.</li>
-      <li>Mismatch in organizational values and the individual’s values.</li>
-    </ul>
-  </li>
-  <li>Net promoter score (NPS):
-    <ul>
-      <li>Using a 0-10 scale:
-        <ul>
-          <li>Promoters: 9-10.</li>
-          <li>Passives: 7-8.</li>
-          <li>Detractors: 0-6.</li>
-        </ul>
-      </li>
-      <li>NPS = %Detractors - %Promoters.</li>
-    </ul>
-  </li>
-  <li>People are an organization’s greatest asset.</li>
-  <li>One of the key contributors to burnout is a mismatch of personal and organizational values.</li>
-  <li>Having employees who strongly identify with the company should prove a competitive advantage.</li>
-  <li>People who feel supported by their employers, who have the tools and resources to do their work, and who feel their judgment is valued, turn out better work.</li>
-  <li>Research shows that teams with more diversity with regard to gender or underrepresented minorities are smarter, achieve better team performance and achieve better business outcomes.</li>
-  <li>Inclusion must be present in order for diversity to take hold.</li>
-  <li>Being a leader doesn’t mean you have people reporting to you on an organization chart. Leadership is about inspiring and motivating those around you.</li>
-  <li>Five characteristics of a transformational leader:
-    <ul>
-      <li>Vision: Has a clear understanding of where the organization is going and where it should be in five years.</li>
-      <li>Inspirational communication.</li>
-      <li>Stimulates people intellectually by challenging them to think about problems in new ways.</li>
-      <li>Demonstrates care and consideration of followers’ personal needs and feelings.</li>
-      <li>Personal recognition.</li>
-    </ul>
-  </li>
-  <li>In the best case managers are also leaders.</li>
-  <li>Managers can improve matters by enabling specific DevOps practices in their teams and by visibly investing in DevOps and in their employees’ professional development.</li>
-  <li>Managers should:
-    <ul>
-      <li>Make performance metrics visible.</li>
-      <li>Align performance metrics with organizational goals.</li>
-      <li>Delegate more authority to their employees.</li>
-    </ul>
-  </li>
-  <li>How to invest in your team as a manager:
-    <ul>
-      <li>Ensure that existing resources are made available and accessible to everyone.</li>
-      <li>Establish a dedicated training budget and make sure people know about it.</li>
-      <li>Encourage staff to attend technical conferences at least once a year.</li>
-      <li>Set up internal hack days.</li>
-      <li>Encourage teams to organize internal “yak days”.</li>
-      <li>Organise internal DevOps mini-conferences.</li>
-      <li>Give staff dedicated time (e.g. 20% time) to experiment with new tools and technologies.</li>
-    </ul>
-  </li>
-  <li>Factors that contribute to a strong team culture:
-    <ul>
-      <li>Cross-functional collaboration.</li>
-      <li>A climate for learning.</li>
-      <li>Tools.</li>
-    </ul>
-  </li>
-  <li>Cross-functional collaborations could be enabled by:
-    <ul>
-      <li>Building trust with your counterparts on other teams (e.g. run disaster recovery testing exercises).</li>
-      <li>Encouraging practitioners to move between departments.</li>
-      <li>Actively seek, encourage and reward work that facilitates collaboration.</li>
-    </ul>
-  </li>
-  <li>Create a climate of learning by:
-    <ul>
-      <li>Creating a training budget and advocating for it internally.</li>
-      <li>Ensuring that your team has the resources to engage in informal learning and the space to explore ideas.</li>
-      <li>Making it safe to fail.</li>
-      <li>Creating opportunities and spaces to share information.</li>
-      <li>Encourage sharing and innovation by having demo days and forums.</li>
-    </ul>
-  </li>
-  <li>Tools:
-    <ul>
-      <li>Make sure your team can choose their tools.</li>
-      <li>Make monitoring a priority.</li>
-    </ul>
-  </li>
-  <li>Correlation analysis only tells us if two variables move in tandem or in opposition; it doesn’t tell us why or what is causing it.</li>
-  <li>Note that the book contains details about what makes a survey bad vs good.</li>
-  <li>A latent construct is a way of measuring something that can’t be measured directly.
-    <ul>
-      <li>Example: We need to measure culture by measuring its component parts.</li>
-    </ul>
-  </li>
-  <li>The benefit of latent constructs is that by using several measures (called manifest variables - the pieces of the latent variable that can be measured) to capture the underlying concept, you help shield yourself against bad measures and bad actors.</li>
-  <li>Taking time to do periodic assessments that include the perceptions of the technologists that make and deliver your technology can uncover key insights into the bottlenecks and constraints of your system.</li>
-  <li>If an employee’s manager finds out they are actively looking for a job, the manager may lay the person off to make sure the employee is not counted in any turnover numbers.</li>
-  <li>Probability sampling is any method of statistical sampling that uses random selection.</li>
-  <li>A courageous and supportive leader is crucial to help teams “slow down to speed up”, providing them with the permission and safety to put quality first which, in the long run, improves speed, consistency, and capacity while reducing cost, delays, and rework.</li>
-  <li>As a leader, you have to look at your own behaviours before you ask others to change.</li>
-  <li>High-Performance Team, Management and Leadership Behaviours and Practices:
-    <ul>
-      <li>Develop your own coaches.</li>
-      <li>Lead by example.</li>
-      <li>Practice discipline. Change takes discipline and courage.</li>
-      <li>Practice patience. It’s going to take time to change actions and thought patterns until they become new habits and, eventually, your new culture.</li>
-      <li>Learn, succeed, fail, learn, adjust, repeat.</li>
-    </ul>
-  </li>
-  <li>Capabilities to drive improvement:
-    <ul>
-      <li>Use version control for all production artifacts.</li>
-      <li>Automate your deployment process.</li>
-      <li>Implement continuous integration.</li>
-      <li>Use trunk-based development methods.</li>
-      <li>Implement test automation.</li>
-      <li>Support test data management.</li>
-      <li>Shift left on security.</li>
-      <li>Implement continuous delivery.</li>
-      <li>Use a loosely coupled architecture.</li>
-      <li>Architect for empowered teams.</li>
-      <li>Gather and implement customer feedback.</li>
-      <li>Make the flow of work visible through the value stream.</li>
-      <li>Work in small batches.</li>
-      <li>Foster and enable team experimentation.</li>
-      <li>Have a lightweight change approval process.</li>
-      <li>Monitor across application and infrastructure to inform business decisions.</li>
-      <li>Check system health proactively.</li>
-      <li>Improve processes and manage work with work-in-progress (WIP) limits.</li>
-      <li>Visualize work to monitor quality and communicate throughout the team.</li>
-      <li>Support a generative culture (as outlined by Westrum).</li>
-      <li>Encourage and support learning. Is learning, in your culture, considered essential for continued progress?</li>
-      <li>Support and facilitate collaboration among teams.</li>
-      <li>Provide resources and tools that make work meaningful.</li>
-      <li>Support or embody transformational leadership.</li>
-    </ul>
-  </li>
-  <li>The authors’ analysis provides evidence that there are no trade-offs between improving performance and achieving higher levels of tempo and stability: they move in tandem.</li>
-  <li>High-performing teams reported having leaders with the strongest behaviours across all dimensions: vision, inspirational communication, intellectual stimulation, supportive leadership, and personal recognition.</li>
-  <li>Leadership is predictive of lean product development capabilities and technical practices.</li>
-</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="accelerate" /><category term="dora" /><category term="devops" /><summary type="html"><![CDATA[Accelerate reading notes]]></summary></entry><entry><title type="html">How can I create a command line tool that creates a plot using plotly and opens it in your browser?</title><link href="http://localhost:4000/2024/02/27/typer-plotly-html-browser" rel="alternate" type="text/html" title="How can I create a command line tool that creates a plot using plotly and opens it in your browser?" /><published>2024-02-27T00:00:00+00:00</published><updated>2024-02-27T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/27/typer-plotly-html-browser</id><content type="html" xml:base="http://localhost:4000/2024/02/27/typer-plotly-html-browser"><![CDATA[<p>One approach is to use <a href="https://typer.tiangolo.com/">typer</a> to create the command line tool and use <a href="https://plotly.com/python/">plotly</a> to create the plot with the auto_open (in browser) option set to <code class="language-plaintext highlighter-rouge">True</code>.</p>
-
-<p>Sample code <a href="https://github.com/ovidiuparvu/cli-plotly-html/blob/main/app.py">here</a>.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="typer" /><category term="pyton" /><category term="cli" /><category term="plotly" /><category term="browser" /><category term="www" /><category term="html" /><summary type="html"><![CDATA[How can I create a command line tool that creates a plot using plotly and opens it in your browser?]]></summary></entry><entry><title type="html">Ovi’s Digital Library</title><link href="http://localhost:4000/2024/02/01/ovi-digital-library" rel="alternate" type="text/html" title="Ovi’s Digital Library" /><published>2024-02-01T00:00:00+00:00</published><updated>2024-02-01T00:00:00+00:00</updated><id>http://localhost:4000/2024/02/01/ovi-digital-library</id><content type="html" xml:base="http://localhost:4000/2024/02/01/ovi-digital-library"><![CDATA[<h1 id="concurrency">Concurrency</h1>
-
-<ol>
-  <li>Race conditions deep dive by Steve Gibson: <a href="https://www.grc.com/sn/SN-970-Notes.pdf">https://www.grc.com/sn/SN-970-Notes.pdf</a>.</li>
-</ol>
-
-<h1 id="data-applications">Data applications</h1>
-
-<ol>
-  <li><a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/">Designing Data-Intensive Applications</a> by Martin Kleppmann.</li>
-</ol>
-
-<h1 id="effectiveness">Effectiveness</h1>
-
-<ol>
-  <li><a href="https://jamesclear.com/atomic-habits">Atomic Habits</a>: An Easy &amp; Proven Way to Build Good Habits &amp; Break Bad Ones, by James Clear.</li>
-</ol>
-
-<h1 id="health">Health</h1>
-
-<ol>
-  <li><a href="https://www.waterstones.com/book/life-time/russell-foster/9780241529317">Life Time</a>: The New Science of the Body Clock, and How It Can Revolutionize Your Sleep and Health, by Russell Foster.</li>
-</ol>
-
-<h1 id="leadership">Leadership</h1>
-
-<ol>
-  <li><a href="https://www.waterstones.com/book/rise/patty-azzarello/9781607742609">Rise</a>: 3 Practical Steps for Advancing Your Career, Standing Out as a Leader, and Liking Your Life, by Patty Azzarello, Keith Ferrazzi.</li>
-</ol>
-
-<h1 id="project-management-and-planning">Project management and planning</h1>
-
-<ol>
-  <li><a href="https://basecamp.com/shapeup">Shape Up</a> - Stop Running in Circles and Ship Work that Matters, by Ryan Singer.</li>
-</ol>
-
-<h1 id="software-engineering">Software engineering</h1>
-
-<ol>
-  <li><a href="https://itrevolution.com/product/accelerate">Accelerate</a> - The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations, by Nicole Forsgren, Jez Humble, Gene Kim.</li>
-  <li><a href="https://www.oreilly.com/library/view/joel-on-software/9781590593899/">Joel on Software</a>: And on Diverse and Occasionally Related Matters That Will Prove of Interest to Software Developers, Designers, and Managers, and to Those Who, Whether by Good Fortune or Ill Luck, Work with Them in Some Capacity, by Joel Spolsky.</li>
-  <li><a href="https://pragprog.com/titles/mnee2/release-it-second-edition/">Release It! Second Edition</a> - Design and Deploy Production-Ready Software, by Michael Nygard.</li>
-  <li><a href="https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/">The Pragmatic Programmer, 20th Anniversary Edition</a> - your journey to mastery, by David Thomas, Andrew Hunt.</li>
-</ol>
-
-<h1 id="storage-systems">Storage systems</h1>
-
-<ol>
-  <li>S3: <a href="https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html">https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html</a>.</li>
-</ol>
-
-<h1 id="tools">Tools</h1>
-
-<ol>
-  <li><a href="https://pragprog.com/titles/dnvim2/practical-vim-second-edition/">Practical Vim, Second Edition</a> - Edit Text at the Speed of Thought, by Drew Neil.</li>
-</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="library" /><category term="technology" /><category term="reading" /><summary type="html"><![CDATA[Technology references I find useful.]]></summary></entry><entry><title type="html">How to set up a GitHub Pages technical blog?</title><link href="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog" rel="alternate" type="text/html" title="How to set up a GitHub Pages technical blog?" /><published>2020-05-25T00:00:00+01:00</published><updated>2020-05-25T00:00:00+01:00</updated><id>http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog</id><content type="html" xml:base="http://localhost:4000/2020/05/25/how-to-set-up-github-pages-technical-blog"><![CDATA[<p>This post describes how to set up a GitHub Pages site for a technical blog like this one.</p>
-
-<ol>
-  <li>Create a GitHub repository for hosting the blog source files: <a href="https://github.com/ovidiuparvu/gh-pages-blog-template/generate">gh-pages-blog-template</a>.</li>
-  <li>Clone the GitHub repository created at step 1 into a local directory, which will be denoted as <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> for the remainder of this post.</li>
-  <li>Set up <a href="https://www.ruby-lang.org/en/documentation/installation/">Ruby</a> and <a href="https://bundler.io/">Bundler</a> locally.</li>
-  <li>Install the gems required for testing the blog locally by running in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory the following:
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle install
-</code></pre></div>    </div>
-  </li>
-  <li>Test the blog locally by running in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory the command below and opening in a browser the URL printed when running the command:
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bundle exec jekyll serve
-</code></pre></div>    </div>
-  </li>
-  <li>Customize the structure and contents of the blog to your own liking. If you are new to Jekyll, going through the <a href="https://jekyllrb.com/docs/step-by-step/01-setup">Step by Step Tutorial</a> could help.
-    <ul>
-      <li>Search for all occurrences of the string <code class="language-plaintext highlighter-rouge">YOUR_NAME</code> in the <code class="language-plaintext highlighter-rouge">BLOG_DIR</code> directory and replace them (and the surrounding text) as needed.</li>
-    </ul>
-  </li>
-</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="blog" /><category term="gh-pages" /><summary type="html"><![CDATA[Post that describes how to set up a GitHub Pages site for a technical blog like this one.]]></summary></entry></feed>
+<p>To sum it up in one phrase, NDC London 2025 was a great learning experience and I hope to be able to attend future editions. If you are unsure if you should do the same, just do it!</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="tech" /><category term="conference" /><category term="ndc" /><category term="london" /><category term="ai" /><category term="messaging" /><category term="architecture" /><category term="dotnet" /><category term="csharp" /><category term="C#" /><category term=".NET" /><summary type="html"><![CDATA[I have attended the NDC London 2025 conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several countries, so you do not need to wait for the next conference in London to attend.]]></summary></entry></feed>
