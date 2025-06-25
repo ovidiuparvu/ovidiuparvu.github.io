@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-06-25T06:21:48+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Creating HTML reports from Python using Jinja</title><link href="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja" rel="alternate" type="text/html" title="Creating HTML reports from Python using Jinja" /><published>2025-06-20T00:00:00+01:00</published><updated>2025-06-20T00:00:00+01:00</updated><id>http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja</id><content type="html" xml:base="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja"><![CDATA[<p>In this post we will go over one approach for generating HTML reports from Python using <a href="https://pypi.org/project/Jinja2">Jinja</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-06-25T06:34:20+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Creating HTML reports from Python using Jinja</title><link href="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja" rel="alternate" type="text/html" title="Creating HTML reports from Python using Jinja" /><published>2025-06-20T00:00:00+01:00</published><updated>2025-06-20T00:00:00+01:00</updated><id>http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja</id><content type="html" xml:base="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja"><![CDATA[<p>In this post we will go over one approach for generating HTML reports from Python using <a href="https://pypi.org/project/Jinja2">Jinja</a>.</p>
 
 <p>Using Python for data loading and analysis is great due to the rich ecosystem of relevant Python packages. Using Jinja for creating HTML reports is great due to the powerful templating capabilities of Jinja.</p>
 
@@ -11,38 +11,38 @@
 
 <h4 id="templatesreporthtmlj2"><strong>templates/report.html.j2</strong></h4>
 
-<pre><code class="language-jinja2">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-  &lt;meta charset="UTF-8"&gt;
-  &lt;title&gt;{{ title }}&lt;/title&gt;
-  &lt;style&gt;
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 8px; }
-    th { background: #f4f4f4; }
-  &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;{{ title }}&lt;/h1&gt;
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;Name&lt;/th&gt;
-        &lt;th&gt;Value&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>{{ title }}<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;style&gt;</span>
+    <span class="nt">table</span> <span class="p">{</span> <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span> <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span> <span class="p">{</span> <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="nx">#ccc</span><span class="p">;</span> <span class="nl">padding</span><span class="p">:</span> <span class="m">8px</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nt">th</span> <span class="p">{</span> <span class="nl">background</span><span class="p">:</span> <span class="nx">#f4f4f4</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">&lt;/style&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>{{ title }}<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;table&gt;</span>
+    <span class="nt">&lt;thead&gt;</span>
+      <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;th&gt;</span>Name<span class="nt">&lt;/th&gt;</span>
+        <span class="nt">&lt;th&gt;</span>Value<span class="nt">&lt;/th&gt;</span>
+      <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/thead&gt;</span>
+    <span class="nt">&lt;tbody&gt;</span>
       {% for item in items %}
-      &lt;tr&gt;
-        &lt;td&gt;{{ item.name }}&lt;/td&gt;
-        &lt;td&gt;{{ item.value }}&lt;/td&gt;
-      &lt;/tr&gt;
+      <span class="nt">&lt;tr&gt;</span>
+        <span class="nt">&lt;td&gt;</span>{{ item.name }}<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>{{ item.value }}<span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;/tr&gt;</span>
       {% endfor %}
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
+    <span class="nt">&lt;/tbody&gt;</span>
+  <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
 
 <h2 id="step-3-load-data-and-render-template-using-it">Step 3: Load data and render template using it</h2>
 
@@ -639,13 +639,12 @@ python <span class="nt">-m</span> uv pip <span class="nb">install </span>jupyter
 <p>The cookiecutter uses:</p>
 
 <ol>
-  <li><a href="https://hatch.pypa.io/dev/">hatch</a> for Python package and virtual environments management.</li>
-  <li><a href="https://docs.astral.sh/uv/">uv</a> for Python package management.</li>
+  <li><a href="https://hatch.pypa.io/dev/">hatch</a> for Python package management.</li>
+  <li><a href="https://tox.wiki/">tox</a> for linting and testing virtual environment management.</li>
+  <li><a href="https://docs.astral.sh/uv/">uv</a> for requirements files generation and virtual environment creation.</li>
   <li><a href="https://docs.astral.sh/ruff/">ruff</a> for linting and formatting.</li>
   <li><a href="https://mypy.readthedocs.io/en/stable/index.html">mypy</a> for type checking.</li>
-  <li><a href="https://github.com/pylint-dev/pylint">pylint</a> for linting.</li>
   <li><a href="https://docs.pytest.org/en/stable/">pytest</a> for testing.</li>
-  <li><a href="https://pypi.org/project/pyupgrade/">pyupgrade</a> for upgrading to newer Python language syntax.</li>
   <li><a href="https://typer.tiangolo.com/">typer</a> and <a href="https://github.com/Textualize/rich">rich</a> for CLI applications.</li>
   <li><a href="https://www.mkdocs.org/">mkdocs</a> for creating documentation pages.</li>
 </ol>
