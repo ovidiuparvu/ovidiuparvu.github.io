@@ -7,7 +7,7 @@ tags: [apache,parquet]
 
 The anatomy of an Apache Parquet file, as of the time of writing, is shown below.
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────┐
 │ "PAR1" ASCII string (4 bytes)                                  │
 ├────────────────────────────────────────────────────────────────┤
