@@ -26,3 +26,8 @@ Inside JetBrains IDEs:
 
 - [AI Assistant](https://plugins.jetbrains.com/plugin/22282-jetbrains-ai-assistant).
 - [ProxyAI](https://plugins.jetbrains.com/plugin/21056-proxyai).
+
+To experiment with language models locally:
+
+- [LM Studio](https://lmstudio.ai/).
+- [ollama](https://ollama.com/).
