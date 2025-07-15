@@ -31,3 +31,7 @@ To experiment with language models locally:
 
 - [LM Studio](https://lmstudio.ai/).
 - [ollama](https://ollama.com/).
+
+For packaging an entire repo into a single file:
+
+- [repomix](https://github.com/yamadashy/repomix).
