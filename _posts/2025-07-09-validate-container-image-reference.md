@@ -22,18 +22,13 @@ DOMAIN_REGEX = rf"{HOST_REGEX}(?::{PORT_NUMBER_REGEX})?"
 
 SEPARATOR_REGEX = r"[_.]|__|[-]*"
 ALPHA_NUMERIC_REGEX = r"[a-z0-9]+"
-PATH_COMPONENT_REGEX = (
-    rf"{ALPHA_NUMERIC_REGEX}(?:{SEPARATOR_REGEX}{ALPHA_NUMERIC_REGEX})*"
-)
+PATH_COMPONENT_REGEX = rf"{ALPHA_NUMERIC_REGEX}(?:{SEPARATOR_REGEX}{ALPHA_NUMERIC_REGEX})*"
 REMOTE_NAME_REGEX = rf"{PATH_COMPONENT_REGEX}(?:[/]{PATH_COMPONENT_REGEX})*"
 NAME_REGEX = rf"(?:{DOMAIN_REGEX}/)?{REMOTE_NAME_REGEX}"
 NAME_PATTERN = re.compile(rf"^{NAME_REGEX}$")
 
 TAG_REGEX = r"[\w][\w.-]{0,127}"
 TAG_PATTERN = re.compile(rf"^{TAG_REGEX}$")
-
-NAME_TAG_REGEX = rf"{NAME_REGEX}(?::{TAG_REGEX})?"
-NAME_TAG_PATTERN = re.compile(rf"^{NAME_TAG_REGEX}$")
 
 DIGEST_HEX_REGEX = r"(?:[a-fA-F0-9]{32,})"
 DIGEST_ALGORITHM_COMPONENT_REGEX = r"(?:[A-Za-z][A-Za-z0-9]*)"
@@ -42,9 +37,7 @@ DIGEST_ALGORITHM_REGEX = rf"{DIGEST_ALGORITHM_COMPONENT_REGEX}(?:{DIGEST_ALGORIT
 DIGEST_REGEX = rf"{DIGEST_ALGORITHM_REGEX}:{DIGEST_HEX_REGEX}"
 DIGEST_PATTERN = re.compile(rf"^{DIGEST_REGEX}$")
 
-CONTAINER_IMAGE_REFERENCE_REGEX = (
-    rf"^{NAME_REGEX}(?::{TAG_REGEX})?(?:@{DIGEST_REGEX})?$"
-)
+CONTAINER_IMAGE_REFERENCE_REGEX = rf"^{NAME_REGEX}(?::{TAG_REGEX})?(?:@{DIGEST_REGEX})?$"
 
 
 def ensure_container_image(image: str) -> str:
@@ -56,29 +49,25 @@ def ensure_container_image(image: str) -> str:
     if digest_separator_index >= 0:
         digest = image[digest_separator_index + 1 :]
         if not DIGEST_PATTERN.match(digest):
-            raise ValueError(
-                f"Invalid container image digest: {digest} ({image=}, {DIGEST_REGEX=})"
-            )
+            raise ValueError(f"Invalid container image digest: {digest} ({image=}, {DIGEST_REGEX=})")
 
-    tag_end_index = (
-        digest_separator_index if digest_separator_index >= 0 else len(image)
-    )
+    tag_end_index = digest_separator_index if digest_separator_index >= 0 else len(image)
     tag_separator_index = image.rfind(":", 0, tag_end_index)
-    tag = image[tag_separator_index + 1 : tag_end_index]
     # Ensure that a separator from the domain is not considered as the tag separator
-    tag_separator_index = tag_separator_index if "/" not in tag else -1
+    tag_separator_index = (
+        tag_separator_index
+        if tag_separator_index >= 0 and image.find("/", tag_separator_index, tag_end_index) < 0
+        else -1
+    )
     if tag_separator_index >= 0:
+        tag = image[tag_separator_index + 1 : tag_end_index]
         if not TAG_PATTERN.match(tag):
-            raise ValueError(
-                f"Invalid container image tag: {tag} ({image=}, {TAG_REGEX=})"
-            )
+            raise ValueError(f"Invalid container image tag: {tag} ({image=}, {TAG_REGEX=})")
 
     name_end_index = tag_separator_index if tag_separator_index >= 0 else tag_end_index
     name = image[:name_end_index]
     if not NAME_PATTERN.match(name):
-        raise ValueError(
-            f"Invalid container image name: {name} ({image=}, {NAME_REGEX=})"
-        )
+        raise ValueError(f"Invalid container image name: {name} ({image=}, {NAME_REGEX=})")
     return image
 ```
 
