@@ -16,6 +16,7 @@ From the command line:
 
 - [claude](https://docs.anthropic.com/en/docs/claude-code/overview).
 - [llm](https://llm.datasette.io/en/stable/).
+- [qwen](https://github.com/QwenLM/qwen-code).
 
 Inside VSCode:
 
