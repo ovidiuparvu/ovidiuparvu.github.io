@@ -27,6 +27,7 @@ Inside JetBrains IDEs:
 
 - [AI Assistant](https://plugins.jetbrains.com/plugin/22282-jetbrains-ai-assistant).
 - [ProxyAI](https://plugins.jetbrains.com/plugin/21056-proxyai).
+- [Junie](https://www.jetbrains.com/junie/).
 
 To experiment with language models locally:
 
