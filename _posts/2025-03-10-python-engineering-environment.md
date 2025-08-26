@@ -28,13 +28,21 @@ Tools I have found useful in the past when working on Python projects include:
     - [mkdocs](https://www.mkdocs.org/).
     - [sphinx](https://www.sphinx-doc.org/en/master/).
 - Benchmarking:
-  - [pytest-benchmark](https://github.com/ionelmc/pytest-benchmark).
+    - [pytest-benchmark](https://github.com/ionelmc/pytest-benchmark).
 - Profiling:
-  - [py-spy](https://github.com/benfred/py-spy). 
+    - [py-spy](https://github.com/benfred/py-spy). 
 - IDEs and corresponding plugins:
-- Data validation
-- Data analysis
-- Plotting:
+    - [PyCharm](https://www.jetbrains.com/pycharm/).
+        - [IdeaVim](https://github.com/JetBrains/ideavim).
+    - [VSCode](https://code.visualstudio.com/). 
+        - [PyLance](https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance).
+- Data validation:
+    - [pydantic](https://docs.pydantic.dev/latest/).
+- Data analysis:
+    - [polars](https://docs.pola.rs/api/python/stable/reference/index.html).
+- Data visualisation:
+    - [marimo](https://marimo.io/?ref=producthunt).
+    - [plotly](https://plotly.com/graphing-libraries/).
 - CLI tools:
     - [typer](https://typer.tiangolo.com/).
     - [rich](https://github.com/Textualize/rich).
