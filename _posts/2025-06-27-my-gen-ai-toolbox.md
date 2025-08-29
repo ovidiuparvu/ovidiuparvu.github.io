@@ -10,6 +10,8 @@ Generative (Gen) AI tools that I use on a regular basis currently are listed bel
 From a browser:
 
 - [ChatGPT](https://chatgpt.com/).
+- [Claude](https://claude.ai).
+- [NotebookLM](https://notebooklm.google/).
 - [perplexity](https://www.perplexity.ai/).
 
 From the command line:
