@@ -22,6 +22,7 @@ Inside VSCode:
 
 - [GitHub Copilot](https://code.visualstudio.com/docs/copilot/overview).
 - [RooCode](https://roocode.com/).
+    - [qdrant](https://qdrant.tech/) for codebase (semantic) indexing.
 
 Inside JetBrains IDEs:
 
