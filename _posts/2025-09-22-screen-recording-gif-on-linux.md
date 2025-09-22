@@ -13,7 +13,7 @@ sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub
 flatpak install flathub io.github.seadve.Kooha
 ```
 
-To run Kooha from the command line, you can run the following:
+To run Kooha from the command line, you can use the following:
 
 ```bash
 flatpak run io.github.seadve.Kooha
