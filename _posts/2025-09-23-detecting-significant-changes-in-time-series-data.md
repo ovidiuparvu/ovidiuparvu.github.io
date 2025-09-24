@@ -1,13 +1,15 @@
 ---
 layout: post
-title: Detecting spikes and troughs in time series data
+title: Detecting significant changes in time series data
 comments: true
-tags: [spike,trough,time series,cpd]
+tags: [change point,time series,cpd]
 ---
 
-Spikes and troughs in time series data can be detected using a class of algorithms called _change point detection algorithms_ \[[1](https://arxiv.org/pdf/1801.00718)\], \[[2](https://arxiv.org/pdf/2003.06222)\].
+Significant changes in time series data can be detected using a class of algorithms called _change point detection algorithms_ \[[1](https://arxiv.org/pdf/1801.00718)\], \[[2](https://arxiv.org/pdf/2003.06222)\].
 
 A Python package that implements several change point detection algorithms is [ruptures](https://centre-borelli.github.io/ruptures-docs/).
+
+## Start simple
 
 If you want to start with a simple and interpretable algorithm before moving on to more advanced ones, the _rolling z-score heuristic_, also known as a [Shewhart individuals control chart](https://en.wikipedia.org/wiki/Shewhart_individuals_control_chart), could be a good start.
 
@@ -40,3 +42,15 @@ df = df.with_columns(
 z_thresh = 3
 print(df.filter(pl.col('zscore').abs() > z_thresh))
 ```
+
+## Become more sophisticated
+
+Even though the _rolling z-score heuristic_ approach can be good enough for some basic use cases, it is likely to not be for more advanced use cases. For such use cases, consider using one of the approaches supported in `ruptures`.
+
+If you choose to use `ruptures` you will have to configure the following:
+
+1. Cost function (e.g mean shift or variance shift).
+2. Search method (e.g. Dynamic programming or heuristic approach).
+3. Penalty constraint (e.g. expected number of change points * \beta).
+
+Charles Truong gave a great talk on change point detection algorithms in [2024](https://kiwi.cmla.ens-cachan.fr/index.php/s/ss3rZwNSKwGtyQW). Go watch it!

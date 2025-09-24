@@ -1,1097 +1,222 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-06-25T06:34:20+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Creating HTML reports from Python using Jinja</title><link href="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja" rel="alternate" type="text/html" title="Creating HTML reports from Python using Jinja" /><published>2025-06-20T00:00:00+01:00</published><updated>2025-06-20T00:00:00+01:00</updated><id>http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja</id><content type="html" xml:base="http://localhost:4000/2025/06/20/creating-html-report-from-python-using-jinja"><![CDATA[<p>In this post we will go over one approach for generating HTML reports from Python using <a href="https://pypi.org/project/Jinja2">Jinja</a>.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-09-24T07:08:58+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ovidiu Pârvu | Technical blog</title><subtitle>Ovidiu Pârvu&apos;s technical blog</subtitle><author><name>Ovidiu Pârvu</name></author><entry><title type="html">Detecting point outliers in univariate time series data</title><link href="http://localhost:4000/2025/09/24/detecting-point-outliers-in-univariate-time-series-data" rel="alternate" type="text/html" title="Detecting point outliers in univariate time series data" /><published>2025-09-24T00:00:00+01:00</published><updated>2025-09-24T00:00:00+01:00</updated><id>http://localhost:4000/2025/09/24/detecting-point-outliers-in-univariate-time-series-data</id><content type="html" xml:base="http://localhost:4000/2025/09/24/detecting-point-outliers-in-univariate-time-series-data"><![CDATA[<p>Let us denote the univariate time series data as $X = [x_0, x_1, …, x_n]$.</p>
 
-<p>Using Python for data loading and analysis is great due to the rich ecosystem of relevant Python packages. Using Jinja for creating HTML reports is great due to the powerful templating capabilities of Jinja.</p>
+<h2 id="approaches-using-thresholds">Approaches using thresholds</h2>
 
-<h2 id="step-1-install-jinja">Step 1: Install Jinja</h2>
+<h3 id="z-score">Z-score</h3>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python <span class="nt">-m</span> uv pip <span class="nb">install </span>Jinja2
+\[outlier(x_i) = |x_i - \mu| &gt; k\sigma\]
+
+<p>where $\mu$ represents the mean, $\sigma$ the standard deviation, and the constant $k$ = 2 or 3 typically.</p>
+
+<h3 id="modified-z-score-using-median-absolute-deviation-mad">Modified z-score using median absolute deviation (MAD)</h3>
+
+\[outlier(x_i) = \left| 0.6745 * \frac{x_i - median(X)}{MAD(X)} \right| &gt; 3.5 \\
+MAD(X) = median(|x_i - median(X)|)\]
+
+<h3 id="interquartile-range-iqr">Interquartile range (IQR)</h3>
+
+\[outlier(x_i) = x_i \notin [quartile_1(X) - k * IQR(X), quartile_3(X) + k  * IQR(X)] \\
+IQR(X) = quartile_3(X) - quartile_1(X)\]
+
+<p>where the constant $k$ = 1.5 typically.</p>
+
+<h2 id="further-reading">Further reading</h2>
+
+<p>For a comprehensive review on point outlier detection in univariate time series data see <a href="https://dl.acm.org/doi/10.1145/3444690">this</a> paper.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="point" /><category term="outlier" /><category term="time series" /><category term="univariate" /><summary type="html"><![CDATA[Let us denote the univariate time series data as $X = [x_0, x_1, …, x_n]$.]]></summary></entry><entry><title type="html">Detecting significant changes in time series data</title><link href="http://localhost:4000/2025/09/23/detecting-significant-changes-in-time-series-data" rel="alternate" type="text/html" title="Detecting significant changes in time series data" /><published>2025-09-23T00:00:00+01:00</published><updated>2025-09-23T00:00:00+01:00</updated><id>http://localhost:4000/2025/09/23/detecting-significant-changes-in-time-series-data</id><content type="html" xml:base="http://localhost:4000/2025/09/23/detecting-significant-changes-in-time-series-data"><![CDATA[<p>Significant changes in time series data can be detected using a class of algorithms called <em>change point detection algorithms</em> [<a href="https://arxiv.org/pdf/1801.00718">1</a>], [<a href="https://arxiv.org/pdf/2003.06222">2</a>].</p>
+
+<p>A Python package that implements several change point detection algorithms is <a href="https://centre-borelli.github.io/ruptures-docs/">ruptures</a>.</p>
+
+<h2 id="start-simple">Start simple</h2>
+
+<p>If you want to start with a simple and interpretable algorithm before moving on to more advanced ones, the <em>rolling z-score heuristic</em>, also known as a <a href="https://en.wikipedia.org/wiki/Shewhart_individuals_control_chart">Shewhart individuals control chart</a>, could be a good start.</p>
+
+<p>The rolling z-score heuristic works as follows:</p>
+
+<ol>
+  <li>For each observation in the time series compute the mean and standard deviation of the previous N observations, where N is the considered window size.</li>
+  <li>If the observation is more than M (typically 3) standard deviations away from the mean, then report the observation as a change point.</li>
+</ol>
+
+<p>A Python implementation of the rolling z-score heuristic for detecting spikes and troughs is given below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars</span> <span class="k">as</span> <span class="n">pl</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">32.2</span><span class="p">,</span> <span class="mf">31.9</span><span class="p">,</span> <span class="mf">32.7</span><span class="p">]})</span>
+
+<span class="c1"># Rolling mean and std
+</span><span class="n">window</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">window</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">([</span>
+    <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">).</span><span class="nf">rolling_mean</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">).</span><span class="nf">alias</span><span class="p">(</span><span class="sh">"</span><span class="s">mean</span><span class="sh">"</span><span class="p">),</span>
+    <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">).</span><span class="nf">rolling_std</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="n">window</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">).</span><span class="nf">alias</span><span class="p">(</span><span class="sh">"</span><span class="s">std</span><span class="sh">"</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="c1"># Compute z-score: (x - mean) / std
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span>
+    <span class="p">((</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">)</span> <span class="o">-</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">mean</span><span class="sh">'</span><span class="p">))</span> <span class="o">/</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">std</span><span class="sh">'</span><span class="p">)).</span><span class="nf">alias</span><span class="p">(</span><span class="sh">"</span><span class="s">zscore</span><span class="sh">"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Filter only spikes or troughs
+</span><span class="n">z_thresh</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">zscore</span><span class="sh">'</span><span class="p">).</span><span class="nf">abs</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">z_thresh</span><span class="p">))</span>
 </code></pre></div></div>
 
-<h2 id="step-2-create-an-html-jinja-template">Step 2: Create an html Jinja template</h2>
+<h2 id="become-more-sophisticated">Become more sophisticated</h2>
 
-<h4 id="templatesreporthtmlj2"><strong>templates/report.html.j2</strong></h4>
+<p>Even though the <em>rolling z-score heuristic</em> approach can be good enough for some basic use cases, it is likely to not be for more advanced use cases. For such use cases, consider using one of the approaches supported in <code class="language-plaintext highlighter-rouge">ruptures</code>.</p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
-<span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;title&gt;</span>{{ title }}<span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;style&gt;</span>
-    <span class="nt">table</span> <span class="p">{</span> <span class="nl">border-collapse</span><span class="p">:</span> <span class="nb">collapse</span><span class="p">;</span> <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="p">;</span> <span class="p">}</span>
-    <span class="nt">th</span><span class="o">,</span> <span class="nt">td</span> <span class="p">{</span> <span class="nl">border</span><span class="p">:</span> <span class="m">1px</span> <span class="nb">solid</span> <span class="nx">#ccc</span><span class="p">;</span> <span class="nl">padding</span><span class="p">:</span> <span class="m">8px</span><span class="p">;</span> <span class="p">}</span>
-    <span class="nt">th</span> <span class="p">{</span> <span class="nl">background</span><span class="p">:</span> <span class="nx">#f4f4f4</span><span class="p">;</span> <span class="p">}</span>
-  <span class="nt">&lt;/style&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-<span class="nt">&lt;body&gt;</span>
-  <span class="nt">&lt;h1&gt;</span>{{ title }}<span class="nt">&lt;/h1&gt;</span>
-  <span class="nt">&lt;table&gt;</span>
-    <span class="nt">&lt;thead&gt;</span>
-      <span class="nt">&lt;tr&gt;</span>
-        <span class="nt">&lt;th&gt;</span>Name<span class="nt">&lt;/th&gt;</span>
-        <span class="nt">&lt;th&gt;</span>Value<span class="nt">&lt;/th&gt;</span>
-      <span class="nt">&lt;/tr&gt;</span>
-    <span class="nt">&lt;/thead&gt;</span>
-    <span class="nt">&lt;tbody&gt;</span>
-      {% for item in items %}
-      <span class="nt">&lt;tr&gt;</span>
-        <span class="nt">&lt;td&gt;</span>{{ item.name }}<span class="nt">&lt;/td&gt;</span>
-        <span class="nt">&lt;td&gt;</span>{{ item.value }}<span class="nt">&lt;/td&gt;</span>
-      <span class="nt">&lt;/tr&gt;</span>
-      {% endfor %}
-    <span class="nt">&lt;/tbody&gt;</span>
-  <span class="nt">&lt;/table&gt;</span>
-<span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+<p>If you choose to use <code class="language-plaintext highlighter-rouge">ruptures</code> you will have to configure the following:</p>
+
+<ol>
+  <li>Cost function (e.g mean shift or variance shift).</li>
+  <li>Search method (e.g. Dynamic programming or heuristic approach).</li>
+  <li>Penalty constraint (e.g. expected number of change points * \beta).</li>
+</ol>
+
+<p>Charles Truong gave a great talk on change point detection algorithms in <a href="https://kiwi.cmla.ens-cachan.fr/index.php/s/ss3rZwNSKwGtyQW">2024</a>. Go watch it!</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="change point" /><category term="time series" /><category term="cpd" /><summary type="html"><![CDATA[Significant changes in time series data can be detected using a class of algorithms called change point detection algorithms [1], [2].]]></summary></entry><entry><title type="html">Adding git repo to Material for Mkdocs website</title><link href="http://localhost:4000/2025/09/22/adding-git-repo-to-material-for-mkdocs-website" rel="alternate" type="text/html" title="Adding git repo to Material for Mkdocs website" /><published>2025-09-22T00:00:00+01:00</published><updated>2025-09-22T00:00:00+01:00</updated><id>http://localhost:4000/2025/09/22/adding-git-repo-to-material-for-mkdocs-website</id><content type="html" xml:base="http://localhost:4000/2025/09/22/adding-git-repo-to-material-for-mkdocs-website"><![CDATA[<p>A git repository can be added to a Material for Mkdocs website as per <a href="https://squidfunk.github.io/mkdocs-material/setup/adding-a-git-repository/?h=repository#adding-a-git-repository">these</a> instructions.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="material" /><category term="mkdocs" /><category term="git" /><summary type="html"><![CDATA[A git repository can be added to a Material for Mkdocs website as per these instructions.]]></summary></entry><entry><title type="html">Screen recording gif on Linux</title><link href="http://localhost:4000/2025/09/22/screen-recording-gif-on-linux" rel="alternate" type="text/html" title="Screen recording gif on Linux" /><published>2025-09-22T00:00:00+01:00</published><updated>2025-09-22T00:00:00+01:00</updated><id>http://localhost:4000/2025/09/22/screen-recording-gif-on-linux</id><content type="html" xml:base="http://localhost:4000/2025/09/22/screen-recording-gif-on-linux"><![CDATA[<p>To screen record a gif on Linux you can use <a href="https://github.com/SeaDve/Kooha">Kooha</a>, which can be installed as follows:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>flatpak
+<span class="nb">sudo </span>flatpak remote-add <span class="nt">--if-not-exists</span> flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak <span class="nb">install </span>flathub io.github.seadve.Kooha
 </code></pre></div></div>
 
-<h2 id="step-3-load-data-and-render-template-using-it">Step 3: Load data and render template using it</h2>
+<p>To run Kooha from the command line, you can use the following:</p>
 
-<h4 id="generate_reportpy"><strong>generate_report.py</strong></h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flatpak run io.github.seadve.Kooha
+</code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="gif" /><category term="linux" /><category term="recording" /><summary type="html"><![CDATA[To screen record a gif on Linux you can use Kooha, which can be installed as follows:]]></summary></entry><entry><title type="html">Running Python code with dependencies from the CLI</title><link href="http://localhost:4000/2025/09/16/running-python-code-with-deps-from-cli" rel="alternate" type="text/html" title="Running Python code with dependencies from the CLI" /><published>2025-09-16T00:00:00+01:00</published><updated>2025-09-16T00:00:00+01:00</updated><id>http://localhost:4000/2025/09/16/running-python-code-with-deps-from-cli</id><content type="html" xml:base="http://localhost:4000/2025/09/16/running-python-code-with-deps-from-cli"><![CDATA[<p><code class="language-plaintext highlighter-rouge">uv</code> can be used to run Python code with dependencies from the CLI as shown in the example below.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
-<span class="kn">from</span> <span class="n">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv run <span class="nt">--with</span> polars - <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+import datetime as dt
+import polars as pl
+
+df = pl.DataFrame(
+    {
+        "name": ["Alice Archer", "Ben Brown", "Chloe Cooper", "Daniel Donovan"],
+        "birthdate": [
+            dt.date(1997, 1, 10),
+            dt.date(1985, 2, 15),
+            dt.date(1983, 3, 22),
+            dt.date(1981, 4, 30),
+        ],
+        "weight": [57.9, 72.5, 53.6, 83.1],  # (kg)
+        "height": [1.56, 1.77, 1.65, 1.75],  # (m)
+    }
+)
+
+print(df)
+</span><span class="no">EOF
+</span></code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="python" /><category term="uv" /><category term="cli" /><summary type="html"><![CDATA[uv can be used to run Python code with dependencies from the CLI as shown in the example below.]]></summary></entry><entry><title type="html">Coding use cases for LLMs</title><link href="http://localhost:4000/2025/08/29/coding-use-cases-for-llms" rel="alternate" type="text/html" title="Coding use cases for LLMs" /><published>2025-08-29T00:00:00+01:00</published><updated>2025-08-29T00:00:00+01:00</updated><id>http://localhost:4000/2025/08/29/coding-use-cases-for-llms</id><content type="html" xml:base="http://localhost:4000/2025/08/29/coding-use-cases-for-llms"><![CDATA[<p>Coding use cases for which I have successfully used LLMs in the past include:</p>
+
+<ol>
+  <li>Code review of the git diff between a feature branch and the parent branch before raising a PR.</li>
+  <li>Reformatting and prettifying (e.g. using emojis) a block of text to be saved in an .md file.</li>
+  <li>Translation of English language queries to SQL queries having given the SQL schema and a description thereof as context.</li>
+  <li>Creating a coding agent that has access to user-defined functions passed in as tools.</li>
+  <li>Interactive chats about how to do XYZ.</li>
+  <li>Code completions.</li>
+</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="coding" /><category term="llm" /><summary type="html"><![CDATA[Coding use cases for which I have successfully used LLMs in the past include:]]></summary></entry><entry><title type="html">(De)serializing pydantic BaseModels list</title><link href="http://localhost:4000/2025/08/13/de-serializing-pydantic-base-models-list" rel="alternate" type="text/html" title="(De)serializing pydantic BaseModels list" /><published>2025-08-13T00:00:00+01:00</published><updated>2025-08-13T00:00:00+01:00</updated><id>http://localhost:4000/2025/08/13/de-serializing-pydantic-base-models-list</id><content type="html" xml:base="http://localhost:4000/2025/08/13/de-serializing-pydantic-base-models-list"><![CDATA[<p>One approach for (de)serializing pydantic BaseModels lists is using <a href="https://docs.pydantic.dev/latest/concepts/type_adapter/">TypeAdapters</a>, an example of which is given below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">functools</span> <span class="kn">import</span> <span class="n">cache</span>
 <span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="n">jinja2</span> <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">FileSystemLoader</span>
+
+<span class="kn">from</span> <span class="n">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">TypeAdapter</span>
 
 
-<span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Data</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">Building</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">city</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">floors</span><span class="p">:</span> <span class="nb">int</span>
 
 
-<span class="k">def</span> <span class="nf">render_report</span><span class="p">(</span><span class="n">template_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">],</span> <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
-    <span class="c1"># 1. Configure Jinja to load from the 'templates' folder
-</span>    <span class="n">env</span> <span class="o">=</span> <span class="nc">Environment</span><span class="p">(</span>
-        <span class="n">loader</span><span class="o">=</span><span class="nc">FileSystemLoader</span><span class="p">(</span><span class="sh">"</span><span class="s">templates</span><span class="sh">"</span><span class="p">),</span>
-        <span class="n">autoescape</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  <span class="c1"># for HTML safety
-</span>    <span class="p">)</span>
-
-    <span class="c1"># 2. Load the template
-</span>    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="p">.</span><span class="nf">get_template</span><span class="p">(</span><span class="n">template_name</span><span class="p">)</span>
-
-    <span class="c1"># 3. Render with your context
-</span>    <span class="n">rendered_html</span> <span class="o">=</span> <span class="n">template</span><span class="p">.</span><span class="nf">render</span><span class="p">(</span><span class="o">**</span><span class="n">context</span><span class="p">)</span>
-
-    <span class="c1"># 4. Write to a file
-</span>    <span class="k">with</span> <span class="n">output_path</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">w</span><span class="sh">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">"</span><span class="s">utf-8</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">rendered_html</span><span class="p">)</span>
+<span class="nd">@cache</span>
+<span class="k">def</span> <span class="nf">make_building_list_adapter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">TypeAdapter</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Building</span><span class="p">]]:</span>
+    <span class="k">return</span> <span class="nc">TypeAdapter</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="n">Building</span><span class="p">])</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
-    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="nc">Data</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Region</span><span class="sh">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">"</span><span class="s">EU</span><span class="sh">"</span><span class="p">),</span>
-        <span class="nc">Data</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Weather</span><span class="sh">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">"</span><span class="s">Hot</span><span class="sh">"</span><span class="p">),</span>
-        <span class="nc">Data</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">PopulationDensity</span><span class="sh">"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">"</span><span class="s">High</span><span class="sh">"</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="sh">"</span><span class="s">title</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Regional report</span><span class="sh">"</span><span class="p">,</span>
-        <span class="sh">"</span><span class="s">items</span><span class="sh">"</span><span class="p">:</span> <span class="n">items</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="nf">render_report</span><span class="p">(</span><span class="sh">"</span><span class="s">report.html.j2</span><span class="sh">"</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="nc">Path</span><span class="p">(</span><span class="sh">"</span><span class="s">report.html</span><span class="sh">"</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">buildings_to_json_file</span><span class="p">(</span><span class="n">buildings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Building</span><span class="p">],</span> <span class="nb">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">file</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">wb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="nf">make_building_list_adapter</span><span class="p">()</span>
+        <span class="n">json_bytes</span> <span class="o">=</span> <span class="n">adapter</span><span class="p">.</span><span class="nf">dump_json</span><span class="p">(</span><span class="n">buildings</span><span class="p">)</span>
+        <span class="n">f</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">json_bytes</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">buildings_from_json_file</span><span class="p">(</span><span class="nb">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Building</span><span class="p">]:</span>
+    <span class="k">with</span> <span class="nb">file</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">rb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="nf">make_building_list_adapter</span><span class="p">()</span>
+        <span class="n">json_bytes</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">adapter</span><span class="p">.</span><span class="nf">validate_json</span><span class="p">(</span><span class="n">json_bytes</span><span class="p">)</span>
 </code></pre></div></div>
 
-<h2 id="step-4-generate-the-report">Step 4: Generate the report</h2>
+<p>A test illustrating how to use the above JSON (de)serialization methods is given <a href="https://github.com/ovidiuparvu/pydantic-base-model-list-serialization/blob/main/test_building.py">here</a>.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="pydantic" /><category term="serialization" /><category term="json" /><category term="BaseModel" /><summary type="html"><![CDATA[One approach for (de)serializing pydantic BaseModels lists is using TypeAdapters, an example of which is given below.]]></summary></entry><entry><title type="html">Checking if two files are logically equal</title><link href="http://localhost:4000/2025/08/06/checking-if-two-files-are-logically-equal" rel="alternate" type="text/html" title="Checking if two files are logically equal" /><published>2025-08-06T00:00:00+01:00</published><updated>2025-08-06T00:00:00+01:00</updated><id>http://localhost:4000/2025/08/06/checking-if-two-files-are-logically-equal</id><content type="html" xml:base="http://localhost:4000/2025/08/06/checking-if-two-files-are-logically-equal"><![CDATA[<p>For some use cases it is useful to be able to determine if two files are logically equal, namely they have the same extension and contents but their metadata can differ.</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python generate_report.py
-</code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="html" /><category term="report" /><category term="python" /><category term="jinja" /><summary type="html"><![CDATA[In this post we will go over one approach for generating HTML reports from Python using Jinja.]]></summary></entry><entry><title type="html">Creating a new Python virtual env in 2025</title><link href="http://localhost:4000/2025/06/02/creating-python-venv-2025" rel="alternate" type="text/html" title="Creating a new Python virtual env in 2025" /><published>2025-06-02T00:00:00+01:00</published><updated>2025-06-02T00:00:00+01:00</updated><id>http://localhost:4000/2025/06/02/creating-python-venv-2025</id><content type="html" xml:base="http://localhost:4000/2025/06/02/creating-python-venv-2025"><![CDATA[<p>The approach I use to create and activate a new Python virtual environment in 2025 is illustrated below:</p>
+<p>One approach for checking if two files are logically equal in Python, with metadata exclusion/ignore support for csv and Parquet files, is given <a href="https://github.com/ovidiuparvu/compare-files-logically">here</a> and shown below.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv venv <span class="nt">--seed</span> <span class="nt">-p</span><span class="o">=</span>python3.13
-<span class="nb">.</span> .venv/bin/activate
-</code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="python" /><category term="venv" /><category term="uv" /><summary type="html"><![CDATA[The approach I use to create and activate a new Python virtual environment in 2025 is illustrated below:]]></summary></entry><entry><title type="html">Determining disk usage for modern disks fast</title><link href="http://localhost:4000/2025/05/14/determining-disk-usage" rel="alternate" type="text/html" title="Determining disk usage for modern disks fast" /><published>2025-05-14T00:00:00+01:00</published><updated>2025-05-14T00:00:00+01:00</updated><id>http://localhost:4000/2025/05/14/determining-disk-usage</id><content type="html" xml:base="http://localhost:4000/2025/05/14/determining-disk-usage"><![CDATA[<p>Tools for determining disk usage for modern disks fast (w/o double-counting hard links, at the time of writing) include:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">filecmp</span>
+<span class="kn">from</span> <span class="n">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">TypeAlias</span>
 
-<ol>
-  <li><a href="https://github.com/dundee/gdu">gdu</a>.</li>
-  <li><a href="https://github.com/sharkdp/diskus">diskus</a>.</li>
-  <li><a href="https://github.com/bootandy/dust">dust</a>.</li>
-  <li><a href="https://www.man7.org/linux/man-pages/man1/du.1.html">du</a>.</li>
-</ol>
+<span class="kn">import</span> <span class="n">polars</span> <span class="k">as</span> <span class="n">pl</span>
 
-<p>Tools for determining disk usage for modern disks fast (w/ double-counting hard links, at the time of writing) include:</p>
+<span class="n">FilePath</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span>
 
-<ol>
-  <li><a href="https://github.com/KSXGitHub/parallel-disk-usage">pdu</a>.</li>
-</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="disk" /><category term="usage" /><category term="gdu" /><category term="du" /><category term="dust" /><summary type="html"><![CDATA[Tools for determining disk usage for modern disks fast (w/o double-counting hard links, at the time of writing) include:]]></summary></entry><entry><title type="html">Checking your internet speed</title><link href="http://localhost:4000/2025/05/13/checking-internet-speed" rel="alternate" type="text/html" title="Checking your internet speed" /><published>2025-05-13T00:00:00+01:00</published><updated>2025-05-13T00:00:00+01:00</updated><id>http://localhost:4000/2025/05/13/checking-internet-speed</id><content type="html" xml:base="http://localhost:4000/2025/05/13/checking-internet-speed"><![CDATA[<p>If you would like to check the “speed” of your Internet connection without being bombarded w/ ads give Cloudflare’s <a href="https://speed.cloudflare.com/">Speed Test</a> a try.</p>
 
-<p>Like with any other Internet speed test, note that in theory your ISP could infer that you are running a speed test and therefore adjust constraints for your Internet connection to make the results look as good as possible.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="internet" /><category term="speed" /><category term="test" /><summary type="html"><![CDATA[If you would like to check the “speed” of your Internet connection without being bombarded w/ ads give Cloudflare’s Speed Test a try.]]></summary></entry><entry><title type="html">Creating a table of contents for a Markdown file</title><link href="http://localhost:4000/2025/04/10/create-toc-for-md-file" rel="alternate" type="text/html" title="Creating a table of contents for a Markdown file" /><published>2025-04-10T00:00:00+01:00</published><updated>2025-04-10T00:00:00+01:00</updated><id>http://localhost:4000/2025/04/10/create-toc-for-md-file</id><content type="html" xml:base="http://localhost:4000/2025/04/10/create-toc-for-md-file"><![CDATA[<p>I wanted to create a table of contents (ToC) for a Markdown file and have an easy way to update the ToC as the markdown file changes. So I asked ChatGPT.</p>
+<span class="k">def</span> <span class="nf">ensure_existing_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">FilePath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="nc">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">file_path</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">path</span><span class="p">.</span><span class="nf">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="nc">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s"> should point to an existing file and it does not.</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span>
 
-<p>Prompt:</p>
 
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>How can I generate a toc for a markdown file?
-</code></pre></div></div>
+<span class="k">def</span> <span class="nf">files_are_logically_equal</span><span class="p">(</span><span class="n">file1</span><span class="p">:</span> <span class="n">FilePath</span><span class="p">,</span> <span class="n">file2</span><span class="p">:</span> <span class="n">FilePath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="n">path1</span> <span class="o">=</span> <span class="nf">ensure_existing_file_path</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+    <span class="n">path2</span> <span class="o">=</span> <span class="nf">ensure_existing_file_path</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
 
-<p>Answer:</p>
-
-<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Generating a table of contents (TOC) for a Markdown file can be accomplished in several ways—ranging from using command-line tools and editor extensions to writing your own script. Below are several methods, along with step-by-step instructions and insights into each approach.
-
-...
-
-<span class="gu">## 2. Using Editor Extensions</span>
-
-<span class="gu">### Visual Studio Code and Markdown All in One  </span>
-If you use VS Code, the <span class="p">[</span><span class="nv">Markdown All in One extension</span><span class="p">](</span><span class="sx">https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one</span><span class="p">)</span> makes generating a TOC easy:
-<span class="p">
--</span> <span class="gs">**Installation:**</span>  
-  Install the extension from the VS Code marketplace.
-<span class="p">  
--</span> <span class="gs">**Usage:**</span>  
-  Open your Markdown file and open the Command Palette (<span class="sb">`Ctrl+Shift+P`</span> or <span class="sb">`Cmd+Shift+P`</span>), then type and select <span class="gs">**"Markdown All in One: Create Table of Contents"**</span>. The extension inserts a TOC at your cursor or replaces an existing one.
-
-...
-</code></pre></div></div>
-
-<p>Option 2, namely the VSCode extension, worked great for me. It makes it easy to create a table of contents as well as updates it automatically whenever the Markdown file is modified in a relevant manner (e.g. a new heading is added).</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="toc" /><category term="md" /><category term="markdown" /><summary type="html"><![CDATA[I wanted to create a table of contents (ToC) for a Markdown file and have an easy way to update the ToC as the markdown file changes. So I asked ChatGPT.]]></summary></entry><entry><title type="html">An intro to Polars</title><link href="http://localhost:4000/2025/03/29/an-intro-to-polars" rel="alternate" type="text/html" title="An intro to Polars" /><published>2025-03-29T00:00:00+00:00</published><updated>2025-03-29T00:00:00+00:00</updated><id>http://localhost:4000/2025/03/29/an-intro-to-polars</id><content type="html" xml:base="http://localhost:4000/2025/03/29/an-intro-to-polars"><![CDATA[<p>This introduction to Polars is my attempt to make it easy for future me to recollect what I have learnt during Polars training sessions provided by <a href="https://quansight.com/training">Quansight</a>.</p>
-
-<ul>
-  <li><a href="#set-up-a-virtual-environment">Set up a virtual environment</a></li>
-  <li><a href="#create-a-dataframe">Create a DataFrame</a>
-    <ul>
-      <li><a href="#basic">Basic</a></li>
-      <li><a href="#specify-column-types">Specify column types</a></li>
-      <li><a href="#reading-from-a-file-eagerly">Reading from a file eagerly</a></li>
-      <li><a href="#reading-from-a-file-lazily">Reading from a file lazily</a></li>
-    </ul>
-  </li>
-  <li><a href="#working-with-dataframe-columns">Working with DataFrame columns</a>
-    <ul>
-      <li><a href="#select-columns">Select columns</a></li>
-      <li><a href="#addreplace-columns">Add/replace columns</a></li>
-      <li><a href="#drop-columns">Drop columns</a></li>
-    </ul>
-  </li>
-  <li><a href="#working-with-dataframe-rows">Working with DataFrame rows</a>
-    <ul>
-      <li><a href="#select-rows">Select rows</a></li>
-      <li><a href="#select-every-n-rows">Select every N rows</a></li>
-      <li><a href="#adding-a-row-index-column-similar-to-what-is-used-for-pandas-dataframes">Adding a row index column similar to what is used for pandas DataFrames</a></li>
-    </ul>
-  </li>
-  <li><a href="#non-primitive-data-type-columns">Non-primitive data type columns</a>
-    <ul>
-      <li><a href="#lists">Lists</a>
-        <ul>
-          <li><a href="#creating-lists-from-values">Creating lists from values</a></li>
-          <li><a href="#creating-lists-using-values-from-other-columns">Creating lists using values from other columns</a></li>
-          <li><a href="#processing-lists-values">Processing lists values</a></li>
-        </ul>
-      </li>
-      <li><a href="#structs">Structs</a>
-        <ul>
-          <li><a href="#creating-dataframes-with-struct-columns">Creating DataFrames with struct columns</a></li>
-          <li><a href="#unnesting-a-struct-column">Unnesting a struct column</a></li>
-          <li><a href="#selecting-a-field-of-a-struct-column">Selecting a field of a struct column</a></li>
-          <li><a href="#viewing-the-schema-of-a-dataframe-containing-struct-columns">Viewing the schema of a DataFrame containing struct columns</a></li>
-        </ul>
-      </li>
-      <li><a href="#arrays">Arrays</a></li>
-    </ul>
-  </li>
-  <li><a href="#aggregations">Aggregations</a>
-    <ul>
-      <li><a href="#mean-of-the-values-in-a-column">Mean of the values in a column</a></li>
-      <li><a href="#mean-of-the-values-in-a-column-grouped-by-values-in-another-column">Mean of the values in a column grouped by values in another column</a></li>
-      <li><a href="#mean-of-the-values-in-a-column-grouped-by-values-in-another-column-and-joined-back-into-the-initial-dataframe">Mean of the values in a column grouped by values in another column and joined back into the initial DataFrame</a></li>
-    </ul>
-  </li>
-  <li><a href="#handling-missinginvalid-values">Handling missing/invalid values</a>
-    <ul>
-      <li><a href="#null-vs-nan-in-polars">Null vs NaN in Polars</a></li>
-      <li><a href="#counting-values-when-some-are-missinginvalid">Counting values when some are missing/invalid</a></li>
-      <li><a href="#dropping-missinginvalid-values">Dropping missing/invalid values</a></li>
-    </ul>
-  </li>
-  <li><a href="#working-with-multiple-dataframes">Working with multiple DataFrames</a>
-    <ul>
-      <li><a href="#joining-dataframes">Joining DataFrames</a></li>
-      <li><a href="#concatenating-dataframes-vertically">Concatenating DataFrames (vertically)</a></li>
-    </ul>
-  </li>
-  <li><a href="#categorical-data">Categorical data</a>
-    <ul>
-      <li><a href="#restricting-values-to-enum-values">Restricting values to Enum values</a></li>
-    </ul>
-  </li>
-  <li><a href="#using-lazyframes-instead-of-eager-dataframes">Using LazyFrames instead of (eager) DataFrames</a>
-    <ul>
-      <li><a href="#textual-representation-of-query-plan">Textual representation of query plan</a></li>
-      <li><a href="#digraph-representation-of-query-plan">Digraph representation of query plan</a></li>
-    </ul>
-  </li>
-  <li><a href="#executing-row-wise-operations">Executing row-wise operations</a></li>
-  <li><a href="#streaming">Streaming</a></li>
-  <li><a href="#working-with-timeseries">Working with timeseries</a>
-    <ul>
-      <li><a href="#creating-datetime-series">Creating datetime Series</a></li>
-      <li><a href="#filtering-based-on-datetimes">Filtering based on datetimes</a></li>
-      <li><a href="#datetime-difference-between-consecutive-rows">Datetime difference between consecutive rows</a></li>
-      <li><a href="#handling-time-zones">Handling time zones</a></li>
-      <li><a href="#daylight-saving-time-dst">Daylight Saving Time (DST)</a></li>
-      <li><a href="#grouping-data-over-time">Grouping data over time</a></li>
-      <li><a href="#rolling-computations">Rolling computations</a></li>
-      <li><a href="#upsampling">Upsampling</a></li>
-    </ul>
-  </li>
-  <li><a href="#miscellaneous">Miscellaneous</a></li>
-</ul>
-
-<p>Right, let’s get to it. First set up a virtual environment. Then go through the examples below.</p>
-
-<h2 id="set-up-a-virtual-environment">Set up a virtual environment</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uv venv <span class="nt">--seed</span><span class="p">;</span>
-<span class="nb">source</span> .venv/bin/activate<span class="p">;</span>
-python <span class="nt">-m</span> pip <span class="nb">install </span>uv<span class="p">;</span>
-python <span class="nt">-m</span> uv pip <span class="nb">install </span>jupyter pandas polars pyarrow<span class="p">;</span>
-</code></pre></div></div>
-
-<h2 id="create-a-dataframe">Create a DataFrame</h2>
-
-<h3 id="basic">Basic</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars</span> <span class="k">as</span> <span class="n">pl</span>
-
-<span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-</code></pre></div></div>
-
-<h3 id="specify-column-types">Specify column types</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]},</span>
-    <span class="n">schema_overrides</span><span class="o">=</span><span class="p">{</span>
-        <span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">String</span><span class="p">,</span>
-        <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">Int16</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="reading-from-a-file-eagerly">Reading from a file eagerly</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nf">read_parquet</span><span class="p">(</span><span class="sh">'</span><span class="s">dataset.parquet</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="reading-from-a-file-lazily">Reading from a file lazily</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">'</span><span class="s">dataset.parquet</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h2 id="working-with-dataframe-columns">Working with DataFrame columns</h2>
-
-<h3 id="select-columns">Select columns</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars.selectors</span> <span class="k">as</span> <span class="n">cs</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">cs</span><span class="p">.</span><span class="nf">all</span><span class="p">()</span> <span class="o">-</span> <span class="n">cs</span><span class="p">.</span><span class="nf">numeric</span><span class="p">())</span>
-</code></pre></div></div>
-
-<h3 id="addreplace-columns">Add/replace columns</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span>
-    <span class="n">keyvalue</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">).</span><span class="nf">cast</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="n">String</span><span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="drop-columns">Drop columns</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">drop</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="working-with-dataframe-rows">Working with DataFrame rows</h2>
-
-<h3 id="select-rows">Select rows</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="select-every-n-rows">Select every N rows</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>             <span class="c1"># Gather every 2nd row
-</span><span class="n">df</span><span class="p">.</span><span class="nf">gather_every</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Gather every 2nd row
-</span></code></pre></div></div>
-
-<h3 id="adding-a-row-index-column-similar-to-what-is-used-for-pandas-dataframes">Adding a row index column similar to what is used for pandas DataFrames</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">],</span> <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">with_row_index</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h2 id="non-primitive-data-type-columns">Non-primitive data type columns</h2>
-
-<h3 id="lists">Lists</h3>
-
-<h4 id="creating-lists-from-values">Creating lists from values</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]})</span>
-</code></pre></div></div>
-
-<h4 id="creating-lists-using-values-from-other-columns">Creating lists using values from other columns</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">x_y</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">concat_list</span><span class="p">(</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">))</span>
-</code></pre></div></div>
-
-<h4 id="processing-lists-values">Processing lists values</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">z_mean</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">).</span><span class="nb">list</span><span class="p">.</span><span class="nf">mean</span><span class="p">())</span>
-</code></pre></div></div>
-
-<h3 id="structs">Structs</h3>
-
-<h4 id="creating-dataframes-with-struct-columns">Creating DataFrames with struct columns</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">cars</span><span class="sh">'</span><span class="p">:</span> <span class="p">[{</span><span class="sh">'</span><span class="s">make</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Audi</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">year</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2020</span><span class="p">},</span> <span class="p">{</span><span class="sh">'</span><span class="s">make</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Volkswagen</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">year</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2024</span><span class="p">}]})</span>
-</code></pre></div></div>
-
-<h4 id="unnesting-a-struct-column">Unnesting a struct column</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="nf">unnest</span><span class="p">(</span><span class="sh">'</span><span class="s">cars</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h4 id="selecting-a-field-of-a-struct-column">Selecting a field of a struct column</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">cars</span><span class="sh">'</span><span class="p">).</span><span class="n">struct</span><span class="p">.</span><span class="nf">field</span><span class="p">(</span><span class="sh">'</span><span class="s">make</span><span class="sh">'</span><span class="p">))</span>
-</code></pre></div></div>
-
-<h4 id="viewing-the-schema-of-a-dataframe-containing-struct-columns">Viewing the schema of a DataFrame containing struct columns</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span><span class="p">.</span><span class="n">schema</span>
-</code></pre></div></div>
-
-<h3 id="arrays">Arrays</h3>
-
-<p>pl.Array is used to represent a fixed-size collection of values. Conversely pl.List is used to represent a variable-size collection of values.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="sh">'</span><span class="s">friends</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">[</span><span class="sh">'</span><span class="s">Mark</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Mary</span><span class="sh">'</span><span class="p">],</span>
-            <span class="p">[</span><span class="sh">'</span><span class="s">John</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Jane</span><span class="sh">'</span><span class="p">],</span>
-        <span class="p">],</span>
-    <span class="p">},</span>
-    <span class="n">schema</span><span class="o">=</span><span class="p">{</span>
-        <span class="sh">'</span><span class="s">friends</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Array</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="n">String</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-    <span class="p">},</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="aggregations">Aggregations</h2>
-
-<h3 id="mean-of-the-values-in-a-column">Mean of the values in a column</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">().</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h3 id="mean-of-the-values-in-a-column-grouped-by-values-in-another-column">Mean of the values in a column grouped by values in another column</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">group_by</span><span class="p">(</span><span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">).</span><span class="nf">agg</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">()).</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h3 id="mean-of-the-values-in-a-column-grouped-by-values-in-another-column-and-joined-back-into-the-initial-dataframe">Mean of the values in a column grouped by values in another column and joined back into the initial DataFrame</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span>
-    <span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">,</span>
-    <span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">,</span>
-    <span class="n">class_mean_survival</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">survived</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">().</span><span class="nf">over</span><span class="p">(</span><span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">)</span>
-<span class="p">).</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h2 id="handling-missinginvalid-values">Handling missing/invalid values</h2>
-
-<h3 id="null-vs-nan-in-polars">Null vs NaN in Polars</h3>
-
-<p>In Polars there is:</p>
-
-<ul>
-  <li>null: missing data.</li>
-  <li>nan: floating point number, which results from e.g. 0/0.</li>
-</ul>
-
-<h3 id="counting-values-when-some-are-missinginvalid">Counting values when some are missing/invalid</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">group_by</span><span class="p">(</span><span class="sh">'</span><span class="s">deck</span><span class="sh">'</span><span class="p">).</span><span class="nf">len</span><span class="p">().</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h3 id="dropping-missinginvalid-values">Dropping missing/invalid values</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="sh">"</span><span class="s">../titanic.parquet</span><span class="sh">"</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">drop_nulls</span><span class="p">().</span><span class="nf">collect</span><span class="p">()</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">deck</span><span class="sh">'</span><span class="p">).</span><span class="nf">is_not_null</span><span class="p">()).</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h2 id="working-with-multiple-dataframes">Working with multiple DataFrames</h2>
-
-<h3 id="joining-dataframes">Joining DataFrames</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">9.1</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">9.2</span><span class="p">,</span> <span class="mf">88.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">9.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">13124.0</span><span class="p">,</span> <span class="mf">559.3</span><span class="p">]})</span>
-<span class="n">df1</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="concatenating-dataframes-vertically">Concatenating DataFrames (vertically)</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mf">9.1</span><span class="p">],</span> <span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">9.2</span><span class="p">,</span> <span class="mf">88.2</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]})</span>
-<span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">9.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="sh">'</span><span class="s">z</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">13124.0</span><span class="p">,</span> <span class="mf">559.3</span><span class="p">]})</span>
-<span class="n">pl</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="sh">'</span><span class="s">diagonal</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="categorical-data">Categorical data</h2>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Use a StringCache for the code block below in order to map strings to the same uints when
-# creating df1, df2 and pl.concat([df1, df2])
-#
-# Alternatively, use pl.enable_string_cache() to enable the global string cache if you do not
-# have a large number of strings.
-</span><span class="k">with</span> <span class="n">pl</span><span class="p">.</span><span class="nc">StringCache</span><span class="p">():</span>
-    <span class="n">df1</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
-        <span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]},</span>
-        <span class="n">schema_overrides</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">Categorical</span><span class="p">},</span>
-    <span class="p">)</span>
-    <span class="n">df2</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
-        <span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">green</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">blue</span><span class="sh">"</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]},</span>
-        <span class="n">schema_overrides</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="n">Categorical</span><span class="p">},</span>
-    <span class="p">)</span>
-    <span class="n">df1</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">).</span><span class="nf">to_physical</span><span class="p">().</span><span class="n">name</span><span class="p">.</span><span class="nf">suffix</span><span class="p">(</span><span class="sh">'</span><span class="s">_physical</span><span class="sh">'</span><span class="p">))</span>
-    <span class="n">df2</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">).</span><span class="nf">to_physical</span><span class="p">().</span><span class="n">name</span><span class="p">.</span><span class="nf">suffix</span><span class="p">(</span><span class="sh">'</span><span class="s">_physical</span><span class="sh">'</span><span class="p">))</span>
-    <span class="n">pl</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">])</span>
-</code></pre></div></div>
-
-<h3 id="restricting-values-to-enum-values">Restricting values to Enum values</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">"</span><span class="s">flower</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tree</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">flower</span><span class="sh">"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nc">Enum</span><span class="p">([</span><span class="sh">"</span><span class="s">flower</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">tree</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">bonsai</span><span class="sh">"</span><span class="p">]))</span>
-<span class="n">s</span><span class="p">.</span><span class="n">dtype</span>
-</code></pre></div></div>
-
-<h2 id="using-lazyframes-instead-of-eager-dataframes">Using LazyFrames instead of (eager) DataFrames</h2>
-
-<ul>
-  <li>Using LazyFrames enables lazy evaluation makes it possible for optimizations to be applied automatically instead of requiring hand-rolled optimizations to be used instead.</li>
-  <li>If you use expressions the lazy mode should be equivalent to the eager mode (except the need to call <code class="language-plaintext highlighter-rouge">.collect()</code> at the end).</li>
-</ul>
-
-<h3 id="textual-representation-of-query-plan">Textual representation of query plan</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">polars</span> <span class="k">as</span> <span class="n">pl</span>
-
-<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">LazyFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">df</span><span class="p">.</span><span class="nf">explain</span><span class="p">())</span>
-</code></pre></div></div>
-
-<h3 id="digraph-representation-of-query-plan">Digraph representation of query plan</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">LazyFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">show_graph</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h2 id="executing-row-wise-operations">Executing row-wise operations</h2>
-
-<p>In order to execute some row-wise operations when using Polars one might need to use nested data types.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">cum_sum_horizontal</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">all</span><span class="p">())).</span><span class="nf">unnest</span><span class="p">(</span><span class="sh">'</span><span class="s">cum_sum</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="streaming">Streaming</h2>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">LazyFrame</span><span class="p">({</span><span class="sh">"</span><span class="s">a</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="sh">"</span><span class="s">b</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">a</span><span class="sh">'</span><span class="p">)</span> <span class="o">+</span> <span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">b</span><span class="sh">'</span><span class="p">)).</span><span class="nf">collect</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="sh">'</span><span class="s">streaming</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h2 id="working-with-timeseries">Working with timeseries</h2>
-
-<h3 id="creating-datetime-series">Creating datetime Series</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">2025-01-01T01:43</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025-01-03T18:44</span><span class="sh">'</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">()</span>
-<span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">"</span><span class="s">2025 January 01 01:43</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">2025 January 03 18:44</span><span class="sh">"</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="sh">'</span><span class="s">%Y %B %d %H:%M</span><span class="sh">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="filtering-based-on-datetimes">Filtering based on datetimes</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span>
-  <span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">,</span> <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="p">})</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">day</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="datetime-difference-between-consecutive-rows">Datetime difference between consecutive rows</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span>
-  <span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">,</span> <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="p">})</span>
-<span class="n">df</span><span class="p">[</span><span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">].</span><span class="nf">diff</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h3 id="handling-time-zones">Handling time zones</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Time stamp and time zone (if set) are stored separately
-</span><span class="n">ser</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">2025-01-01T01:43</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025-01-03T18:44</span><span class="sh">'</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">()</span>                           <span class="c1"># time zone unaware
-</span><span class="n">ser</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">2025-01-01T01:43</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025-01-03T18:44</span><span class="sh">'</span><span class="p">]).</span><span class="nb">str</span><span class="p">.</span><span class="nf">to_datetime</span><span class="p">(</span><span class="n">time_zone</span><span class="o">=</span><span class="sh">'</span><span class="s">Europe/London</span><span class="sh">'</span><span class="p">)</span>  <span class="c1"># time zone aware
-# Change time zone w/o changing underlying timestamp
-</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="nf">convert_time_zone</span><span class="p">(</span><span class="sh">'</span><span class="s">Asia/Kathmandu</span><span class="sh">'</span><span class="p">)</span>
-<span class="c1"># Change timestamp ignoring current time zone
-</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="nf">replace_time_zone</span><span class="p">(</span><span class="sh">'</span><span class="s">Asia/Kathmandu</span><span class="sh">'</span><span class="p">)</span>
-<span class="c1"># Unset time zone
-</span><span class="n">ser</span> <span class="o">=</span> <span class="n">ser</span><span class="p">.</span><span class="n">dt</span><span class="p">.</span><span class="nf">replace_time_zone</span><span class="p">(</span><span class="n">time_zone</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="daylight-saving-time-dst">Daylight Saving Time (DST)</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Convert a Series into a DataFrame
-</span><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">datetime_range</span><span class="p">(</span>
-    <span class="nf">date</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
-    <span class="nf">datetime</span><span class="p">(</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
-    <span class="sh">"</span><span class="s">1h</span><span class="sh">"</span><span class="p">,</span>
-    <span class="n">time_zone</span><span class="o">=</span><span class="sh">"</span><span class="s">Europe/London</span><span class="sh">"</span><span class="p">,</span>
-    <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-<span class="p">).</span><span class="nf">to_frame</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span>
-  <span class="c1"># Determine the DST offset
-</span>  <span class="n">dst_offset</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">dst_offset</span><span class="p">(),</span>
-  <span class="c1"># Add 1d to date ignoring DST
-</span>  <span class="n">day_plus_1d</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">offset_by</span><span class="p">(</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">),</span>
-  <span class="c1"># Add 24h (i.e. 1d) to date considering DST
-</span>  <span class="n">day_plus_24h</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">offset_by</span><span class="p">(</span><span class="sh">'</span><span class="s">24h</span><span class="sh">'</span><span class="p">),</span>
-  <span class="c1"># Handle ambiguities due to DST explicitly
-</span>  <span class="n">replaced_time_zone</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">).</span><span class="n">dt</span><span class="p">.</span><span class="nf">replace_time_zone</span><span class="p">(</span>
-    <span class="sh">'</span><span class="s">Europe/London</span><span class="sh">'</span><span class="p">,</span>
-    <span class="n">ambiguous</span><span class="o">=</span><span class="n">pl</span><span class="p">.</span><span class="nc">Series</span><span class="p">([</span><span class="sh">'</span><span class="s">earliest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">earliest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">]),</span>
-  <span class="p">)</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="grouping-data-over-time">Grouping data over time</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">../assets.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">try_parse_dates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">df</span><span class="p">.</span><span class="nf">group_by_dynamic</span><span class="p">(</span>
-  <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span>
-  <span class="n">every</span><span class="o">=</span><span class="sh">'</span><span class="s">1mo</span><span class="sh">'</span><span class="p">,</span>
-  <span class="n">group_by</span><span class="o">=</span><span class="sh">'</span><span class="s">symbol</span><span class="sh">'</span><span class="p">,</span>
-<span class="p">).</span><span class="nf">agg</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">mean</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">)).</span><span class="nf">collect</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h3 id="rolling-computations">Rolling computations</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Using rolling_mean_by()
-</span><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_csv</span><span class="p">(</span><span class="sh">"</span><span class="s">../assets.csv</span><span class="sh">"</span><span class="p">,</span> <span class="n">try_parse_dates</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="p">(</span>
-  <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">rolling_mean_by</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="sh">'</span><span class="s">5d</span><span class="sh">'</span><span class="p">))</span>
-  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="c1"># Using rolling()
-</span><span class="p">(</span>
-  <span class="n">df</span>
-  <span class="p">.</span><span class="nf">filter</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">symbol</span><span class="sh">'</span><span class="p">)</span> <span class="o">==</span> <span class="sh">'</span><span class="s">ABBV</span><span class="sh">'</span><span class="p">)</span>
-  <span class="p">.</span><span class="nf">rolling</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="sh">'</span><span class="s">5d</span><span class="sh">'</span><span class="p">)</span>
-  <span class="p">.</span><span class="nf">agg</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">mean</span><span class="p">().</span><span class="nf">alias</span><span class="p">(</span><span class="sh">'</span><span class="s">rolling_price</span><span class="sh">'</span><span class="p">))</span>
-  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="c1"># Rolling mean for each group using over()
-</span><span class="p">(</span>
-  <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">rolling_mean_by</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="sh">'</span><span class="s">5d</span><span class="sh">'</span><span class="p">).</span><span class="nf">over</span><span class="p">(</span><span class="sh">'</span><span class="s">symbol</span><span class="sh">'</span><span class="p">))</span>
-  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="c1"># Exponentially weighted averages
-</span><span class="p">(</span>
-  <span class="n">df</span><span class="p">.</span><span class="nf">with_columns</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">col</span><span class="p">(</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">).</span><span class="nf">ewm_mean_by</span><span class="p">(</span><span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">,</span> <span class="n">half_life</span><span class="o">=</span><span class="sh">'</span><span class="s">10d</span><span class="sh">'</span><span class="p">))</span>
-  <span class="p">.</span><span class="nf">collect</span><span class="p">()</span>
-<span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="upsampling">Upsampling</h3>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span>
-        <span class="sh">'</span><span class="s">ts</span><span class="sh">'</span><span class="p">:</span> <span class="n">pl</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="nf">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="sh">'</span><span class="s">4d</span><span class="sh">'</span><span class="p">,</span> <span class="n">eager</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
-        <span class="sh">'</span><span class="s">value</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">]</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-<span class="c1"># Without filling in missing values
-</span><span class="n">df</span><span class="p">.</span><span class="nf">upsample</span><span class="p">(</span><span class="sh">'</span><span class="s">ts</span><span class="sh">'</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">)</span>
-<span class="c1"># Filling in missing values
-</span><span class="n">df</span><span class="p">.</span><span class="nf">upsample</span><span class="p">(</span><span class="sh">'</span><span class="s">ts</span><span class="sh">'</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="sh">'</span><span class="s">1d</span><span class="sh">'</span><span class="p">).</span><span class="nf">interpolate</span><span class="p">()</span>
-</code></pre></div></div>
-
-<h2 id="miscellaneous">Miscellaneous</h2>
-
-<ul>
-  <li>Data is stored in a columnar (Arrow) format when using Polars.</li>
-  <li>In Polars objects are usually immutable.</li>
-  <li>In order to improve execution time performance use non-eval approach first, eval second, map_batches third and map_elements fourth (because of jumping btw. Python and a Rust binary)</li>
-  <li>Use struct column type if the format/structure of a column is fixed. Otherwise use object type.</li>
-  <li>pl.Series()._get_buffers() -&gt; underlying representation.</li>
-  <li>.collect([new_]streaming=True, gpu=True) for using streaming and/or GPUs when collecting results from a lazy DataFrame.</li>
-  <li>Using sorted data enables Polars to use some optimizations which reduce execution time. Use <code class="language-plaintext highlighter-rouge">set_sorted</code> to tell Polars that data is sorted (Polars won’t check, so use w/ care).</li>
-</ul>]]></content><author><name>Ovidiu Pârvu</name></author><category term="polars" /><category term="python" /><category term="data" /><category term="analysis" /><summary type="html"><![CDATA[This introduction to Polars is my attempt to make it easy for future me to recollect what I have learnt during Polars training sessions provided by Quansight.]]></summary></entry><entry><title type="html">Python project cookiecutter</title><link href="http://localhost:4000/2025/03/10/python-project-cookiecutter" rel="alternate" type="text/html" title="Python project cookiecutter" /><published>2025-03-10T00:00:00+00:00</published><updated>2025-03-10T00:00:00+00:00</updated><id>http://localhost:4000/2025/03/10/python-project-cookiecutter</id><content type="html" xml:base="http://localhost:4000/2025/03/10/python-project-cookiecutter"><![CDATA[<p>In order to make it easier and faster than it is usually to create a new library or CLI Python project I have created <a href="https://github.com/ovidiuparvu/python-project-cookiecutter/tree/main">this</a> cookiecutter; see the README.md file in the linked repository for details on how to use it.</p>
-
-<p>The cookiecutter uses:</p>
-
-<ol>
-  <li><a href="https://hatch.pypa.io/dev/">hatch</a> for Python package management.</li>
-  <li><a href="https://tox.wiki/">tox</a> for linting and testing virtual environment management.</li>
-  <li><a href="https://docs.astral.sh/uv/">uv</a> for requirements files generation and virtual environment creation.</li>
-  <li><a href="https://docs.astral.sh/ruff/">ruff</a> for linting and formatting.</li>
-  <li><a href="https://mypy.readthedocs.io/en/stable/index.html">mypy</a> for type checking.</li>
-  <li><a href="https://docs.pytest.org/en/stable/">pytest</a> for testing.</li>
-  <li><a href="https://typer.tiangolo.com/">typer</a> and <a href="https://github.com/Textualize/rich">rich</a> for CLI applications.</li>
-  <li><a href="https://www.mkdocs.org/">mkdocs</a> for creating documentation pages.</li>
-</ol>
-
-<p>Examples of toy Python projects created using the cookiecutter are linked below.</p>
-
-<ol>
-  <li>Library: .</li>
-  <li>CLI tool: .</li>
-</ol>]]></content><author><name>Ovidiu Pârvu</name></author><category term="python" /><category term="cookiecutter" /><category term="library" /><category term="cli" /><category term="typer" /><summary type="html"><![CDATA[In order to make it easier and faster than it is usually to create a new library or CLI Python project I have created this cookiecutter; see the README.md file in the linked repository for details on how to use it.]]></summary></entry><entry><title type="html">Testing Python functions running git commands</title><link href="http://localhost:4000/2025/03/05/test-python-functions-running-git-commands" rel="alternate" type="text/html" title="Testing Python functions running git commands" /><published>2025-03-05T00:00:00+00:00</published><updated>2025-03-05T00:00:00+00:00</updated><id>http://localhost:4000/2025/03/05/test-python-functions-running-git-commands</id><content type="html" xml:base="http://localhost:4000/2025/03/05/test-python-functions-running-git-commands"><![CDATA[<p>Let us assume that we would like to implement some Python functions that use the <code class="language-plaintext highlighter-rouge">subprocess</code> module to run some git commands. The question is how would you (unit) test such functions?</p>
-
-<h2 id="sample-python-function-running-a-git-command">Sample Python function running a git command</h2>
-
-<p>First of all let’s consider the sample Python function below that runs a git command to determine the current git branch.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">current_branch</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">=</span> <span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="bp">None</span><span class="p">:</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span>
-            <span class="p">[</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">rev-parse</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">--abbrev-ref</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">HEAD</span><span class="sh">'</span><span class="p">],</span>
-            <span class="n">cwd</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-            <span class="n">capture_output</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-            <span class="n">text</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-            <span class="n">check</span><span class="o">=</span><span class="bp">True</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">stdout</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
-    <span class="k">except</span> <span class="n">subprocess</span><span class="p">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span>
-</code></pre></div></div>
-
-<h2 id="how-can-we-test-python-functions-running-git-commands">How can we test Python functions running git commands?</h2>
-
-<p>To test the function above one can write a helper function that initializes a git repo in a temporary test directory and then runs the tests against this directory.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@pytest.fixture</span>
-<span class="k">def</span> <span class="nf">temp_git_repo</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-    <span class="n">os</span><span class="p">.</span><span class="nf">chdir</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
-    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">init</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">config</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">user.name</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Test User</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">config</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">user.email</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">test@example.com</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path1</span><span class="p">.</span><span class="nf">samefile</span><span class="p">(</span><span class="n">path2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
     
-    <span class="n">test_file</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="sh">"</span><span class="s">test.txt</span><span class="sh">"</span>
-    <span class="n">test_file</span><span class="p">.</span><span class="nf">write_text</span><span class="p">(</span><span class="sh">"</span><span class="s">test content</span><span class="sh">"</span><span class="p">)</span>
-    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">add</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">subprocess</span><span class="p">.</span><span class="nf">run</span><span class="p">([</span><span class="sh">'</span><span class="s">git</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">commit</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">-m</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Initial commit</span><span class="sh">'</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path1</span><span class="p">.</span><span class="nf">stat</span><span class="p">().</span><span class="n">st_size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">path2</span><span class="p">.</span><span class="nf">stat</span><span class="p">().</span><span class="n">st_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
     
-    <span class="k">return</span> <span class="n">tmp_path</span>
+    <span class="n">ext1</span> <span class="o">=</span> <span class="n">path1</span><span class="p">.</span><span class="n">suffix</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span>
+    <span class="n">ext2</span> <span class="o">=</span> <span class="n">path2</span><span class="p">.</span><span class="n">suffix</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="n">ext1</span> <span class="o">!=</span> <span class="n">ext2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    
+    <span class="k">match</span> <span class="n">ext1</span><span class="p">:</span>
+        <span class="k">case</span> <span class="sh">'</span><span class="s">.csv</span><span class="sh">'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_csv</span><span class="p">(</span><span class="n">path1</span><span class="p">).</span><span class="nf">collect</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="sh">"</span><span class="s">streaming</span><span class="sh">"</span><span class="p">).</span><span class="nf">equals</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">scan_csv</span><span class="p">(</span><span class="n">path2</span><span class="p">).</span><span class="nf">collect</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="sh">"</span><span class="s">streaming</span><span class="sh">"</span><span class="p">))</span>
+        <span class="k">case</span> <span class="sh">'</span><span class="s">.parquet</span><span class="sh">'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="n">path1</span><span class="p">).</span><span class="nf">collect</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="sh">"</span><span class="s">streaming</span><span class="sh">"</span><span class="p">).</span><span class="nf">equals</span><span class="p">(</span><span class="n">pl</span><span class="p">.</span><span class="nf">scan_parquet</span><span class="p">(</span><span class="n">path2</span><span class="p">).</span><span class="nf">collect</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="sh">"</span><span class="s">streaming</span><span class="sh">"</span><span class="p">))</span>
+        <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">filecmp</span><span class="p">.</span><span class="nf">cmp</span><span class="p">(</span><span class="n">path1</span><span class="p">,</span> <span class="n">path2</span><span class="p">,</span> <span class="n">shallow</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>]]></content><author><name>Ovidiu Pârvu</name></author><category term="files" /><category term="equal" /><category term="equality" /><summary type="html"><![CDATA[For some use cases it is useful to be able to determine if two files are logically equal, namely they have the same extension and contents but their metadata can differ.]]></summary></entry><entry><title type="html">Numerical error thresholds for floating point numbers</title><link href="http://localhost:4000/2025/07/22/numerical-error-threshold-floating-point-numbers" rel="alternate" type="text/html" title="Numerical error thresholds for floating point numbers" /><published>2025-07-22T00:00:00+01:00</published><updated>2025-07-22T00:00:00+01:00</updated><id>http://localhost:4000/2025/07/22/numerical-error-threshold-floating-point-numbers</id><content type="html" xml:base="http://localhost:4000/2025/07/22/numerical-error-threshold-floating-point-numbers"><![CDATA[<p>According to W. Kahan’s <a href="https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF">notes</a> on the status of the IEEE Standard 754, the precision of:</p>
+<ol>
+  <li>A <em>32 bit</em> floating point number (i.e. a Single) is <em>6-9</em> decimal digits;</li>
+  <li>A <em>64 bit</em> floating point number (i.e. a Double) is <em>15-17</em> decimal digits.</li>
+</ol>
 
-<span class="k">def</span> <span class="nf">test_current_branch_main</span><span class="p">(</span><span class="n">temp_git_repo</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="nf">current_branch</span><span class="p">(</span><span class="n">temp_git_repo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span><span class="sh">'</span><span class="s">main</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">master</span><span class="sh">'</span><span class="p">]</span>
+<p>Specifically the precision is expressed as a range rather than a single value because:</p>
+<ol>
+  <li>If a decimal string with at most 6/15 significant decimal digits is converted to a Single/Double and then converted back to the same number of significant decimal digits, then the final string should match the original.</li>
+  <li>If a Single/Double is converted to a decimal string with at least 9/17 decimal digits and then converted back to a Single/Double, then the final number must match the original.</li>
+</ol>
+
+<p>Therefore a conservative numerical error threshold could be:</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">1E-6</code> for a Single;</li>
+  <li><code class="language-plaintext highlighter-rouge">1E-15</code> for a Double.</li>
+</ol>
+
+<p>Examples of using such error thresholds are given below.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (abs(double - value) &lt; 1e-15) {
+    // Double is equal to value
+}
+
+if (single + 1e+6 &lt; value) {
+    // Single is less than value
+}
 </code></pre></div></div>
 
-<p>Source code is made available on <a href="https://github.com/ovidiuparvu/python-git-function-testing/tree/main">GitHub</a> illustrating the testing approach described in this post.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="test" /><category term="python" /><category term="git" /><summary type="html"><![CDATA[Let us assume that we would like to implement some Python functions that use the subprocess module to run some git commands. The question is how would you (unit) test such functions?]]></summary></entry><entry><title type="html">Conditionally include typeguard in Python project</title><link href="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project" rel="alternate" type="text/html" title="Conditionally include typeguard in Python project" /><published>2025-02-24T00:00:00+00:00</published><updated>2025-02-24T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project</id><content type="html" xml:base="http://localhost:4000/2025/02/24/conditionally-include-typeguard-in-project"><![CDATA[<p>In this post I will show how to use environment variables to conditionally include <a href="https://pypi.org/project/typeguard/">typeguard</a> in a Python project. The source code underpinning this blog post is made available <a href="https://github.com/ovidiuparvu/typeguard-conditional-import">here</a>.</p>
-
-<h2 id="problem">Problem</h2>
-
-<p>Let’s say we maintain some code using typeguard and a snippet of it is the following.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
-<span class="kn">from</span> <span class="n">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
-
-<span class="nd">@typechecked</span>
-<span class="k">class</span> <span class="nc">Formatter</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">bold_green</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">[bold green]</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s">[/green bold]</span><span class="sh">"</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
-    <span class="n">console</span> <span class="o">=</span> <span class="nc">Console</span><span class="p">()</span>
-    <span class="n">formatter</span> <span class="o">=</span> <span class="nc">Formatter</span><span class="p">()</span>
-    <span class="n">console</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">formatter</span><span class="p">.</span><span class="nf">bold_green</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, World!</span><span class="sh">"</span><span class="p">))</span>
-</code></pre></div></div>
-
-<p>As per <a href="https://github.com/agronholm/typeguard/issues/468">this</a> issue, importing <code class="language-plaintext highlighter-rouge">typeguard</code> can add a noticeable execution time performance overhead to the import of a module.</p>
-
-<p>Now let us assume you would like to use the same code for both of the following scenarios.</p>
-
-<ol>
-  <li>User wants to benefit from typeguard features and the execution time overhead that typeguard adds is acceptable.</li>
-  <li>User wants to use our code w/o typeguard because the execution time overhead that typeguard adds is <em>not</em> acceptable.</li>
-</ol>
-
-<p>So the question is how can we update the code to support both scenarios?</p>
-
-<h2 id="solution">Solution</h2>
-
-<p>One option is to use the value of an environment variable to decide whether to import typeguard annotations/types or dummy ones instead. The updated code using this approach is given below.</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
-<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
-<span class="kn">from</span> <span class="n">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
-
-
-<span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">"</span><span class="s">ENABLE_TYPEGUARD</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">)</span> <span class="o">==</span> <span class="sh">"</span><span class="s">1</span><span class="sh">"</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="n">typeguard</span> <span class="kn">import</span> <span class="n">typechecked</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="c1"># Define a no-op decorator
-</span>    <span class="k">def</span> <span class="nf">typechecked</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[...,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[...,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="n">func</span>
-
-<span class="nd">@typechecked</span>
-<span class="k">class</span> <span class="nc">Formatter</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">bold_green</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">[bold green]</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s">[/green bold]</span><span class="sh">"</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
-    <span class="n">console</span> <span class="o">=</span> <span class="nc">Console</span><span class="p">()</span>
-    <span class="n">formatter</span> <span class="o">=</span> <span class="nc">Formatter</span><span class="p">()</span>
-    <span class="n">console</span><span class="p">.</span><span class="nf">print</span><span class="p">(</span><span class="n">formatter</span><span class="p">.</span><span class="nf">bold_green</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, World!</span><span class="sh">"</span><span class="p">))</span>
-</code></pre></div></div>
-
-<p>If the value of the <code class="language-plaintext highlighter-rouge">ENABLE_TYPEGUARD</code> environment variable is set to a value different from <code class="language-plaintext highlighter-rouge">1</code> then typeguard is not used. Otherwise typeguard is used.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="Python" /><category term="typeguard" /><category term="conditional" /><category term="performance" /><summary type="html"><![CDATA[In this post I will show how to use environment variables to conditionally include typeguard in a Python project. The source code underpinning this blog post is made available here.]]></summary></entry><entry><title type="html">NDC London 2025</title><link href="http://localhost:4000/2025/02/05/ndc-london-2025" rel="alternate" type="text/html" title="NDC London 2025" /><published>2025-02-05T00:00:00+00:00</published><updated>2025-02-05T00:00:00+00:00</updated><id>http://localhost:4000/2025/02/05/ndc-london-2025</id><content type="html" xml:base="http://localhost:4000/2025/02/05/ndc-london-2025"><![CDATA[<p>I have attended the <a href="https://ndclondon.com">NDC London 2025</a> conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several <a href="https://www.ndcconferences.com">countries</a>, so you do not need to wait for the next conference in London to attend.</p>
-
-<p>The ingredients that made my conference experience so enjoyable this year are:</p>
-<ol>
-  <li>A very useful 2 day practical workshop on <a href="https://ndclondon.com/workshops/practical-messaging-workshop/377bfb56107c">messaging</a>.</li>
-  <li>Insightful <a href="https://ndclondon.com/agenda">talks</a> with lots of demos for the next 3 days.</li>
-  <li>An awesome community which is welcoming to newcomers (like me).</li>
-  <li>Exciting companies to engage with at their booths.</li>
-  <li>An ad-hoc .NET London Meetup event during one of the evenings.</li>
-</ol>
-
-<h1 id="overview-of-topics-covered">Overview of topics covered</h1>
-
-<p>I have attended a workshop and several talks covering the following topics:</p>
-<ol>
-  <li>Artificial intelligence.</li>
-  <li>Messaging in distributed systems.</li>
-  <li>Software architecture.</li>
-  <li>C# and .NET.</li>
-  <li>Data visualisation.</li>
-</ol>
-
-<p>Given that several workshops and talks were running concurrently most of the time the topics listed above are only a small subset of the topics covered by the conference.</p>
-
-<p>I will summarize below my main takeaways for each topic.</p>
-
-<h1 id="artificial-intelligence-talks">Artificial intelligence talks</h1>
-
-<p>The building blocks that I think can be integrated to build great AI applications are:</p>
-<ol>
-  <li>Local large language models (LLMs).</li>
-  <li><a href="https://help.openai.com/en/articles/8868588-retrieval-augmented-generation-rag-and-semantic-search-for-gpts">Retrieval Augmented Generation</a> (RAG).</li>
-  <li><a href="https://platform.openai.com/docs/guides/function-calling">Predict + function call loops</a>.</li>
-  <li>Voice instead of text input.</li>
-  <li>AI powered tools.</li>
-</ol>
-
-<p>Over the next few weeks I will create sample demos using the building blocks listed above, so periodically come back to my blog if you are interested.</p>
-
-<h2 id="ai-powered-tools">AI powered tools</h2>
-
-<h3 id="vs-code">VS Code</h3>
-
-<p>Useful features available in VS Code include:</p>
-<ul>
-  <li>Ability to use per-project custom Copilot instructions.</li>
-  <li>Button to automatically generate commit message.</li>
-  <li>Copilot in the terminal.</li>
-  <li>Ability to use Claude 3.5 Sonnet for code generation.</li>
-  <li>“Edit with Copilot” for large scale code generation.</li>
-  <li>Copilot commands: /tests, /fix, /explain.</li>
-</ul>
-
-<h2 id="useful-references">Useful references</h2>
-
-<ol>
-  <li>For experimenting with local LLMs: <a href="https://lmstudio.ai/">LM Studio</a>.</li>
-  <li>Application for running local LLMs: <a href="https://ollama.com/">ollama</a>.</li>
-  <li>Repository of AI models: <a href="https://huggingface.co/">HuggingFace</a>.</li>
-</ol>
-
-<h1 id="messaging-in-distributed-systems-talks-and-workshop">Messaging in distributed systems talks and workshop</h1>
-
-<ul>
-  <li>In order to build large-scale distributed systems that are maintainable and evolvable over time the systems typically need to be split up into multiple components.</li>
-  <li>These components usually need to interact and ideally they would be as loosely coupled as possible.
-    <ul>
-      <li>Decoupling allows teams to work independently and an organisation to scale.</li>
-    </ul>
-  </li>
-  <li>Messaging can be used to allow components to be as loosely coupled as possible and to interact in a reliable manner.</li>
-  <li>Queuing theory (from mathematics) can be used to do capacity planning.</li>
-  <li>As long as components need to interact they need to be coupled to a certain extent.
-    <ul>
-      <li>Data coupling allows components to be loosely coupled.</li>
-      <li>Why switch from sync (e.g. HTTP) to async interactions between components? Resilience.</li>
-    </ul>
-  </li>
-  <li>There are design patterns for how to add messaging code to applications.</li>
-  <li>Message pump = forever loop that reads message off channel + translate to other representation + dispatch.</li>
-  <li>Break large messages into pieces (e.g 64-256KB).</li>
-  <li>To send large messages use claim checks (i.e. store content in distributed storage =&gt; token, send token to receivers, receiver uses token to retrieve content from distributed storage).</li>
-  <li>Messaging (has intent, uses commands) vs eventing (provides facts, events, notifications).</li>
-  <li>Popular message queuing solution: Rabbit MQ.</li>
-  <li>Popular streaming solution: Kafka.</li>
-  <li>Popular C# frameworks: Brighter, MassTransit, NServiceBus</li>
-  <li>Scaling out:
-    <ul>
-      <li>Message queues: Increase # of consumers.</li>
-      <li>Streams: Partition # of streams.</li>
-    </ul>
-  </li>
-  <li><a href="https://en.wikipedia.org/wiki/Robustness_principle">Postel’s law</a>: Enforce schemas on producer, be flexible on the consumer side
-    <ul>
-      <li>Forward transitive schema compatibility is typically used</li>
-    </ul>
-  </li>
-  <li>Patterns for reliably performing writes in one transactional DB and another data store:
-    <ol>
-      <li>Outbox model;</li>
-      <li>Outbox and inbox model;</li>
-      <li>Tailing DB log and writing to outbox using a sweeper.</li>
-      <li>State change capture.</li>
-    </ol>
-  </li>
-  <li>Standards:
-    <ul>
-      <li>AsyncAPI: like OpenAPI for messaging.</li>
-      <li>CloudEvents: for defining headers.</li>
-      <li>OTEL: Observability.</li>
-    </ul>
-  </li>
-  <li>Messaging patterns (involving requestor vs provider):
-    <ul>
-      <li>In-Only: Provider is a consumer.</li>
-      <li>Out-Only: Provider is a producer.</li>
-      <li>In-Out: Both provider and requestor are consumers and producers.</li>
-    </ul>
-  </li>
-  <li>Typically messaging is used for In-Only patterns and eventing is used for Out-Only patterns.</li>
-  <li>Red Panda Connect can be used to convert DB/stream/queue into stream/queue.</li>
-  <li>Miro can be used to design interactions between services.</li>
-</ul>
-
-<h2 id="useful-resources">Useful resources</h2>
-
-<ul>
-  <li>From messaging workshop:
-    <ul>
-      <li>Slides and excercises: <a href="https://github.com/iancooper/practical-messaging">https://github.com/iancooper/practical-messaging</a></li>
-      <li>Solutions for exercises implemented in C#: <a href="https://github.com/iancooper/Practical-Messaging-Sharp/tree/exercises">https://github.com/iancooper/Practical-Messaging-Sharp/tree/exercises</a></li>
-    </ul>
-  </li>
-  <li>Book on building microservices: <a href="https://samnewman.io/books/building_microservices_2nd_edition/">https://samnewman.io/books/building_microservices_2nd_edition/</a></li>
-  <li>Fallacies of distributed computing: <a href="https://cacmb4.acm.org/opinion/interviews/254622-l-peter-deutsch-on-the-fallacies-of-distributed-computing/fulltext">https://cacmb4.acm.org/opinion/interviews/254622-l-peter-deutsch-on-the-fallacies-of-distributed-computing/fulltext</a></li>
-  <li>Enterprise Integration Patterns: <a href="https://www.amazon.com/o/asin/0321200683/ref=nosim/enterpriseint-20">https://www.amazon.com/o/asin/0321200683/ref=nosim/enterpriseint-20</a></li>
-  <li>Transitional architecture: <a href="https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html">https://martinfowler.com/articles/patterns-legacy-displacement/transitional-architecture.html</a></li>
-  <li>Domain storytelling: <a href="https://domainstorytelling.org/">https://domainstorytelling.org/</a></li>
-  <li>Value stream mapping: <a href="https://www.lean.org/the-lean-post/articles/understanding-the-fundamentals-of-value-stream-mapping/">https://www.lean.org/the-lean-post/articles/understanding-the-fundamentals-of-value-stream-mapping/</a></li>
-</ul>
-
-<h1 id="software-architecture-talks">Software architecture talks</h1>
-
-<h2 id="software-architects">Software architects</h2>
-
-<ul>
-  <li>“Architects aren’t the smartest people in the room. They make everyone else smarter.”</li>
-  <li>What makes architects valuable to a business:
-    <ol>
-      <li>Connect the different levels in an organisation.</li>
-      <li>Use metaphors to help people understand concepts using their own language.</li>
-      <li>Look at problems across multiple dimensions.
-        <ul>
-          <li>Break down the problem into subproblems.</li>
-          <li>Increase solution space by increasing dimensionality.</li>
-          <li>Decouple sub-{problems,solutions}.</li>
-        </ul>
-      </li>
-      <li>Help people think logically rather than just follow trends.</li>
-      <li>Learn from the real world, which is a good source for metaphors.</li>
-      <li>Create as many options for the business as possible in order to attempt to maximize the likelihood of choosing the best possible solution.
-        <ul>
-          <li>Standardise as much as possible in order to be able to spend most time on expanding the solution space.</li>
-          <li>The higher the uncertainty, the higher the value of the options offered to the business.</li>
-        </ul>
-      </li>
-      <li>Help others understand using models, which should be as simple as possible.
-        <ul>
-          <li>Custom/hand-made diagrams/models are good for two-way communication.</li>
-        </ul>
-      </li>
-      <li>Read around problems in order to understand well the context of the problem to solve.</li>
-      <li>“Sketch, don’t draw”.</li>
-      <li>Raise the level of abstraction (to deepen the thinking).</li>
-      <li>Become stronger with resistance.
-        <ul>
-          <li>Without changing beliefs and/or assumptions, you cannot change behaviours.</li>
-        </ul>
-      </li>
-    </ol>
-  </li>
-</ul>
-
-<h2 id="the-architects-paradox">The Architect’s Paradox</h2>
-
-<ul>
-  <li>Some things from real life cannot be reduced to 0s and 1s and logic. Therefore the software systems we build are approximations of real life. Depending on how the approximations are built, they may be very difficult to adapt to changes in real life, which means there is a risk that we build systems that cannot adapt as needed over time.</li>
-  <li>The architect’s paradox is caused by the fact that we are trying to hold everything or most things still (in terms of architecture/diagrams), whereas the business/world keeps changing. Therefore it is only a matter of time until the architectures/models we build break.</li>
-  <li>SWE is an early/immature discipline. As a result there is no structured predictable way to architect software.</li>
-  <li>Embracing emergentism (philosophy), which attempts to handle complexity by adoptions philosophies of movement, could help.
-    <ul>
-      <li>Criticality is the ability to withstand changes outside the spec. Architects should focus on this.</li>
-    </ul>
-  </li>
-  <li>For more details read written work of Barry M O’Reilly.</li>
-</ul>
-
-<h2 id="migrating-legacy-web-applications-to-a-modern-stack">Migrating legacy web applications to a modern stack</h2>
-
-<ul>
-  <li>Migration approaches:
-    <ol>
-      <li>Big bang (risky).</li>
-      <li>Strangler fig (risk is contained).</li>
-    </ol>
-  </li>
-  <li>Focus on ASP .NET Framework legacy web applications.</li>
-  <li>Migrate using strangler fig pattern, .NET Upgrade Assistant and a reverse proxy called YARP (which runs in the same app in which the modern ASP .NET Core/Blazor code lies).
-    <ul>
-      <li>LigerSharp package to import CSS and JS from legacy project.</li>
-      <li>SystemWebAdapters namespace = shim that enables new and old to share auth + session state.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="modular-monoliths">Modular monoliths</h2>
-
-<ul>
-  <li>Creating boundaries between modules is one of the hardest parts
-    <ol>
-      <li>Talk to the business.</li>
-      <li>Event storming.</li>
-      <li>Bounded contexts.</li>
-    </ol>
-  </li>
-  <li>Bounded contexts represent an architectural choice. Microservices represent a deployment choice. The two are not necessarily linked.</li>
-  <li>Split code by business needs/requirements first, tech second.</li>
-  <li>Use separate schemas for data stores corresponding to different modules.</li>
-  <li>Register module endpoints inside modules rather than inside cross-module components (e.g. Controllers).</li>
-  <li>Use mediator pattern to ensure coupling between modules remains low.</li>
-  <li>Communicate between modules using services or events.
-    <ul>
-      <li>Sync communication within modules.</li>
-      <li>Async communication between modules.
-        <ul>
-          <li>HangFire, NServiceBus, Brighter, MassTransit.</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>Use ArchUnit (and NDependCop) to enforce interaction rules between modules.</li>
-</ul>
-
-<h3 id="useful-resources-1">Useful resources</h3>
-
-<ul>
-  <li>EventStorming book: <a href="https://www.eventstorming.com/book">https://www.eventstorming.com/book</a></li>
-  <li>Mediator design pattern: <a href="https://refactoring.guru/design-patterns/mediator">https://refactoring.guru/design-patterns/mediator</a>.</li>
-</ul>
-
-<h2 id="event-driven-architectures-and-domain-driven-design">Event driven architectures and domain driven design</h2>
-
-<ul>
-  <li>Event driven architectures (EDAs) adoption seems to be increasing because EDAs are becoming more and more accessible as a result of the ecosystem built around them.
-    <ul>
-      <li>Tools: EventCatalog</li>
-      <li>Standards: Arazzo, OpenAPI, AsyncAPI, xRegistry, cloudevents</li>
-    </ul>
-  </li>
-  <li>Prevent accidental back-pressure from consumers to producers using events carried state transfer (ECST).</li>
-  <li>Bridge the gap between domain experts and devs using domain driven design (DDD) techniques to reduce the likelihood of shipping misunderstandings.
-    <ul>
-      <li>Use EventStorming</li>
-    </ul>
-  </li>
-  <li>Switch from an implementation-first mindset to behaviour-first</li>
-  <li>Debugging issues when using EDAs is hard. Observability can help a lot (especially tracing).
-    <ul>
-      <li>Observability will make it possible for you to understand what a system is doing in PROD.</li>
-      <li>Custom instrumentation is key.</li>
-    </ul>
-  </li>
-  <li>When traces comprise too many spans, for better DX, split trace out and add causal links between (sub-)traces.</li>
-  <li>Do not include sensitive/PII data in spans.</li>
-  <li>Popular observability tools: Datadog, honeycomb</li>
-  <li>Tool for mocking synchronous interactions: Wiremock</li>
-</ul>
-
-<h3 id="useful-resources-2">Useful resources</h3>
-
-<ul>
-  <li>Eric Evans’ DDD blue book: <a href="https://www.domainlanguage.com/ddd/blue-book/">https://www.domainlanguage.com/ddd/blue-book/</a>.</li>
-</ul>
-
-<h1 id="c-and-net-talks">C# and .NET talks</h1>
-
-<h2 id="c-14-and-beyond">C# 14 and beyond</h2>
-
-<ul>
-  <li>Features likely to come to C# 14:
-    <ul>
-      <li>Dictionary expressions.</li>
-      <li>Modifiers on simple lambda parameters.</li>
-      <li>Unbound generic types in nameof.</li>
-      <li>Null-conditional assignment.</li>
-      <li>Partial events and constructors.</li>
-      <li>Field access in auto-properties.</li>
-      <li>First-class spans.</li>
-      <li>User-defined compound assignment operator.</li>
-      <li>Faster async code execution (runtime changes required).</li>
-      <li>Extension all the things.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="intro-to-net-aspire">Intro to .NET Aspire</h2>
-
-<ul>
-  <li>.NET Aspire = tools + templates + packages to build PROD distributed applications.</li>
-  <li>OTEL + service discovery out-of-the-box.</li>
-  <li>Supports running any executable or container.</li>
-  <li>Samples available in the Aspire GitHub repo.</li>
-  <li>Mocking support will be added in the future to help with testing.</li>
-  <li>Aspire can be used with Azure Dev Cli (azd) for deployment.</li>
-  <li>Resource visualizer will be added to dashboard in the future.</li>
-</ul>
-
-<h1 id="data-visualisation">Data visualisation</h1>
-
-<ul>
-  <li>Lie Factor = Size of effect shown in graphic / Size of effect in data.
-    <ul>
-      <li>Minimize this.</li>
-    </ul>
-  </li>
-  <li>Data-Ink Ratio = Data Ink / Total Ink.
-    <ul>
-      <li>Maximize this.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="useful-resources-3">Useful resources</h2>
-
-<ul>
-  <li>Edward Tufte’s books: https://www.edwardtufte.com/book/all-5-paperback-books/</li>
-</ul>
-
-<h1 id="summary">Summary</h1>
-
-<p>To sum it up in one phrase, NDC London 2025 was a great learning experience and I hope to be able to attend future editions. If you are unsure if you should do the same, just do it!</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="tech" /><category term="conference" /><category term="ndc" /><category term="london" /><category term="ai" /><category term="messaging" /><category term="architecture" /><category term="dotnet" /><category term="csharp" /><category term="C#" /><category term=".NET" /><summary type="html"><![CDATA[I have attended the NDC London 2025 conference and it was a wonderful experience. If you have not attended an NDC conference before, based on my experience from 2025, I would wholeheartedly recommend that you do. NDC conferences are organised in several countries, so you do not need to wait for the next conference in London to attend.]]></summary></entry></feed>
+<p>Note that the magnitude of numerical errors can increase as a result of arithmetic operations (e.g. multiplication). Therefore, depending on your use case, the results of arithmetic operations may need to be rounded to ensure that numerical errors do not exceed the error threshold given above.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="float" /><category term="double" /><category term="ieee754" /><category term="numerical" /><category term="threshold" /><summary type="html"><![CDATA[According to W. Kahan’s notes on the status of the IEEE Standard 754, the precision of: A 32 bit floating point number (i.e. a Single) is 6-9 decimal digits; A 64 bit floating point number (i.e. a Double) is 15-17 decimal digits.]]></summary></entry><entry><title type="html">Decoding and encoding JSON from Python fast</title><link href="http://localhost:4000/2025/07/21/fast-json-encoding-decoding" rel="alternate" type="text/html" title="Decoding and encoding JSON from Python fast" /><published>2025-07-21T00:00:00+01:00</published><updated>2025-07-21T00:00:00+01:00</updated><id>http://localhost:4000/2025/07/21/fast-json-encoding-decoding</id><content type="html" xml:base="http://localhost:4000/2025/07/21/fast-json-encoding-decoding"><![CDATA[<p>Use <a href="https://jcristharif.com/msgspec/benchmarks.html">msgspec</a> or <a href="https://github.com/ijl/orjson">orjson</a>.</p>]]></content><author><name>Ovidiu Pârvu</name></author><category term="decode" /><category term="encode" /><category term="json" /><category term="serialisation" /><category term="deserialisation" /><category term="msgspec" /><summary type="html"><![CDATA[Use msgspec or orjson.]]></summary></entry></feed>

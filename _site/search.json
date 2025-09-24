@@ -2,6 +2,160 @@
   
     {
 
+      "title"       : "Detecting point outliers in univariate time series data",
+      "url"         : "/2025/09/24/detecting-point-outliers-in-univariate-time-series-data",
+      "category"    : "",
+      "tags"        : "point, outlier, time series, univariate",
+      "date"        : "2025-09-24 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Detecting significant changes in time series data",
+      "url"         : "/2025/09/23/detecting-significant-changes-in-time-series-data",
+      "category"    : "",
+      "tags"        : "change point, time series, cpd",
+      "date"        : "2025-09-23 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Screen recording gif on Linux",
+      "url"         : "/2025/09/22/screen-recording-gif-on-linux",
+      "category"    : "",
+      "tags"        : "gif, linux, recording",
+      "date"        : "2025-09-22 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Adding git repo to Material for Mkdocs website",
+      "url"         : "/2025/09/22/adding-git-repo-to-material-for-mkdocs-website",
+      "category"    : "",
+      "tags"        : "material, mkdocs, git",
+      "date"        : "2025-09-22 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Running Python code with dependencies from the CLI",
+      "url"         : "/2025/09/16/running-python-code-with-deps-from-cli",
+      "category"    : "",
+      "tags"        : "python, uv, cli",
+      "date"        : "2025-09-16 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Coding use cases for LLMs",
+      "url"         : "/2025/08/29/coding-use-cases-for-llms",
+      "category"    : "",
+      "tags"        : "coding, llm",
+      "date"        : "2025-08-29 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "(De)serializing pydantic BaseModels list",
+      "url"         : "/2025/08/13/de-serializing-pydantic-base-models-list",
+      "category"    : "",
+      "tags"        : "pydantic, serialization, json, BaseModel",
+      "date"        : "2025-08-13 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Checking if two files are logically equal",
+      "url"         : "/2025/08/06/checking-if-two-files-are-logically-equal",
+      "category"    : "",
+      "tags"        : "files, equal, equality",
+      "date"        : "2025-08-06 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Numerical error thresholds for floating point numbers",
+      "url"         : "/2025/07/22/numerical-error-threshold-floating-point-numbers",
+      "category"    : "",
+      "tags"        : "float, double, ieee754, numerical, threshold",
+      "date"        : "2025-07-22 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Decoding and encoding JSON from Python fast",
+      "url"         : "/2025/07/21/fast-json-encoding-decoding",
+      "category"    : "",
+      "tags"        : "decode, encode, json, serialisation, deserialisation, msgspec",
+      "date"        : "2025-07-21 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Easily reuse keyboard and mouse across a PC and a laptop",
+      "url"         : "/2025/07/14/reuse-keyboard-mouse-across-pc-and-laptop",
+      "category"    : "",
+      "tags"        : "keyboard, mouse, usb, switch",
+      "date"        : "2025-07-14 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Validate a container image reference in Python",
+      "url"         : "/2025/07/09/validate-container-image-reference",
+      "category"    : "",
+      "tags"        : "container, image, docker, python",
+      "date"        : "2025-07-09 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "My generative AI toolbox",
+      "url"         : "/2025/06/27/my-gen-ai-toolbox",
+      "category"    : "",
+      "tags"        : "ai, generative, genai, toolbox",
+      "date"        : "2025-06-27 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
+      "title"       : "Anatomy of an Apache Parquet file",
+      "url"         : "/2025/06/26/anatomy-of-a-parquet-file",
+      "category"    : "",
+      "tags"        : "apache, parquet",
+      "date"        : "2025-06-26 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "Creating HTML reports from Python using Jinja",
       "url"         : "/2025/06/20/creating-html-report-from-python-using-jinja",
       "category"    : "",
@@ -68,10 +222,10 @@
   
     {
 
-      "title"       : "Python project cookiecutter",
-      "url"         : "/2025/03/10/python-project-cookiecutter",
+      "title"       : "Python engineering environment",
+      "url"         : "/2025/03/10/python-engineering-environment",
       "category"    : "",
-      "tags"        : "python, cookiecutter, library, cli, typer",
+      "tags"        : "python, engineering, environment, tools",
       "date"        : "2025-03-10 00:00:00 +0000",
       "description" : ""
 
