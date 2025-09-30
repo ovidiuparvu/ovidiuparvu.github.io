@@ -36,8 +36,8 @@ where the constant $k$ = 1.5 typically.
 ### Interpercentile range* (IPR*)
 
 $$
-outlier(x_i, n, t) = \begin{cases}
-    false \text{, if } len(X) < n \\ 
+outlier(x_i, c, t) = \begin{cases}
+    false \text{, if } n < c \\ 
     x_i \notin [ \\
         \text{  }min(-t, percentile(5, X) - k * IPR(X)), \\
         \text{  }max(t, percentile(95, X) + k  * IPR(X)) \\
