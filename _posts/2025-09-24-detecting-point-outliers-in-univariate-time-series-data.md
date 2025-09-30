@@ -33,6 +33,21 @@ $$
 
 where the constant $k$ = 1.5 typically.
 
+### Interpercentile range* (IPR*)
+
+$$
+outlier(x_i, n, t) = \begin{cases}
+    false \text{, if } len(X) < n \\ 
+    x_i \notin [ \\
+        \text{  }min(-t, percentile(5, X) - k * IPR(X)), \\
+        \text{  }max(t, percentile(95, X) + k  * IPR(X)) \\
+    ] \text{, otherwise.}
+\end{cases} \\
+IPR(X) = percentile(95, X) - percentile(5, X)
+$$
+
+where the constant $k$ = 1.5 typically.
+
 ## Further reading
 
 For a comprehensive review on point outlier detection in univariate time series data see [this](https://dl.acm.org/doi/10.1145/3444690) paper.

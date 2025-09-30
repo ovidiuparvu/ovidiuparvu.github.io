@@ -2,6 +2,17 @@
   
     {
 
+      "title"       : "Running pytest tests in parallel",
+      "url"         : "/2025/09/30/running-pytest-tests-in-parallel",
+      "category"    : "",
+      "tags"        : "pytest, parallel, test",
+      "date"        : "2025-09-30 00:00:00 +0100",
+      "description" : ""
+
+    } ,
+  
+    {
+
       "title"       : "Detecting point outliers in univariate time series data",
       "url"         : "/2025/09/24/detecting-point-outliers-in-univariate-time-series-data",
       "category"    : "",
