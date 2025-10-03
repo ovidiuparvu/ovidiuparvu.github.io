@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Checking how a Python `rich` color looks in your terminal
+title: Checking how a Python rich color looks in your terminal
 comments: true
 tags: [rich,python,colour,color]
 ---
