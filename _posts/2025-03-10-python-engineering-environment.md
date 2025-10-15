@@ -26,6 +26,7 @@ Tools I have found useful in the past when working on Python projects include:
     - [pytest-timeout](https://github.com/pytest-dev/pytest-timeout).
 - Docs generation:
     - [mkdocs](https://www.mkdocs.org/).
+    - [material for mkdocs](https://mrkeo.github.io/getting-started/).
     - [sphinx](https://www.sphinx-doc.org/en/master/).
 - Benchmarking:
     - [pytest-benchmark](https://github.com/ionelmc/pytest-benchmark).
