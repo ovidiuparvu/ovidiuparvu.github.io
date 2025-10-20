@@ -18,7 +18,8 @@ Some things I have learned over the years about automated developer-driven softw
 
 ## Testing concepts
 
-- Unit test: TODO
+- Unit test: A test of relatively narrow scope.
+- Test double: TODO
 - Fake: TODO
 - Mock: TODO
 
@@ -27,7 +28,14 @@ Some things I have learned over the years about automated developer-driven softw
 1. Test everything that you don't want to break.
    1. The Beyonce rule is another way of saying this: "If you liked it, then you shoulda put a test on it".
 2. Aim to write tests that are as self-contained, or hermetic, as possible.
-3. Keep the logic inside the tests as simple as possible by reducing conditional and loop statements as much as possible, ideally down to 0.
-4. Test using real dependencies instead of fakes/mocks where it is reasonable to do so.
-   1. Here you will have to strike a balance between amount of resources required to create, maintain and use fakes/mocks vs setting up and using test/staging versions of the real dependencies.
-5. A good test suite typically contains a mix of different test sizes and scopes (e.g. 80% unit tests, 15% integration tests, 5% e2e tests).
+   1. Ideally a test's body should contain all of the information needed to understand the test and nothing more.
+   2. Writing clear self-contained tests sometimes means introducing some duplication across multiple test cases, therefore violating DRY. Strike a balance that is right for you between zero code duplication and maximum understandability of the tests.
+3. Keep the logic inside the tests as simple as possible (e.g. by reducing the number of conditional and loop statements as much as possible).
+4. Strive to write tests that do not need changing unless the requirements of the system under test change.
+   1. Brittle tests are the opposite of this.
+   2. Testing via public APIs helps with this because tests would use the system under test like users can.
+   3. Write tests for behaviours that the system under test supports, not for each method that is implemented.
+5. Aim to write failure messages that provide sufficient context to an engineer to diagnose the failure without needing to look at anything else.
+6. Test using real dependencies instead of fakes/mocks where it is reasonable to do so.
+   1. Here you will have to strike a balance between the amount of resources required to create, maintain and use fakes/mocks vs setting up and using test/staging versions of the real dependencies.
+7. A good test suite typically contains a mix of different test sizes and scopes (e.g. 80% unit tests, 15% integration tests, 5% e2e tests).
