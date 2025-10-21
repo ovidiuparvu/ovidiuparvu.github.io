@@ -19,9 +19,11 @@ Some things I have learned over the years about automated developer-driven softw
 ## Testing concepts
 
 - Unit test: A test of relatively narrow scope.
-- Test double: TODO
-- Fake: TODO
-- Mock: TODO
+- Integration test: A test of medium/large scope that verifies the behaviour of multiple integrated units/components.
+- Test double: A function or an object that can stand in for a real implementation in a test.
+   - Mock: A test double whose behaviour is defined inline in the test (setup).
+   - Fake: A fake is a lightweight implementation of an API that behaves similar to the real implementation but isn't suitable for production.
+- Stubbing: Stubbing is the process of giving behaviour to a (mock) function that otherwise has no behaviour on its own.
 
 ## Tips for writing good tests
 
@@ -38,4 +40,5 @@ Some things I have learned over the years about automated developer-driven softw
 5. Aim to write failure messages that provide sufficient context to an engineer to diagnose the failure without needing to look at anything else.
 6. Test using real dependencies instead of fakes/mocks where it is reasonable to do so.
    1. Here you will have to strike a balance between the amount of resources required to create, maintain and use fakes/mocks vs setting up and using test/staging versions of the real dependencies.
+   2. If you use fakes, test them, to ensure their behaviour matches the behaviour of the system they represent.
 7. A good test suite typically contains a mix of different test sizes and scopes (e.g. 80% unit tests, 15% integration tests, 5% e2e tests).
