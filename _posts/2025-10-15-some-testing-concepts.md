@@ -20,6 +20,13 @@ Some things I have learned over the years about automated developer-driven softw
 
 - Unit test: A test of relatively narrow scope.
 - Integration test: A test of medium/large scope that verifies the behaviour of multiple integrated units/components.
+- End-to-end (e2e) or system test: A large scope test that verifies the behaviour of the system under test end-to-end.
+- UI test: A test for verifying that interacting with the UI in a certain way leads to the desired outcome.
+- Performance test: A test for verifying that the system under test can perform a certain task within specific performance (e.g. execution time) constraints.
+- Load test: A test for verifying if the system under test can successfully cope with a specific amount of load/usage/requests.
+- Stress test: A test for verifying what happens when the system under test is overloaded.
+- A/B testing: Verifying the impact of some changes (i.e. A) by making them available to a subset of users (e.g. 5%) while all other users continue to use the version of the system under test without the changes (i.e. B).
+   - Useful for gradually rolling out changes and assessing the impact of them on a small fraction of users first.
 - Test double: A function or an object that can stand in for a real implementation in a test.
    - Mock: A test double whose behaviour is defined inline in the test (setup).
    - Fake: A fake is a lightweight implementation of an API that behaves similar to the real implementation but isn't suitable for production.
