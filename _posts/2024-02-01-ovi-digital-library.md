@@ -7,15 +7,21 @@ comments: true
 tags: [library,technology,reading]
 ---
 
+# Communication
+
+1. <a href="https://www.goodreads.com/book/show/38894169-unleash-the-power-of-storytelling">Unleash the Power of Storytelling</a>: Win Hearts, Change Minds, Get Results by Rob Biesenbach.
+
 # Concurrency
 
 1. Race conditions deep dive by Steve Gibson: <a href="https://www.grc.com/sn/SN-970-Notes.pdf">https://www.grc.com/sn/SN-970-Notes.pdf</a>.
-
 
 # Data applications
 
 1. <a href="https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/">Designing Data-Intensive Applications</a> by Martin Kleppmann.
 
+# Design
+
+1. <a href="https://www.waterstones.com/book/the-design-of-everyday-things/donald-a-norman/9780262525671">The Design of Everyday Things</a> by Donald A. Norman.
 
 # Effectiveness
 
@@ -30,11 +36,19 @@ tags: [library,technology,reading]
 # Leadership
 
 1. <a href="https://www.waterstones.com/book/rise/patty-azzarello/9781607742609">Rise</a>: 3 Practical Steps for Advancing Your Career, Standing Out as a Leader, and Liking Your Life, by Patty Azzarello, Keith Ferrazzi.
+2. <a href="https://www.goodreads.com/book/show/16144853-leaders-eat-last">Leaders Eat Last</a>: Why Some Teams Pull Together and Others Don't by Simon Sinek.
+3. <a href="https://www.waterstones.com/book/turn-the-ship-around/l-david-marquet/stephen-r-covey/9780241250945">Turn The Ship Around!</a>: A True Story of Turning Followers into Leaders by L. David Marquet, Stephen R Covey.
 
+# Psychology
+
+1. <a href="https://www.penguin.co.uk/books/347571/mans-search-for-meaning-by-viktor-e-frankl/9781846046384">Man's Search For Meaning</a> by Viktor E Frankl.
 
 # Project management and planning
 
 1. <a href="https://basecamp.com/shapeup">Shape Up</a> - Stop Running in Circles and Ship Work that Matters, by Ryan Singer.
+2. <a href="https://www.waterstones.com/book/the-mythical-man-month/frederick-p-brooks-jr/9780201835953">The Mythical Man-Month: Essays on Software Engineering</a> by Frederick P. Brooks Jr.
+3. <a href="https://www.waterstones.com/book/lean-software-systems-engineering-for-developers/doug-durham/chad-michel/9781484269329">Lean Software Systems Engineering for Developers</a>: Managing Requirements, Complexity, Teams, and Change Like a Champ by
+Doug Durham, Chad Michel.
 
 
 # Software engineering
