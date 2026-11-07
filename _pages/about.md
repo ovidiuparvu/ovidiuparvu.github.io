@@ -9,4 +9,4 @@ Ovidiu Pârvu. Creating value using technology.
 - Publicly available code contributions: [GitHub](https://www.github.com/ovidiuparvu).
 - Preferred contact method: [LinkedIn](https://www.linkedin.com/in/ovidiuparvu).
 
-This is my technical blog. All opinions are my own.
+This is my blog. All opinions are my own.
