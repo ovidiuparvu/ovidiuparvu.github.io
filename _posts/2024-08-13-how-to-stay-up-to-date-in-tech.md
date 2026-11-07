@@ -27,7 +27,7 @@ tags: [tech,literature,acm]
         - [The InfoQ Podcast](https://www.infoq.com/the-infoq-podcast/).
         - [Thoughtworks Technology Podcast](https://www.thoughtworks.com/en-gb/insights/podcasts/technology-podcasts).
 - Engineering blogs.
-- [Books](https://ovidiuparvu.me/2024/02/01/ovi-digital-library).
+- [Books](https://ovidiuparvu.me/2026/11/07/ovi-digital-library).
 - [Blinkist](https://www.blinkist.com).
 - Conferences:
     - [NDC London](https://ndclondon.com).
