@@ -11,6 +11,10 @@ tags: [library,technology,reading]
 
 1. <a href="https://www.goodreads.com/book/show/38894169-unleash-the-power-of-storytelling">Unleash the Power of Storytelling</a>: Win Hearts, Change Minds, Get Results by Rob Biesenbach.
 
+# Computer architecture
+
+1. <a href="https://www.akkadia.org/drepper/cpumemory.pdf">What Every Programmer Should Know About Memory</a> by Ulrich Drepper.
+
 # Concurrency
 
 1. Race conditions deep dive by Steve Gibson: <a href="https://www.grc.com/sn/SN-970-Notes.pdf">https://www.grc.com/sn/SN-970-Notes.pdf</a>.
@@ -23,9 +27,14 @@ tags: [library,technology,reading]
 
 1. <a href="https://www.waterstones.com/book/the-design-of-everyday-things/donald-a-norman/9780262525671">The Design of Everyday Things</a> by Donald A. Norman.
 
+# Economics
+
+1. <a href="https://www.goodreads.com/book/isbn/9781982160272">Principles for Dealing with the Changing World Order</a>: Why Nations Succeed and Fail, by Ray Dalio.
+
 # Effectiveness
 
 1. <a href="https://jamesclear.com/atomic-habits">Atomic Habits</a>: An Easy & Proven Way to Build Good Habits & Break Bad Ones, by James Clear.
+2. <a href="https://www.principles.com/">Principles</a>: Life and Work, by Ray Dalio.
 
 
 # Health
@@ -38,10 +47,18 @@ tags: [library,technology,reading]
 1. <a href="https://www.waterstones.com/book/rise/patty-azzarello/9781607742609">Rise</a>: 3 Practical Steps for Advancing Your Career, Standing Out as a Leader, and Liking Your Life, by Patty Azzarello, Keith Ferrazzi.
 2. <a href="https://www.goodreads.com/book/show/16144853-leaders-eat-last">Leaders Eat Last</a>: Why Some Teams Pull Together and Others Don't by Simon Sinek.
 3. <a href="https://www.waterstones.com/book/turn-the-ship-around/l-david-marquet/stephen-r-covey/9780241250945">Turn The Ship Around!</a>: A True Story of Turning Followers into Leaders by L. David Marquet, Stephen R Covey.
+4. <a href="https://www.goodreads.com/book/isbn/9781984877864">No Rules Rules</a>: Netflix and the Culture of Reinvention, by Reed Hastings, Erin Meyer.
+
+# Personal finance
+
+1. <a href="https://www.navalmanack.com/">The Almanack of Naval Ravikant</a>: A Guide to Wealth and Happiness, by Eric Jorgenson.
+2. <a href="https://www.goodreads.com/book/isbn/9780857197689">The Psychology of Money</a>: Timeless Lessons on Wealth, Greed, and Happiness, by Morgan Housel.
+3. <a href="https://www.goodreads.com/book/isbn/9781533667922">The Simple Path to Wealth</a>: Your Road Map to Financial Independence and a Rich, Free Life, by JL Collins.
 
 # Psychology
 
 1. <a href="https://www.penguin.co.uk/books/347571/mans-search-for-meaning-by-viktor-e-frankl/9781846046384">Man's Search For Meaning</a> by Viktor E Frankl.
+2. <a href="https://www.goodreads.com/book/isbn/9780374533557">Thinking, Fast and Slow</a> by Daniel Kahneman.
 
 # Project management and planning
 
@@ -57,11 +74,23 @@ Doug Durham, Chad Michel.
 2. <a href="https://www.oreilly.com/library/view/joel-on-software/9781590593899/">Joel on Software</a>: And on Diverse and Occasionally Related Matters That Will Prove of Interest to Software Developers, Designers, and Managers, and to Those Who, Whether by Good Fortune or Ill Luck, Work with Them in Some Capacity, by Joel Spolsky.
 3. <a href="https://pragprog.com/titles/mnee2/release-it-second-edition/">Release It! Second Edition</a> - Design and Deploy Production-Ready Software, by Michael Nygard.
 4. <a href="https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary-edition/">The Pragmatic Programmer, 20th Anniversary Edition</a> - your journey to mastery, by David Thomas, Andrew Hunt.
+5. <a href="http://elementsofprogramming.com/">Elements of Programming</a> by Alexander Stepanov, Paul McJones.
+6. <a href="https://debuggingrules.com/">Debugging</a>: The 9 Indispensable Rules for Finding Even the Most Elusive Software and Hardware Problems, by David J. Agans.
+
+
+# Statistics and machine learning
+
+1. <a href="https://www.statlearning.com/">An Introduction to Statistical Learning</a> by Gareth James, Daniela Witten, Trevor Hastie, Robert Tibshirani.
 
 
 # Storage systems
 
 1. S3: [https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html](https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html).
+
+
+# Strategy
+
+1. <a href="https://en.wikipedia.org/wiki/The_Art_of_War">The Art of War</a> by Sun Tzu.
 
 
 # Tools
